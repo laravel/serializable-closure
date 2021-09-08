@@ -3,6 +3,8 @@
 namespace Laravel\SerializableClosure;
 
 use Closure;
+use Laravel\SerializableClosure\Exceptions\InvalidSignatureException;
+use Laravel\SerializableClosure\Serializers\Signed;
 use Laravel\SerializableClosure\Signers\Hmac;
 use Opis\Closure\SerializableClosure as BaseSerializableClosure;
 
@@ -19,7 +21,6 @@ class SerializableClosure
      * Creates a new serializable closure instance.
      *
      * @param  \Closure  $closure
-     *
      * @return void
      */
     public function __construct(Closure $closure)
@@ -57,7 +58,6 @@ class SerializableClosure
      * Sets the serializable closure secret key.
      *
      * @param  string|null  $secret
-     *
      * @return void
      */
     public static function setSecretKey($secret)
@@ -77,7 +77,6 @@ class SerializableClosure
      * Sets the serializable closure secret key.
      *
      * @param  \Closure|null  $transformer
-     *
      * @return void
      */
     public static function transformUseVariablesUsing($transformer)
@@ -89,11 +88,39 @@ class SerializableClosure
      * Sets the serializable closure secret key.
      *
      * @param  \Closure|null  $resolver
-     *
      * @return void
      */
     public static function resolveUseVariablesUsing($resolver)
     {
         Serializers\Native::$resolveUseVariables = $resolver;
+    }
+
+    /**
+     * Get the serializable representation of the closure.
+     *
+     * @return array
+     */
+    public function __serialize()
+    {
+        return [
+            'serializable' => $this->serializable,
+        ];
+    }
+
+    /**
+     * Restore the closure after serialization.
+     *
+     * @param  array  $data
+     * @return void
+     *
+     * @throws \Opis\Closure\SecurityException
+     */
+    public function __unserialize($data)
+    {
+        if (Signed::$signer && ! $data['serializable'] instanceof Signed) {
+            throw new InvalidSignatureException();
+        }
+
+        $this->serializable = $data['serializable'];
     }
 }

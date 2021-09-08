@@ -322,6 +322,21 @@ test('closure scope remains the same', function () {
     expect($ro->getClosureScopeClass())->toBeNull();
 })->with('serializers');
 
+test('mixed encodings', function () {
+    $a = iconv('utf-8', 'utf-16', 'Düsseldorf');
+    $b = utf8_decode('Düsseldorf');
+
+    $closure = function () use ($a, $b) {
+        return [$a, $b];
+    };
+
+    $u = s($closure);
+    $r = $u();
+
+    expect($r[0])->toEqual($a);
+    expect($r[1])->toEqual($b);
+})->with('serializers');
+
 class A
 {
     protected static function aStaticProtected()
