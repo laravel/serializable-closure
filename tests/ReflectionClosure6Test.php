@@ -45,6 +45,7 @@ test('null safe operator', function () {
     };
     $e1 = 'function () {
         $obj = new \stdClass();
+
         return $obj?->invalid();
     }';
 
