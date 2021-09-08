@@ -19,7 +19,7 @@
     ],
     "require": {
         "php": "^7.3|^8.0",
-        "opis/closure": "^3.6"
+        "opis/closure": "^3.6.2"
     },
     "require-dev": {
         "pestphp/pest": "^1.18",

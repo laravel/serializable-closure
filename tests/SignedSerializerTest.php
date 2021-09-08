@@ -55,7 +55,7 @@ test('invalid signed closure without signer', function () {
     $value = str_replace('.', ',', $value);
     SerializableClosure::setSecretKey(null);
     unserialize($value);
-})->addWarning('Previously this was expecting an exception.');
+})->throws(SecurityException::class);
 
 test('mixed encodings', function () {
     $a = iconv('utf-8', 'utf-16', 'Düsseldorf');

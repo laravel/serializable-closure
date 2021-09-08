@@ -49,7 +49,7 @@ test('closure use transformation with Native', function () {
     })));
 
     expect($c())->toEqual(50);
-});
+})->skip((float) phpversion() < '7.4');
 
 test('closure use transformation with Signed', function () {
     $a = 100;
@@ -76,7 +76,7 @@ test('closure use transformation with Signed', function () {
     })));
 
     expect($c())->toEqual(50);
-});
+})->skip((float) phpversion() < '7.4');
 
 test('closure use return closure', function () {
     $a = function ($p) {

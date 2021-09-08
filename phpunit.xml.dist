@@ -11,8 +11,20 @@
          stopOnFailure="false"
 >
     <testsuites>
-        <testsuite name="Serializable Closure Test Suite">
-            <directory suffix="Test.php">./tests</directory>
+        <testsuite name="common">
+            <file phpVersion="7.3.0" phpVersionOperator=">=">./tests/SerializerTest.php</file>
+            <file phpVersion="7.3.0" phpVersionOperator=">=">./tests/SignedSerializerTest.php</file>
+            <file phpVersion="7.3.0" phpVersionOperator=">=">./tests/SignedSerializerTest.php</file>
+            <file phpVersion="7.3.0" phpVersionOperator=">=">./tests/ReflectionClosure1Test.php</file>
+            <file phpVersion="7.3.0" phpVersionOperator=">=">./tests/ReflectionClosure2Test.php</file>
+            <file phpVersion="7.3.0" phpVersionOperator=">=">./tests/ReflectionClosure3Test.php</file>
+            <file phpVersion="7.3.0" phpVersionOperator=">=">./tests/ReflectionClosure4Test.php</file>
+        </testsuite>
+        <testsuite name="php74">
+            <file phpVersion="7.4.0" phpVersionOperator=">=">./tests/ReflectionClosure5Test.php</file>
+        </testsuite>
+        <testsuite name="php80">
+            <file phpVersion="8.0.0-dev" phpVersionOperator=">=">./tests/ReflectionClosure6Test.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

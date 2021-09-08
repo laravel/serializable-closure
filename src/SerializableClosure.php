@@ -4,6 +4,7 @@ namespace Laravel\SerializableClosure;
 
 use Closure;
 use Laravel\SerializableClosure\Signers\Hmac;
+use Opis\Closure\SerializableClosure as BaseSerializableClosure;
 
 class SerializableClosure
 {
@@ -23,9 +24,13 @@ class SerializableClosure
      */
     public function __construct(Closure $closure)
     {
-        $this->serializable = Serializers\Signed::$signer
-            ? new Serializers\Signed($closure)
-            : new Serializers\Native($closure);
+        if ((float) phpversion() < '7.4') {
+            $this->serializable = new BaseSerializableClosure($closure);
+        } else {
+            $this->serializable = Serializers\Signed::$signer
+                ? new Serializers\Signed($closure)
+                : new Serializers\Native($closure);
+        }
     }
 
     /**
@@ -57,9 +62,15 @@ class SerializableClosure
      */
     public static function setSecretKey($secret)
     {
-        Serializers\Signed::$signer = $secret
-            ? new Hmac($secret)
-            : null;
+        if ((float) phpversion() < '7.4') {
+            $secret
+                ? BaseSerializableClosure::setSecretKey($secret)
+                : BaseSerializableClosure::removeSecurityProvider();
+        } else {
+            Serializers\Signed::$signer = $secret
+                ? new Hmac($secret)
+                : null;
+        }
     }
 
     /**

@@ -144,6 +144,13 @@ test('typed properties', function () {
     expect($u())->toEqual('PC');
 })->with('serializers');
 
+test('group namespaces', function () {
+    $f = fn (): Forest => new Forest();
+    $e = 'fn (): \Foo\Baz\Qux\Forest => new \Foo\Baz\Qux\Forest()';
+
+    expect($f)->toBeCode($e);
+});
+
 // Helpers
 function c(Closure $closure)
 {
