@@ -25,7 +25,7 @@ class SerializableClosure
      */
     public function __construct(Closure $closure)
     {
-        if (\PHP_VERSION_ID >= 70400) {
+        if (\PHP_VERSION_ID < 70400) {
             $this->serializable = new BaseSerializableClosure($closure);
         } else {
             $this->serializable = Serializers\Signed::$signer
@@ -62,7 +62,7 @@ class SerializableClosure
      */
     public static function setSecretKey($secret)
     {
-        if (\PHP_VERSION_ID >= 70400) {
+        if (\PHP_VERSION_ID < 70400) {
             $secret
                 ? BaseSerializableClosure::setSecretKey($secret)
                 : BaseSerializableClosure::removeSecurityProvider();
