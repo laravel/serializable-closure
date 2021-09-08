@@ -5,8 +5,8 @@
  * Licensed under the MIT License
  * =========================================================================== */
 
-use Opis\Closure\SecurityException;
 use Laravel\SerializableClosure\SerializableClosure;
+use Opis\Closure\SecurityException;
 
 test('secure closure integrity fail', function () {
     $closure = function () {
@@ -58,8 +58,8 @@ test('invalid signed closure without signer', function () {
 })->addWarning('Previously this was expecting an exception.');
 
 test('mixed encodings', function () {
-    $a = iconv('utf-8', 'utf-16', "Düsseldorf");
-    $b = utf8_decode("Düsseldorf");
+    $a = iconv('utf-8', 'utf-16', 'Düsseldorf');
+    $b = utf8_decode('Düsseldorf');
 
     $closure = function () use ($a, $b) {
         return [$a, $b];

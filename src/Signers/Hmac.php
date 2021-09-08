@@ -17,6 +17,7 @@ class Hmac implements Signer
      * Creates a new signer instance.
      *
      * @param string $secret
+     *
      * @return void
      */
     public function __construct($secret)
@@ -27,21 +28,23 @@ class Hmac implements Signer
     /**
      * Sign the given serializable.
      *
-     * @param  string $serialized
+     * @param string $serialized
+     *
      * @return array
      */
     public function sign($serialized)
     {
         return [
             'serializable' => $serialized,
-            'hash' => base64_encode(hash_hmac('sha256', $serialized, $this->secret, true)),
+            'hash'         => base64_encode(hash_hmac('sha256', $serialized, $this->secret, true)),
         ];
     }
 
     /**
      * Verify the given signature.
      *
-     * @param  array $signature
+     * @param array $signature
+     *
      * @return bool
      */
     public function verify($signature)

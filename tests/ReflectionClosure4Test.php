@@ -1,6 +1,5 @@
 <?php
 
-use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Foo\{
     Bar as Baz,
 };
@@ -19,7 +18,6 @@ test('resolve return type', function () {
     };
     $e1 = 'function (): object {
     }';
-
 
     expect($f1)->toBeCode($e1);
 });

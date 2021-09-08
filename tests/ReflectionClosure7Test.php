@@ -1,14 +1,13 @@
 <?php
 
+use Foo\Bar;
+use Foo\Baz\Qux\Forest;
 use Opis\Closure\ClosureContext;
 use Opis\Closure\ClosureContext as SomeAlias;
-use Foo\Bar as Baz;
-use Foo\Baz\Qux\Forest;
-use Foo\Bar;
 
 test('instantiate non qualified class name', function () {
     $f = function () {
-        new NonExisting\B;
+        new NonExisting\B();
     };
     $e = 'function () {
         new \NonExisting\B;
@@ -28,7 +27,7 @@ test('instantiate partially qualified namespace', function () {
 
 test('fully qualified', function () {
     $f = function () {
-        new \A;
+        new \A();
     };
     $e = 'function () {
         new \A;
@@ -38,7 +37,7 @@ test('fully qualified', function () {
 });
 
 test('group namespaces', function () {
-    $f = fn (): Forest => new Forest;
+    $f = fn (): Forest => new Forest();
     $e = 'fn (): \Foo\Baz\Qux\Forest => new \Foo\Baz\Qux\Forest';
 
     expect($f)->toBeCode($e);
