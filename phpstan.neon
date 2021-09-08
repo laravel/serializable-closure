@@ -1,0 +1,12 @@
+parameters:
+    level: max
+    paths:
+        - src
+
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    reportUnmatchedIgnoredErrors: true
+
+    excludePaths:
+        - 'src/Support/ReflectionClosure'
+        - 'src/Serializers/Native'
