@@ -1,3 +1,5 @@
 php:
   version: 8
   preset: laravel
+  finder:
+    not-name: ReflectionClosure7Test.php
