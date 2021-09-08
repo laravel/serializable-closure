@@ -26,5 +26,8 @@
         <testsuite name="php80">
             <file phpVersion="8.0.0-dev" phpVersionOperator=">=">./tests/ReflectionClosure6Test.php</file>
         </testsuite>
+        <testsuite name="php81">
+            <file phpVersion="8.1.0-dev" phpVersionOperator=">=">./tests/ReflectionClosure7Test.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>

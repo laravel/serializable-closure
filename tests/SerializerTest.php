@@ -2,7 +2,7 @@
 
 use Laravel\SerializableClosure\SerializableClosure;
 use Opis\Closure\ReflectionClosure;
-use Opis\Closure\SerializableClosure as BaseSerializableClosure;
+use Tests\Fixtures\TransformingSerializableClosure;
 
 test('closure use return value', function () {
     $a = 100;
@@ -23,7 +23,7 @@ test('closure use transformation with Base', function () {
     })));
 
     expect($c())->toEqual(50);
-});
+})->skip( (float) phpversion() >= '8.1');
 
 test('closure use transformation with Native', function () {
     $a = 100;
@@ -395,25 +395,4 @@ class A2
 class ObjSelf
 {
     public $o;
-}
-
-class TransformingSerializableClosure extends BaseSerializableClosure
-{
-    protected function transformUseVariables($data)
-    {
-        foreach ($data as $key => $value) {
-            $data[$key] = $value * 2;
-        }
-
-        return $data;
-    }
-
-    protected function resolveUseVariables($data)
-    {
-        foreach ($data as $key => $value) {
-            $data[$key] = $value / 4;
-        }
-
-        return $data;
-    }
 }
