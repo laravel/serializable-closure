@@ -1,12 +1,8 @@
 <?php
 
-use Laravel\SerializableClosure\Support\ReflectionClosure;
-
 // Fake
 use Foo\Bar;
 use Foo\Baz as Qux;
-use function Bar\b1;
-use function Bar\b2 as b3;
 
 test('resolve arguments', function () {
     $f1 = function (?Bar $p) {
@@ -33,7 +29,6 @@ test('resolve arguments', function () {
     };
     $e5 = 'function (?array $p, ?string $x) {
     }';
-
 
     expect($f1)->toBeCode($e1);
     expect($f2)->toBeCode($e2);

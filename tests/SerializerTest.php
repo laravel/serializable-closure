@@ -1,8 +1,8 @@
 <?php
 
+use Laravel\SerializableClosure\SerializableClosure;
 use Opis\Closure\ReflectionClosure;
 use Opis\Closure\SerializableClosure as BaseSerializableClosure;
-use Laravel\SerializableClosure\SerializableClosure;
 
 test('closure use return value', function () {
     $a = 100;
@@ -116,7 +116,7 @@ test('closure use self', function () {
 })->with('serializers');
 
 test('closure use self in array', function () {
-    $a = array();
+    $a = [];
 
     $b = function () use (&$a) {
         return $a[0];
@@ -144,7 +144,7 @@ test('closure use self in object', function () {
 })->with('serializers');
 
 test('closure use self in multi array', function () {
-    $a = array();
+    $a = [];
     $x = null;
 
     $b = function () use (&$x) {
@@ -153,6 +153,7 @@ test('closure use self in multi array', function () {
 
     $c = function ($i) use (&$a) {
         $f = $a[$i];
+
         return $f();
     };
 
@@ -232,8 +233,9 @@ test('closure nested', function () {
 
 test('closure curly syntax', function () {
     $f = function () {
-        $x = (object)array('a' => 1, 'b' => 3);
+        $x = (object) ['a' => 1, 'b' => 3];
         $b = 'b';
+
         return $x->{'a'} + $x->{$b};
     };
     $f = s($f);
@@ -247,7 +249,7 @@ test('closure bind to object', function () {
         return $this->aPublic();
     };
 
-    $b = $b->bindTo($a, __NAMESPACE__ . "\\A");
+    $b = $b->bindTo($a, __NAMESPACE__.'\\A');
 
     $u = s($b);
 
@@ -261,7 +263,7 @@ test('closure bind to object scope', function () {
         return $this->aProtected();
     };
 
-    $b = $b->bindTo($a, __NAMESPACE__ . "\\A");
+    $b = $b->bindTo($a, __NAMESPACE__.'\\A');
 
     $u = s($b);
 
@@ -275,7 +277,7 @@ test('closure bind to object static scope', function () {
         return static::aStaticProtected();
     };
 
-    $b = $b->bindTo(null, __NAMESPACE__ . "\\A");
+    $b = $b->bindTo(null, __NAMESPACE__.'\\A');
 
     $u = s($b);
 
@@ -355,6 +357,7 @@ class A2
         };
         $this->closure3 = function () {
             $c = $this->closure2;
+
             return $this === $c();
         };
     }
@@ -362,16 +365,17 @@ class A2
     public function getPhrase()
     {
         $c = $this->closure1;
+
         return $c();
     }
 
     public function getEquality()
     {
         $c = $this->closure3;
+
         return $c();
     }
 }
-
 
 class ObjSelf
 {

@@ -5,8 +5,6 @@
  * Licensed under the MIT License
  * =========================================================================== */
 
-use Opis\Closure\ReflectionClosure;
-
 // Fake
 use Foo\Bar;
 use Foo\Baz as Qux;
@@ -14,7 +12,7 @@ use Foo\Baz as Qux;
 test('new instance', function () {
     $f = function () {
         $c = '\A';
-        new $c;
+        new $c();
     };
     $e = 'function () {
         $c = \'\A\';
@@ -25,7 +23,7 @@ test('new instance', function () {
 
 test('new instance2', function () {
     $f = function () {
-        new A;
+        new A();
     };
     $e = 'function () {
         new \A;
@@ -33,7 +31,7 @@ test('new instance2', function () {
     expect($f)->toBeCode($e);
 
     $f = function () {
-        new A\B;
+        new A\B();
     };
     $e = 'function () {
         new \A\B;
@@ -41,7 +39,7 @@ test('new instance2', function () {
     expect($f)->toBeCode($e);
 
     $f = function () {
-        new \A;
+        new \A();
     };
     $e = 'function () {
         new \A;
@@ -49,7 +47,7 @@ test('new instance2', function () {
     expect($f)->toBeCode($e);
 
     $f = function () {
-        new A(new B, [new C]);
+        new A(new B(), [new C()]);
     };
     $e = 'function () {
         new \A(new \B, [new \C]);
@@ -57,9 +55,9 @@ test('new instance2', function () {
     expect($f)->toBeCode($e);
 
     $f = function () {
-        new self;
-        new static;
-        new parent;
+        new self();
+        new static();
+        new parent();
     };
     $e = 'function () {
         new self;
@@ -165,7 +163,6 @@ test('cloure resolve in body', function () {
         return new \Foo();
     }';
 
-
     expect($f1)->toBeCode($e1);
     expect($f2)->toBeCode($e2);
     expect($f3)->toBeCode($e3);
@@ -216,7 +213,6 @@ test('closure resolve static method', function () {
     $e6 = 'function () {
         return \Foo::test();
     }';
-
 
     expect($f1)->toBeCode($e1);
     expect($f2)->toBeCode($e2);

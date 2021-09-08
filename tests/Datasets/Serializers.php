@@ -10,7 +10,7 @@ dataset('serializers', function () {
 
     $serializers = array_merge($serializers, [
         Serializers\Native::class,
-        Serializers\Signed::class
+        Serializers\Signed::class,
     ]);
     foreach ($serializers as $serializer) {
         yield function () use ($serializer) {
