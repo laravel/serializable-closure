@@ -17,7 +17,7 @@ class SerializableClosure
     /**
      * Creates a new serializable closure instance.
      *
-     * @param \Closure $closure
+     * @param  \Closure  $closure
      *
      * @return void
      */
@@ -51,7 +51,7 @@ class SerializableClosure
     /**
      * Sets the serializable closure secret key.
      *
-     * @param string|null $secret
+     * @param  string|null  $secret
      *
      * @return void
      */
@@ -65,7 +65,7 @@ class SerializableClosure
     /**
      * Sets the serializable closure secret key.
      *
-     * @param \Closure|null $transformer
+     * @param  \Closure|null  $transformer
      *
      * @return void
      */
@@ -77,7 +77,7 @@ class SerializableClosure
     /**
      * Sets the serializable closure secret key.
      *
-     * @param \Closure|null $resolver
+     * @param  \Closure|null  $resolver
      *
      * @return void
      */

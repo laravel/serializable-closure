@@ -29,8 +29,8 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Creates a new reflection closure instance.
      *
-     * @param \Closure    $closure
-     * @param string|null $code
+     * @param  \Closure  $closure
+     * @param  string|null  $code
      *
      * @return void
      */
@@ -1107,7 +1107,7 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Parse the given token.
      *
-     * @param string $token [description]
+     * @param  string  $token  [description]
      *
      * @return array
      */

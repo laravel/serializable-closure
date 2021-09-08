@@ -76,7 +76,7 @@ class Native implements Serializable
     /**
      * Creates a new serializable closure instance.
      *
-     * @param \Closure $closure
+     * @param  \Closure  $closure
      *
      * @return void
      */
@@ -213,8 +213,8 @@ class Native implements Serializable
     /**
      * Ensures the given closures are serializable.
      *
-     * @param mixed                        $data
-     * @param \Opis\Closure\ClosureContext $storage
+     * @param  mixed  $data
+     * @param  \Opis\Closure\ClosureContext  $storage
      *
      * @return void
      */
@@ -383,7 +383,7 @@ class Native implements Serializable
     /**
      * Internal method used to map closures by reference.
      *
-     * @param mixed &$data
+     * @param  mixed  &$data
      */
     protected function mapByReference(&$data)
     {

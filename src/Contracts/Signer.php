@@ -7,7 +7,7 @@ interface Signer
     /**
      * Sign the given serializable.
      *
-     * @param string $serializable
+     * @param  string  $serializable
      *
      * @return array
      */
@@ -16,7 +16,7 @@ interface Signer
     /**
      * Verify the given signature.
      *
-     * @param array $signature
+     * @param  array  $signature
      *
      * @return bool
      */
