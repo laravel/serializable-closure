@@ -11,7 +11,7 @@ class SerializableClosure
     /**
      * The closure's serializable.
      *
-     * @var \Laravel\SerializableClosure\Contracts\Serializable
+     * @var \Laravel\SerializableClosure\Contracts\Serializable|\Opis\Closure\SerializableClosure
      */
     protected $serializable;
 
