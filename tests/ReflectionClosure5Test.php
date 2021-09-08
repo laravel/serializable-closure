@@ -3,6 +3,7 @@
 use Foo\Bar as Baz;
 use Foo\Baz\Qux;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
+use Foo\Baz\Qux\Forest;
 
 test('is short closure', function () {
     $f1 = fn () => 1;
