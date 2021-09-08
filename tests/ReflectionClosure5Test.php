@@ -1,18 +1,14 @@
 <?php
 
-
-use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Foo\Bar as Baz;
 use Foo\Baz\Qux;
-use Opis\Closure\SerializableClosure;
+use Laravel\SerializableClosure\Support\ReflectionClosure;
 
 test('is short closure', function () {
     $f1 = fn () => 1;
     $f2 = static fn () => 1;
     $f3 = function () {
-        fn () => 1
-
-        ;
+        fn () => 1;
     };
 
     expect((new ReflectionClosure($f1))->isShortClosure())->toBeTrue();
@@ -21,19 +17,19 @@ test('is short closure', function () {
 });
 
 test('basic short closure', function () {
-    $f1 = fn () => "hello";
+    $f1 = fn () => 'hello';
     $e1 = 'fn () => "hello"';
 
-    $f2 = fn &() => "hello";
+    $f2 = fn &() => 'hello';
     $e2 = 'fn &() => "hello"';
 
-    $f3 = fn ($a) => "hello";
+    $f3 = fn ($a) => 'hello';
     $e3 = 'fn ($a) => "hello"';
 
-    $f4 = fn (&$a) => "hello";
+    $f4 = fn (&$a) => 'hello';
     $e4 = 'fn (&$a) => "hello"';
 
-    $f5 = fn (&$a): string => "hello";
+    $f5 = fn (&$a): string => 'hello';
     $e5 = 'fn (&$a): string => "hello"';
 
     expect($f1)->toBeCode($e1);
@@ -44,10 +40,10 @@ test('basic short closure', function () {
 });
 
 test('resolve types', function () {
-    $f1 = fn (Baz $a) => "hello";
+    $f1 = fn (Baz $a) => 'hello';
     $e1 = 'fn (\Foo\Bar $a) => "hello"';
 
-    $f2 = fn (Baz $a): Qux => "hello";
+    $f2 = fn (Baz $a): Qux => 'hello';
     $e2 = 'fn (\Foo\Bar $a): \Foo\Baz\Qux => "hello"';
 
     $f3 = fn (Baz $a): int => (function (Qux $x) {
@@ -103,7 +99,7 @@ test('function inside expressions and arrays', function () {
     $f3 = [fn () => 1, 0];
     $e3 = 'fn () => 1';
 
-    $f4 =  fn () => ($a === true) && (!empty([0, 1,]));
+    $f4 = fn () => ($a === true) && (!empty([0, 1]));
     $e4 = 'fn () => ($a === true) && (!empty([0, 1,]))';
 
     expect($f1)->toBeCode($e1);
@@ -131,14 +127,14 @@ test('serialize', function ($e) {
 
 test('typed properties', function () {
     $user = new User();
-    $s = s(function () use ($user) {
+    $s = s(function () {
         return true;
     });
     expect($s())->toBeTrue();
 
     $user = new User();
     $product = new Product();
-    $product->name = "PC";
+    $product->name = 'PC';
     $user->setProduct($product);
 
     $u = s(function () use ($user) {
@@ -152,6 +148,7 @@ test('typed properties', function () {
 function c(Closure $closure)
 {
     $r = new ReflectionClosure($closure);
+
     return $r->getCode();
 }
 

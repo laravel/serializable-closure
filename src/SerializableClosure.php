@@ -2,8 +2,8 @@
 
 namespace Laravel\SerializableClosure;
 
-use Laravel\SerializableClosure\Signers\Hmac;
 use Closure;
+use Laravel\SerializableClosure\Signers\Hmac;
 
 class SerializableClosure
 {
@@ -18,6 +18,7 @@ class SerializableClosure
      * Creates a new serializable closure instance.
      *
      * @param \Closure $closure
+     *
      * @return void
      */
     public function __construct(Closure $closure)
@@ -50,7 +51,8 @@ class SerializableClosure
     /**
      * Sets the serializable closure secret key.
      *
-     * @param  string|null $secret
+     * @param string|null $secret
+     *
      * @return void
      */
     public static function setSecretKey($secret)
@@ -63,7 +65,8 @@ class SerializableClosure
     /**
      * Sets the serializable closure secret key.
      *
-     * @param  \Closure|null $transformer
+     * @param \Closure|null $transformer
+     *
      * @return void
      */
     public static function transformUseVariablesUsing($transformer)
@@ -74,7 +77,8 @@ class SerializableClosure
     /**
      * Sets the serializable closure secret key.
      *
-     * @param  \Closure|null $resolver
+     * @param \Closure|null $resolver
+     *
      * @return void
      */
     public static function resolveUseVariablesUsing($resolver)

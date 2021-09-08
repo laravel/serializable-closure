@@ -2,12 +2,12 @@
 
 namespace Laravel\SerializableClosure\Serializers;
 
+use Closure;
 use Laravel\SerializableClosure\Contracts\Serializable;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Opis\Closure\ClosureScope;
 use Opis\Closure\ClosureStream;
 use Opis\Closure\SelfReference;
-use Closure;
 use ReflectionObject;
 
 class Native implements Serializable
@@ -76,7 +76,8 @@ class Native implements Serializable
     /**
      * Creates a new serializable closure instance.
      *
-     * @param  \Closure $closure
+     * @param \Closure $closure
+     *
      * @return void
      */
     public function __construct(Closure $closure)
@@ -152,11 +153,11 @@ class Native implements Serializable
         $this->mapByReference($use);
 
         $data = [
-            'use' => $use,
+            'use'      => $use,
             'function' => $code,
-            'scope' => $scope,
-            'this' => $object,
-            'self' => $this->reference
+            'scope'    => $scope,
+            'this'     => $object,
+            'self'     => $this->reference,
         ];
 
         if (!--$this->scope->serializations && !--$this->scope->toserialize) {
@@ -178,7 +179,7 @@ class Native implements Serializable
         $this->code = $data;
         unset($data);
 
-        $this->code['objects'] = array();
+        $this->code['objects'] = [];
 
         if ($this->code['use']) {
             $this->scope = new ClosureScope();
@@ -192,7 +193,7 @@ class Native implements Serializable
             $this->scope = null;
         }
 
-        $this->closure = include(ClosureStream::STREAM_PROTO . '://' . $this->code['function']);
+        $this->closure = include ClosureStream::STREAM_PROTO.'://'.$this->code['function'];
 
         if ($this->code['this'] === $this) {
             $this->code['this'] = null;
@@ -212,8 +213,9 @@ class Native implements Serializable
     /**
      * Ensures the given closures are serializable.
      *
-     * @param  mixed  $data
-     * @param  \Opis\Closure\ClosureContext  $storage
+     * @param mixed                        $data
+     * @param \Opis\Closure\ClosureContext $storage
+     *
      * @return void
      */
     public static function wrapClosures(&$data, $storage = null)
@@ -240,9 +242,10 @@ class Native implements Serializable
         } elseif ($data instanceof \stdClass) {
             if (isset($storage[$data])) {
                 $data = $storage[$data];
+
                 return;
             }
-            $data = $storage[$data] = clone($data);
+            $data = $storage[$data] = clone $data;
             foreach ($data as &$value) {
                 static::wrapClosures($value, $storage);
             }
@@ -250,12 +253,14 @@ class Native implements Serializable
         } elseif (is_object($data) && !$data instanceof static) {
             if (isset($storage[$data])) {
                 $data = $storage[$data];
+
                 return;
             }
             $instance = $data;
             $reflection = new ReflectionObject($instance);
             if (!$reflection->isUserDefined()) {
                 $storage[$instance] = $data;
+
                 return;
             }
             $storage[$instance] = $data = $reflection->newInstanceWithoutConstructor();
@@ -277,7 +282,7 @@ class Native implements Serializable
                         static::wrapClosures($value, $storage);
                     }
                     $property->setValue($data, $value);
-                };
+                }
             } while ($reflection = $reflection->getParentClass());
         }
     }
@@ -298,8 +303,10 @@ class Native implements Serializable
     }
 
     /**
-     * Internal method used to map closure pointers
+     * Internal method used to map closure pointers.
+     *
      * @param $data
+     *
      * @internal
      */
     protected function mapPointers(&$data)
@@ -359,11 +366,11 @@ class Native implements Serializable
                     }
                     $item = $property->getValue($data);
                     if ($item instanceof SerializableClosure || ($item instanceof SelfReference && $item->hash === $this->code['self'])) {
-                        $this->code['objects'][] = array(
+                        $this->code['objects'][] = [
                             'instance' => $data,
                             'property' => $property,
-                            'object' => $item instanceof SelfReference ? $this : $item,
-                        );
+                            'object'   => $item instanceof SelfReference ? $this : $item,
+                        ];
                     } elseif (is_array($item) || is_object($item)) {
                         $this->mapPointers($item);
                         $property->setValue($data, $item);
@@ -374,7 +381,7 @@ class Native implements Serializable
     }
 
     /**
-     * Internal method used to map closures by reference
+     * Internal method used to map closures by reference.
      *
      * @param mixed &$data
      */
@@ -383,11 +390,13 @@ class Native implements Serializable
         if ($data instanceof Closure) {
             if ($data === $this->closure) {
                 $data = new SelfReference($this->reference);
+
                 return;
             }
 
             if (isset($this->scope[$data])) {
                 $data = $this->scope[$data];
+
                 return;
             }
 
@@ -416,10 +425,11 @@ class Native implements Serializable
         } elseif ($data instanceof \stdClass) {
             if (isset($this->scope[$data])) {
                 $data = $this->scope[$data];
+
                 return;
             }
             $instance = $data;
-            $this->scope[$instance] = $data = clone($data);
+            $this->scope[$instance] = $data = clone $data;
 
             foreach ($data as &$value) {
                 $this->mapByReference($value);
@@ -428,6 +438,7 @@ class Native implements Serializable
         } elseif (is_object($data) && !$data instanceof SerializableClosure) {
             if (isset($this->scope[$data])) {
                 $data = $this->scope[$data];
+
                 return;
             }
 
@@ -435,6 +446,7 @@ class Native implements Serializable
             $reflection = new ReflectionObject($data);
             if (!$reflection->isUserDefined()) {
                 $this->scope[$instance] = $data;
+
                 return;
             }
             $this->scope[$instance] = $data = $reflection->newInstanceWithoutConstructor();
