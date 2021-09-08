@@ -54,4 +54,4 @@ test('invalid signed closure without signer', function () {
     $value = serialize(new SerializableClosure($closure));
     $value = str_replace('.', ',', $value);
     SerializableClosure::setSecretKey(null);
-})->addWarning('Should this test fail?');
+})->skip('Should this test fail?');
