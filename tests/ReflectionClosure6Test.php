@@ -1,7 +1,5 @@
 <?php
 
-use Laravel\SerializableClosure\Support\ReflectionClosure;
-
 // Fake
 use Some\ClassName as ClassAlias;
 
@@ -42,6 +40,7 @@ test('mixed type', function () {
 test('null safe operator', function () {
     $f1 = function () {
         $obj = new \stdClass();
+
         return $obj?->invalid();
     };
     $e1 = 'function () {
@@ -63,7 +62,7 @@ test('trailling comma', function () {
 
 test('named arguments', function () {
     $f1 = function (string $firstName, string $lastName) {
-        return $firstName . ' ' . $lastName;
+        return $firstName.' '.$lastName;
     };
 
     expect('Marco Deleu')->toBe(s($f1)(
@@ -87,9 +86,9 @@ test('constructor property promotion', function () {
 class PropertyPromotion
 {
     public function __construct(
-        public string    $public,
+        public string $public,
         protected string $protected,
-        private string   $private,
+        private string $private,
     ) {
     }
 

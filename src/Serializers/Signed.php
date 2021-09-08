@@ -25,7 +25,7 @@ class Signed implements Serializable
     /**
      * Creates a new serializable closure instance.
      *
-     * @param \Closure $closure
+     * @param  \Closure  $closure
      *
      * @return void
      */
@@ -73,7 +73,7 @@ class Signed implements Serializable
     /**
      * Restore the closure after serialization.
      *
-     * @param array $signature
+     * @param  array  $signature
      *
      * @throws \Opis\Closure\SecurityException
      *

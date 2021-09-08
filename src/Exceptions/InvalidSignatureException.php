@@ -9,7 +9,7 @@ class InvalidSignatureException extends SecurityException
     /**
      * Create a new exception instance.
      *
-     * @param string $message
+     * @param  string  $message
      *
      * @return void
      */
