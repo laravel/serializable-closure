@@ -154,7 +154,8 @@ test('anonymous inside closure', function () {
         };
     };
     $e1 = 'function () {
-        return new class extends \A {
+        return new class() extends \A
+        {
         };
     }';
 
@@ -164,7 +165,8 @@ test('anonymous inside closure', function () {
         };
     };
     $e2 = 'function () {
-        return new class extends \A implements \B {
+        return new class() extends \A implements \B
+        {
         };
     }';
 
@@ -177,7 +179,8 @@ test('anonymous inside closure', function () {
         };
     };
     $e3 = 'function () {
-        return new class {
+        return new class()
+        {
             public function x(\A $a): \B
             {
             }
@@ -197,7 +200,8 @@ test('closure resolve traits names in anonymous classes', function () {
         };
     };
     $e1 = 'function () {
-        new class {
+        new class()
+        {
             use \Foo\Bar;
         };
     }';
@@ -209,7 +213,8 @@ test('closure resolve traits names in anonymous classes', function () {
         };
     };
     $e2 = 'function () {
-        new class {
+        new class()
+        {
             use \Foo\Bar\Test;
         };
     }';
@@ -221,7 +226,8 @@ test('closure resolve traits names in anonymous classes', function () {
         };
     };
     $e3 = 'function () {
-        new class {
+        new class()
+        {
             use \Foo\Baz;
         };
     }';
@@ -233,7 +239,8 @@ test('closure resolve traits names in anonymous classes', function () {
         };
     };
     $e4 = 'function () {
-        new class {
+        new class()
+        {
             use \Foo\Baz\Test;
         };
     }';
@@ -245,7 +252,8 @@ test('closure resolve traits names in anonymous classes', function () {
         };
     };
     $e5 = 'function () {
-        new class {
+        new class()
+        {
             use \Foo;
         };
     }';
@@ -257,7 +265,8 @@ test('closure resolve traits names in anonymous classes', function () {
         };
     };
     $e6 = 'function () {
-        new class {
+        new class()
+        {
             use \Foo;
         };
     }';
@@ -276,13 +285,15 @@ test('closure resolve traits names in anonymous classes', function () {
         }
     };
     $e7 = 'function () {
-        new class {
+        new class()
+        {
             use \Foo\Bar;
         };
         function a(\Foo\Baz $q): \Foo\Bar
         {
             \Foo\f1();
-            $a = new class extends \Foo\Bar {
+            $a = new class() extends \Foo\Bar
+            {
             };
         }
     }';

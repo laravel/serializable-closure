@@ -16,7 +16,7 @@ test('new instance', function () {
     };
     $e = 'function () {
         $c = \'\A\';
-        new $c;
+        new $c();
     }';
     expect($f)->toBeCode($e);
 });
@@ -26,7 +26,7 @@ test('new instance2', function () {
         new A();
     };
     $e = 'function () {
-        new \A;
+        new \A();
     }';
     expect($f)->toBeCode($e);
 
@@ -34,7 +34,7 @@ test('new instance2', function () {
         new A\B();
     };
     $e = 'function () {
-        new \A\B;
+        new \A\B();
     }';
     expect($f)->toBeCode($e);
 
@@ -42,7 +42,7 @@ test('new instance2', function () {
         new \A();
     };
     $e = 'function () {
-        new \A;
+        new \A();
     }';
     expect($f)->toBeCode($e);
 
@@ -50,7 +50,7 @@ test('new instance2', function () {
         new A(new B(), [new C()]);
     };
     $e = 'function () {
-        new \A(new \B, [new \C]);
+        new \A(new \B(), [new \C()]);
     }';
     expect($f)->toBeCode($e);
 
@@ -60,9 +60,9 @@ test('new instance2', function () {
         new parent();
     };
     $e = 'function () {
-        new self;
-        new static;
-        new parent;
+        new self();
+        new static();
+        new parent();
     }';
     expect($f)->toBeCode($e);
 });

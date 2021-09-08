@@ -10,7 +10,7 @@ test('instantiate non qualified class name', function () {
         new NonExisting\B();
     };
     $e = 'function () {
-        new \NonExisting\B;
+        new \NonExisting\B();
     }';
 
     expect($f)->toBeCode($e);
@@ -30,7 +30,7 @@ test('fully qualified', function () {
         new \A();
     };
     $e = 'function () {
-        new \A;
+        new \A();
     }';
 
     expect($f)->toBeCode($e);
@@ -38,7 +38,7 @@ test('fully qualified', function () {
 
 test('group namespaces', function () {
     $f = fn (): Forest => new Forest();
-    $e = 'fn (): \Foo\Baz\Qux\Forest => new \Foo\Baz\Qux\Forest';
+    $e = 'fn (): \Foo\Baz\Qux\Forest => new \Foo\Baz\Qux\Forest()';
 
     expect($f)->toBeCode($e);
 });
