@@ -49,8 +49,8 @@ class Hmac implements Signer
      */
     public function verify($signature)
     {
-        return base64_encode(
+        return hash_equals(base64_encode(
             hash_hmac('sha256', $signature['serializable'], $this->secret, true)
-        ) === $signature['hash'];
+        ), $signature['hash']);
     }
 }
