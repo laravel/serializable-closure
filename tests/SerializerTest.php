@@ -23,7 +23,7 @@ test('closure use transformation with Base', function () {
     })));
 
     expect($c())->toEqual(50);
-})->skip( (float) phpversion() >= '8.1');
+})->skip((float) phpversion() >= '8.1');
 
 test('closure use transformation with Native', function () {
     $a = 100;
