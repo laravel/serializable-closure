@@ -99,7 +99,7 @@ test('function inside expressions and arrays', function () {
     $f3 = [fn () => 1, 0];
     $e3 = 'fn () => 1';
 
-    $f4 = fn () => ($a === true) && (!empty([0, 1]));
+    $f4 = fn () => ($a === true) && (! empty([0, 1]));
     $e4 = 'fn () => ($a === true) && (!empty([0, 1,]))';
 
     expect($f1)->toBeCode($e1);

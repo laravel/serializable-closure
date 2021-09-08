@@ -160,7 +160,7 @@ class Native implements Serializable
             'self'     => $this->reference,
         ];
 
-        if (!--$this->scope->serializations && !--$this->scope->toserialize) {
+        if (! --$this->scope->serializations && ! --$this->scope->toserialize) {
             $this->scope = null;
         }
 
@@ -201,7 +201,7 @@ class Native implements Serializable
 
         $this->closure = $this->closure->bindTo($this->code['this'], $this->code['scope']);
 
-        if (!empty($this->code['objects'])) {
+        if (! empty($this->code['objects'])) {
             foreach ($this->code['objects'] as $item) {
                 $item['property']->setValue($item['instance'], $item['object']->getClosure());
             }
@@ -250,7 +250,7 @@ class Native implements Serializable
                 static::wrapClosures($value, $storage);
             }
             unset($value);
-        } elseif (is_object($data) && !$data instanceof static) {
+        } elseif (is_object($data) && ! $data instanceof static) {
             if (isset($storage[$data])) {
                 $data = $storage[$data];
 
@@ -258,7 +258,7 @@ class Native implements Serializable
             }
             $instance = $data;
             $reflection = new ReflectionObject($instance);
-            if (!$reflection->isUserDefined()) {
+            if (! $reflection->isUserDefined()) {
                 $storage[$instance] = $data;
 
                 return;
@@ -266,15 +266,15 @@ class Native implements Serializable
             $storage[$instance] = $data = $reflection->newInstanceWithoutConstructor();
 
             do {
-                if (!$reflection->isUserDefined()) {
+                if (! $reflection->isUserDefined()) {
                     break;
                 }
                 foreach ($reflection->getProperties() as $property) {
-                    if ($property->isStatic() || !$property->getDeclaringClass()->isUserDefined()) {
+                    if ($property->isStatic() || ! $property->getDeclaringClass()->isUserDefined()) {
                         continue;
                     }
                     $property->setAccessible(true);
-                    if (PHP_VERSION >= 7.4 && !$property->isInitialized($instance)) {
+                    if (PHP_VERSION >= 7.4 && ! $property->isInitialized($instance)) {
                         continue;
                     }
                     $value = $property->getValue($instance);
@@ -346,22 +346,22 @@ class Native implements Serializable
                 }
             }
             unset($value);
-        } elseif (is_object($data) && !($data instanceof Closure)) {
+        } elseif (is_object($data) && ! ($data instanceof Closure)) {
             if (isset($scope[$data])) {
                 return;
             }
             $scope[$data] = true;
             $reflection = new ReflectionObject($data);
             do {
-                if (!$reflection->isUserDefined()) {
+                if (! $reflection->isUserDefined()) {
                     break;
                 }
                 foreach ($reflection->getProperties() as $property) {
-                    if ($property->isStatic() || !$property->getDeclaringClass()->isUserDefined()) {
+                    if ($property->isStatic() || ! $property->getDeclaringClass()->isUserDefined()) {
                         continue;
                     }
                     $property->setAccessible(true);
-                    if (PHP_VERSION >= 7.4 && !$property->isInitialized($data)) {
+                    if (PHP_VERSION >= 7.4 && ! $property->isInitialized($data)) {
                         continue;
                     }
                     $item = $property->getValue($data);
@@ -435,7 +435,7 @@ class Native implements Serializable
                 $this->mapByReference($value);
             }
             unset($value);
-        } elseif (is_object($data) && !$data instanceof SerializableClosure) {
+        } elseif (is_object($data) && ! $data instanceof SerializableClosure) {
             if (isset($this->scope[$data])) {
                 $data = $this->scope[$data];
 
@@ -444,7 +444,7 @@ class Native implements Serializable
 
             $instance = $data;
             $reflection = new ReflectionObject($data);
-            if (!$reflection->isUserDefined()) {
+            if (! $reflection->isUserDefined()) {
                 $this->scope[$instance] = $data;
 
                 return;
@@ -452,15 +452,15 @@ class Native implements Serializable
             $this->scope[$instance] = $data = $reflection->newInstanceWithoutConstructor();
 
             do {
-                if (!$reflection->isUserDefined()) {
+                if (! $reflection->isUserDefined()) {
                     break;
                 }
                 foreach ($reflection->getProperties() as $property) {
-                    if ($property->isStatic() || !$property->getDeclaringClass()->isUserDefined()) {
+                    if ($property->isStatic() || ! $property->getDeclaringClass()->isUserDefined()) {
                         continue;
                     }
                     $property->setAccessible(true);
-                    if (PHP_VERSION >= 7.4 && !$property->isInitialized($instance)) {
+                    if (PHP_VERSION >= 7.4 && ! $property->isInitialized($instance)) {
                         continue;
                     }
                     $value = $property->getValue($instance);

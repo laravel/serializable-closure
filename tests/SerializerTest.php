@@ -218,7 +218,7 @@ test('closure nested', function () {
         }
 
         $n = function ($b) {
-            return !$b;
+            return ! $b;
         };
 
         $ns = s($n);
