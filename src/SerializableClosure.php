@@ -62,7 +62,7 @@ class SerializableClosure
      */
     public static function setSecretKey($secret)
     {
-        if ((float) phpversion() < '7.4') {
+        if (\PHP_VERSION_ID >= 70400) {
             $secret
                 ? BaseSerializableClosure::setSecretKey($secret)
                 : BaseSerializableClosure::removeSecurityProvider();
