@@ -26,7 +26,6 @@ class Signed implements Serializable
      * Creates a new serializable closure instance.
      *
      * @param  \Closure  $closure
-     *
      * @return void
      */
     public function __construct($closure)
@@ -74,10 +73,9 @@ class Signed implements Serializable
      * Restore the closure after serialization.
      *
      * @param  array  $signature
+     * @return void
      *
      * @throws \Opis\Closure\SecurityException
-     *
-     * @return void
      */
     public function __unserialize($signature)
     {
