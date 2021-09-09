@@ -77,7 +77,6 @@ class Native implements Serializable
      * Creates a new serializable closure instance.
      *
      * @param  \Closure  $closure
-     *
      * @return void
      */
     public function __construct(Closure $closure)
@@ -215,7 +214,6 @@ class Native implements Serializable
      *
      * @param  mixed  $data
      * @param  \Opis\Closure\ClosureContext  $storage
-     *
      * @return void
      */
     public static function wrapClosures(&$data, $storage = null)

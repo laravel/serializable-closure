@@ -58,7 +58,6 @@ expect()->extend('toBeCode', function ($expected) {
  * Returns the given closure after serialize/unserialize.
  *
  * @param  \Closure  $closure
- *
  * @return \Closure
  */
 function s($closure)

@@ -31,7 +31,6 @@ class ReflectionClosure extends ReflectionFunction
      *
      * @param  \Closure  $closure
      * @param  string|null  $code
-     *
      * @return void
      */
     public function __construct(Closure $closure, $code = null)
@@ -1108,7 +1107,6 @@ class ReflectionClosure extends ReflectionFunction
      * Parse the given token.
      *
      * @param  string  $token  [description]
-     *
      * @return array
      */
     protected function parseNameQualified($token)
