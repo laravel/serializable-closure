@@ -128,7 +128,7 @@ class Native implements Serializable
         if ($reflector->isBindingRequired()) {
             $object = $reflector->getClosureThis();
 
-            static::wrapClosures($object,$this->scope);
+            static::wrapClosures($object, $this->scope);
         }
 
         if ($scope = $reflector->getClosureScopeClass()) {
