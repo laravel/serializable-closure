@@ -3,7 +3,6 @@
 use Laravel\SerializableClosure\SerializableClosure;
 use Laravel\SerializableClosure\Serializers;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
-use Opis\Closure\SerializableClosure as BaseSerializableClosure;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,9 +62,6 @@ expect()->extend('toBeCode', function ($expected) {
 function s($closure)
 {
     switch (test()->serializer) {
-        case BaseSerializableClosure::class:
-            $closure = new BaseSerializableClosure($closure);
-            break;
         case Serializers\Native::class:
             $closure = new SerializableClosure($closure);
             break;

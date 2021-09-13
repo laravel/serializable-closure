@@ -13,7 +13,7 @@ class SerializableClosure
     /**
      * The closure's serializable.
      *
-     * @var \Laravel\SerializableClosure\Contracts\Serializable|\Opis\Closure\SerializableClosure
+     * @var \Laravel\SerializableClosure\Contracts\Serializable
      */
     protected $serializable;
 
@@ -107,7 +107,7 @@ class SerializableClosure
      * @param  array  $data
      * @return void
      *
-     * @throws \Opis\Closure\SecurityException
+     * @throws \Laravel\SerializableClosure\Exceptions\InvalidSignatureException
      */
     public function __unserialize($data)
     {

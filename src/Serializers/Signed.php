@@ -75,7 +75,7 @@ class Signed implements Serializable
      * @param  array  $signature
      * @return void
      *
-     * @throws \Opis\Closure\SecurityException
+     * @throws \Laravel\SerializableClosure\Exceptions\InvalidSignatureException
      */
     public function __unserialize($signature)
     {

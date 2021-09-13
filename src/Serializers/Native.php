@@ -64,7 +64,7 @@ class Native implements Serializable
     /**
      * Holds the context during serialization/unserialization.
      *
-     * @var \Opis\Closure\ClosureContext
+     * @var \Laravel\SerializableClosure\Support\ClosureContext
      */
     protected static $context;
 
@@ -211,7 +211,7 @@ class Native implements Serializable
      * Ensures the given closures are serializable.
      *
      * @param  mixed  $data
-     * @param  \Opis\Closure\ClosureContext  $storage
+     * @param  \Laravel\SerializableClosure\Support\ClosureContext  $storage
      * @return void
      */
     public static function wrapClosures(&$data, $storage = null)
