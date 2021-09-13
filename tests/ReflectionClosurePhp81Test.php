@@ -1,5 +1,8 @@
 <?php
 
+use Foo\Baz\Qux\Forest;
+use Some\ClassName as ClassAlias;
+
 enum GlobalEnum: string {
     case Admin = 'Administrator';
     case Guest = 'Guest';
@@ -100,11 +103,11 @@ test('first-class callable', function () {
 });
 
 test('intersection types', function () {
-    $f = function (ReflectionClosurePhp81HasId&ReflectionClosurePhp81HasName $service): ReflectionClosureHasId&ReflectionClosurePhp81HasName {
+    $f = function (ClassAlias&Forest $service): ClassAlias&Forest {
         return $service;
     };
 
-    $e = 'function (\ReflectionClosurePhp81HasId&\ReflectionClosurePhp81HasName $service): \ReflectionClosureHasId&\ReflectionClosurePhp81HasName {
+    $e = 'function (\Some\ClassName&\Foo\Baz\Qux\Forest $service): \Some\ClassName&\Foo\Baz\Qux\Forest {
         return $service;
     }';
 
@@ -147,10 +150,7 @@ test('final class constants', function () {
     expect($f)->toBeCode($e);
 })->skip('Constants in anonymous classes is not supported.');
 
-interface ReflectionClosurePhp81HasId {}
-interface ReflectionClosurePhp81HasName {}
-
-class ReflectionClosurePhp81Service implements ReflectionClosurePhp81HasId, ReflectionClosurePhp81HasName
+class ReflectionClosurePhp81Service
 {
 }
 
