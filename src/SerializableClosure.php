@@ -27,11 +27,11 @@ class SerializableClosure
     {
         if (\PHP_VERSION_ID < 70400) {
             throw new PhpVersionNotSupportedException();
-        } else {
-            $this->serializable = Serializers\Signed::$signer
-                ? new Serializers\Signed($closure)
-                : new Serializers\Native($closure);
         }
+
+        $this->serializable = Serializers\Signed::$signer
+            ? new Serializers\Signed($closure)
+            : new Serializers\Native($closure);
     }
 
     /**
@@ -41,7 +41,7 @@ class SerializableClosure
      */
     public function __invoke()
     {
-        return $this->serializable->__invoke();
+        return call_user_func_array($this->serializable, func_get_args());
     }
 
     /**
