@@ -21,7 +21,7 @@ Laravel Serializable Closure provides an easy and secure way to **serialize clos
 
 ## Installation / Usage
 
-> **Requires [PHP 7.3+](https://php.net/releases/)**
+> **Requires [PHP 7.4+](https://php.net/releases/)**
 
 First, install Laravel Serializable Closure via the [Composer](https://getcomposer.org/) package manager:
 
