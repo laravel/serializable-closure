@@ -663,6 +663,11 @@ class ReflectionClosure extends ReflectionFunction
      */
     protected static function getBuiltinTypes()
     {
+        // PHP 8.1
+        if (PHP_VERSION_ID >= 80100) {
+            return ['array', 'callable', 'string', 'int', 'bool', 'float', 'iterable', 'void', 'object', 'mixed', 'false', 'null', 'never'];
+        }
+
         // PHP 8
         if (\PHP_MAJOR_VERSION === 8) {
             return ['array', 'callable', 'string', 'int', 'bool', 'float', 'iterable', 'void', 'object', 'mixed', 'false', 'null'];

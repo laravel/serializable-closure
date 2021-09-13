@@ -12,8 +12,9 @@ dataset('serializers', function () {
         Serializers\Native::class,
         Serializers\Signed::class,
     ]);
+
     foreach ($serializers as $serializer) {
-        yield function () use ($serializer) {
+        yield (new ReflectionClass($serializer))->getShortName() => function () use ($serializer) {
             $this->serializer = $serializer;
         };
     }

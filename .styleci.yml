@@ -2,4 +2,6 @@ php:
   version: 8
   preset: laravel
   finder:
-    not-name: ReflectionClosure7Test.php
+    not-name:
+      - ReflectionClosurePhp81Test.php
+      - SerializerPhp81Test.php

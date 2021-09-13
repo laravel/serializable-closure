@@ -44,6 +44,10 @@ $closure = unserialize($serialized)->getClosure();
 echo $closure(); // james;
 ```
 
+## Limitations
+
+- Creating **anonymous classes** within closures is not supported.
+
 ## License
 
 Seriazable Closure is open-sourced software licensed under the [MIT license](LICENSE.md).

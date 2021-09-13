@@ -21,13 +21,14 @@
             <file phpVersion="7.3.0" phpVersionOperator=">=">./tests/ReflectionClosure4Test.php</file>
         </testsuite>
         <testsuite name="php74">
-            <file phpVersion="7.4.0" phpVersionOperator=">=">./tests/ReflectionClosure5Test.php</file>
+            <file phpVersion="7.4.0" phpVersionOperator=">=">./tests/ReflectionClosurePhp74Test.php</file>
         </testsuite>
         <testsuite name="php80">
-            <file phpVersion="8.0.0-dev" phpVersionOperator=">=">./tests/ReflectionClosure6Test.php</file>
+            <file phpVersion="8.0.0-dev" phpVersionOperator=">=">./tests/ReflectionClosurePhp80Test.php</file>
         </testsuite>
         <testsuite name="php81">
-            <file phpVersion="8.1.0-dev" phpVersionOperator=">=">./tests/ReflectionClosure7Test.php</file>
+            <file phpVersion="8.1.0-dev" phpVersionOperator=">=">./tests/ReflectionClosurePhp81Test.php</file>
+            <file phpVersion="8.1.0-dev" phpVersionOperator=">=">./tests/SerializerPhp81Test.php</file>
         </testsuite>
     </testsuites>
 </phpunit>
