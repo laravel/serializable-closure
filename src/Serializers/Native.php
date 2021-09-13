@@ -55,7 +55,7 @@ class Native implements Serializable
     protected $reference;
 
     /**
-     * The closure's scope..
+     * The closure's scope.
      *
      * @var string
      */
@@ -71,7 +71,7 @@ class Native implements Serializable
     /**
      * The "key" that marks an array as recursive.
      */
-    const ARRAY_RECURSIVE_KEY = '¯\_(ツ)_/¯';
+    const ARRAY_RECURSIVE_KEY = 'LARAVEL_SERIALIZABLE_RECURSIVE_KEY';
 
     /**
      * Creates a new serializable closure instance.
