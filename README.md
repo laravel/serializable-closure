@@ -15,9 +15,9 @@
 
 ## Introduction
 
-> This package is a work in progress
+> This project is a fork of the excellent [opis/closure: 3.x](https://github.com/opis/closure) package. At Laravel, we decided to fork this package as the upcoming version [4.x](https://github.com/opis/closure) is a complete rewrite on top of the [FFI extension](https://www.php.net/manual/en/book.ffi.php). As Laravel is a web framework, and FFI is not enabled by default in web requests, this fork allows us to keep using the `3.x` series while adding support for new PHP versions.
 
-Laravel Serializable Closure provides an easy way to serialize closures in PHP. It's a fork of [opis/closure: ^3.0](https://github.com/opis/closure) that **does not use the PHP FFI Extension**, and supports PHP 8.1.
+Laravel Serializable Closure provides an easy and secure way to **serialize closures in PHP**.
 
 ## Installation / Usage
 
@@ -36,6 +36,7 @@ use Laravel\SerializableClosure\SerializableClosure;
 
 $closure = fn () => 'james';
 
+// Recommended
 SerializableClosure::setSecretKey('secret');
 
 $serialized = serialize(new SerializableClosure($closure));
@@ -44,7 +45,7 @@ $closure = unserialize($serialized)->getClosure();
 echo $closure(); // james;
 ```
 
-## Limitations
+## Caveats
 
 - Creating **anonymous classes** within closures is not supported.
 
