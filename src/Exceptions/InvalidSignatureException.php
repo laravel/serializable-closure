@@ -7,7 +7,7 @@ use Opis\Closure\SecurityException;
 class InvalidSignatureException extends SecurityException
 {
     /**
-     * Create a new exception instance.
+     * Create a new security exception instance.
      *
      * @param  string  $message
      * @return void
