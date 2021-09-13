@@ -127,14 +127,12 @@ class Native implements Serializable
 
         if ($reflector->isBindingRequired()) {
             $object = $reflector->getClosureThis();
-            static::wrapClosures($object, $this->scope);
-            if ($scope = $reflector->getClosureScopeClass()) {
-                $scope = $scope->name;
-            }
-        } else {
-            if ($scope = $reflector->getClosureScopeClass()) {
-                $scope = $scope->name;
-            }
+
+            static::wrapClosures($object,$this->scope);
+        }
+
+        if ($scope = $reflector->getClosureScopeClass()) {
+            $scope = $scope->name;
         }
 
         $this->reference = spl_object_hash($this->closure);
