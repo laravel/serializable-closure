@@ -1,8 +1,7 @@
 <?php
 
 use Laravel\SerializableClosure\SerializableClosure;
-use Opis\Closure\ReflectionClosure;
-use Tests\Fixtures\TransformingSerializableClosure;
+use Laravel\SerializableClosure\Support\ReflectionClosure;
 
 test('closure use return value', function () {
     $a = 100;
@@ -14,16 +13,6 @@ test('closure use return value', function () {
 
     expect($a)->toEqual($u());
 })->with('serializers');
-
-test('closure use transformation with Base', function () {
-    $a = 100;
-
-    $c = unserialize(serialize(new TransformingSerializableClosure(function () use ($a) {
-        return $a;
-    })));
-
-    expect($c())->toEqual(50);
-})->skip((float) phpversion() >= '8.1');
 
 test('closure use transformation with Native', function () {
     $a = 100;

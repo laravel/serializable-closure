@@ -2,12 +2,12 @@
 
 namespace Laravel\SerializableClosure\Exceptions;
 
-use Opis\Closure\SecurityException;
+use Exception;
 
-class MissingSecretKeyException extends SecurityException
+class MissingSecretKeyException extends Exception
 {
     /**
-     * Create a new security exception instance.
+     * Create a new exception instance.
      *
      * @param  string  $message
      * @return void

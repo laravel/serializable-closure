@@ -4,7 +4,7 @@ namespace Laravel\SerializableClosure\Exceptions;
 
 use Exception;
 
-class InvalidSignatureException extends Exception
+class PhpVersionNotSupportedException extends Exception
 {
     /**
      * Create a new exception instance.
@@ -12,7 +12,7 @@ class InvalidSignatureException extends Exception
      * @param  string  $message
      * @return void
      */
-    public function __construct($message = 'Your serialized closure might have been modified or it\'s unsafe to be unserialized.')
+    public function __construct($message = 'PHP 7.3 is not supported.')
     {
         parent::__construct($message);
     }

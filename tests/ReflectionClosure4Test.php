@@ -1,6 +1,10 @@
 <?php
 
 use Foo\Bar;
+use Foo\{
+    Bar as Baz,
+};
+use ReflectionClosure4Class as SomeAlias;
 
 test('resolve arguments', function () {
     $f1 = function (object $p) {
@@ -28,12 +32,6 @@ test('trailing comma', function () {
 
     expect($f1)->toBeCode($e1);
 });
-
-use Foo\{
-    Bar as Baz,
-};
-use Opis\Closure\ClosureContext;
-use Opis\Closure\ClosureContext as SomeAlias;
 
 test('instantiate non qualified class name', function () {
     $f = function () {
@@ -68,9 +66,9 @@ test('fully qualified', function () {
 
 test('namespaced object inside closure', function () {
     $closure = function () {
-        $object = new ClosureContext();
+        $object = new ReflectionClosure4Class();
 
-        expect($object)->toBeInstanceOf(\Opis\Closure\ClosureContext::class);
+        expect($object)->toBeInstanceOf(ReflectionClosure4Class::class);
         expect($object)->toBeInstanceOf(SomeAlias::class);
     };
 
@@ -78,3 +76,8 @@ test('namespaced object inside closure', function () {
 
     $executable();
 })->with('serializers');
+
+class ReflectionClosure4Class
+{
+    // ..
+}

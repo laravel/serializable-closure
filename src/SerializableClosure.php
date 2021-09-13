@@ -4,9 +4,9 @@ namespace Laravel\SerializableClosure;
 
 use Closure;
 use Laravel\SerializableClosure\Exceptions\InvalidSignatureException;
+use Laravel\SerializableClosure\Exceptions\PhpVersionNotSupportedException;
 use Laravel\SerializableClosure\Serializers\Signed;
 use Laravel\SerializableClosure\Signers\Hmac;
-use Opis\Closure\SerializableClosure as BaseSerializableClosure;
 
 class SerializableClosure
 {
@@ -26,7 +26,7 @@ class SerializableClosure
     public function __construct(Closure $closure)
     {
         if (\PHP_VERSION_ID < 70400) {
-            $this->serializable = new BaseSerializableClosure($closure);
+            throw new PhpVersionNotSupportedException();
         } else {
             $this->serializable = Serializers\Signed::$signer
                 ? new Serializers\Signed($closure)
@@ -62,15 +62,9 @@ class SerializableClosure
      */
     public static function setSecretKey($secret)
     {
-        if (\PHP_VERSION_ID < 70400) {
-            $secret
-                ? BaseSerializableClosure::setSecretKey($secret)
-                : BaseSerializableClosure::removeSecurityProvider();
-        } else {
-            Serializers\Signed::$signer = $secret
-                ? new Hmac($secret)
-                : null;
-        }
+        Serializers\Signed::$signer = $secret
+            ? new Hmac($secret)
+            : null;
     }
 
     /**

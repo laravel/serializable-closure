@@ -4,10 +4,10 @@ namespace Laravel\SerializableClosure\Serializers;
 
 use Closure;
 use Laravel\SerializableClosure\Contracts\Serializable;
+use Laravel\SerializableClosure\Support\ClosureScope;
+use Laravel\SerializableClosure\Support\ClosureStream;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
-use Opis\Closure\ClosureScope;
-use Opis\Closure\ClosureStream;
-use Opis\Closure\SelfReference;
+use Laravel\SerializableClosure\Support\SelfReference;
 use ReflectionObject;
 
 class Native implements Serializable
@@ -84,7 +84,7 @@ class Native implements Serializable
         $this->closure = $closure;
         if (static::$context !== null) {
             $this->scope = static::$context->scope;
-            $this->scope->toserialize++;
+            $this->scope->toSerialize++;
         }
     }
 
@@ -117,7 +117,7 @@ class Native implements Serializable
     {
         if ($this->scope === null) {
             $this->scope = new ClosureScope();
-            $this->scope->toserialize++;
+            $this->scope->toSerialize++;
         }
 
         $this->scope->serializations++;
@@ -157,7 +157,7 @@ class Native implements Serializable
             'self'     => $this->reference,
         ];
 
-        if (! --$this->scope->serializations && ! --$this->scope->toserialize) {
+        if (! --$this->scope->serializations && ! --$this->scope->toSerialize) {
             $this->scope = null;
         }
 
@@ -398,7 +398,7 @@ class Native implements Serializable
             $instance = new static($data);
 
             if (static::$context !== null) {
-                static::$context->scope->toserialize--;
+                static::$context->scope->toSerialize--;
             } else {
                 $instance->scope = $this->scope;
             }

@@ -5,8 +5,8 @@
  * Licensed under the MIT License
  * =========================================================================== */
 
+use Laravel\SerializableClosure\Exceptions\InvalidSignatureException;
 use Laravel\SerializableClosure\SerializableClosure;
-use Opis\Closure\SecurityException;
 
 test('secure closure integrity fail', function () {
     $closure = function () {
@@ -18,7 +18,7 @@ test('secure closure integrity fail', function () {
     $value = serialize(new SerializableClosure($closure));
     $value = str_replace('*x*', '*y*', $value);
     unserialize($value);
-})->throws(SecurityException::class);
+})->throws(InvalidSignatureException::class);
 
 test('unsigned closure with signer', function () {
     SerializableClosure::setSecretKey(null);
@@ -30,7 +30,7 @@ test('unsigned closure with signer', function () {
     $value = serialize(new SerializableClosure($closure));
     SerializableClosure::setSecretKey('secret');
     unserialize($value);
-})->throws(SecurityException::class);
+})->throws(InvalidSignatureException::class);
 
 test('signed closure without signer', function () {
     SerializableClosure::setSecretKey('secret');
