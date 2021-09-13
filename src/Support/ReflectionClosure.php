@@ -854,7 +854,7 @@ class ReflectionClosure extends ReflectionFunction
     }
 
     /**
-     * Gets the contants.
+     * Gets the constants.
      *
      * @return array
      */
@@ -1106,7 +1106,7 @@ class ReflectionClosure extends ReflectionFunction
     /**
      * Parse the given token.
      *
-     * @param  string  $token  [description]
+     * @param  string  $token
      * @return array
      */
     protected function parseNameQualified($token)

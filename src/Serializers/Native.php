@@ -291,8 +291,8 @@ class Native implements Serializable
     public function getReflector()
     {
         if ($this->reflector === null) {
-            $this->reflector = new ReflectionClosure($this->closure);
             $this->code = null;
+            $this->reflector = new ReflectionClosure($this->closure);
         }
 
         return $this->reflector;
@@ -301,9 +301,8 @@ class Native implements Serializable
     /**
      * Internal method used to map closure pointers.
      *
-     * @param $data
-     *
-     * @internal
+     * @param  mixed  $data
+     * @return void
      */
     protected function mapPointers(&$data)
     {
