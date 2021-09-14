@@ -55,7 +55,7 @@ Creating **anonymous classes** within closures is not supported.
 
 ## Contributing
 
-Thank you for considering contributing to BrowserKit Testing! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Thank you for considering contributing to Serializable Closure! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
 ## Code of Conduct
 
@@ -63,7 +63,7 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 ## Security Vulnerabilities
 
-Please review [our security policy](https://github.com/laravel/browser-kit-testing/security/policy) on how to report security vulnerabilities.
+Please review [our security policy](https://github.com/laravel/serializable-closure/security/policy) on how to report security vulnerabilities.
 
 ## License
 
