@@ -41,6 +41,10 @@ class SerializableClosure
      */
     public function __invoke()
     {
+        if (\PHP_VERSION_ID < 70400) {
+            throw new PhpVersionNotSupportedException();
+        }
+
         return call_user_func_array($this->serializable, func_get_args());
     }
 
@@ -51,6 +55,10 @@ class SerializableClosure
      */
     public function getClosure()
     {
+        if (\PHP_VERSION_ID < 70400) {
+            throw new PhpVersionNotSupportedException();
+        }
+
         return $this->serializable->getClosure();
     }
 
