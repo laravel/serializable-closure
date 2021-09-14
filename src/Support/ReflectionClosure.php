@@ -124,7 +124,7 @@ class ReflectionClosure extends ReflectionFunction
 
         for ($i = 0, $l = count($tokens); $i < $l; $i++) {
             $token = $tokens[$i];
-            
+
             switch ($state) {
                 case 'start':
                     if ($token[0] === T_FUNCTION || $token[0] === T_STATIC) {
