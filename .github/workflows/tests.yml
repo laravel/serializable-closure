@@ -41,4 +41,9 @@ jobs:
         run: composer update --prefer-stable --no-interaction --no-progress
 
       - name: Execute tests
+        run: vendor/bin/pest tests/Php73Test.php
+        if: matrix.php == 7.3
+
+      - name: Execute tests
         run: vendor/bin/pest
+        if: matrix.php > 7.3
