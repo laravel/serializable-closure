@@ -1,8 +1,8 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v0.0.1...master)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.0.0...master)
 
 
-## v0.0.1 (2020-09-XX)
+## v1.0.0 (2020-09-XX)
 
 Initial release
