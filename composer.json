@@ -1,6 +1,6 @@
 {
     "name": "laravel/serializable-closure",
-    "description": "The Laravel Serializable Closure.",
+    "description": "Laravel Serializable Closure provides an easy and secure way to serialize closures in PHP.",
     "keywords": ["laravel", "Serializable", "closure"],
     "license": "MIT",
     "support": {
