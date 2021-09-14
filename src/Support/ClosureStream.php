@@ -81,9 +81,9 @@ class ClosureStream
     /**
      * Change stream options.
      *
-     * @param  int  $option  [description]
-     * @param  int  $arg1  [description]
-     * @param  int  $arg2  [description]
+     * @param  int  $option
+     * @param  int  $arg1
+     * @param  int  $arg2
      * @return bool
      */
     public function stream_set_option($option, $arg1, $arg2)
