@@ -19,17 +19,21 @@
 
 Laravel Serializable Closure provides an easy and secure way to **serialize closures in PHP**.
 
-## Installation / Usage
+## Official Documentation
+
+### Installation
 
 > **Requires [PHP 7.4+](https://php.net/releases/)**
 
 First, install Laravel Serializable Closure via the [Composer](https://getcomposer.org/) package manager:
 
 ```bash
-composer require laravel/serializable-closure --dev
+composer require laravel/serializable-closure
 ```
 
-Then, you may serialize a closure this way:
+### Usage
+
+You may serialize a closure this way:
 
 ```php
 use Laravel\SerializableClosure\SerializableClosure;
@@ -45,10 +49,22 @@ $closure = unserialize($serialized)->getClosure();
 echo $closure(); // james;
 ```
 
-## Caveats
+### Caveats
 
-- Creating **anonymous classes** within closures is not supported.
+Creating **anonymous classes** within closures is not supported.
+
+## Contributing
+
+Thank you for considering contributing to BrowserKit Testing! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+
+## Code of Conduct
+
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+
+## Security Vulnerabilities
+
+Please review [our security policy](https://github.com/laravel/browser-kit-testing/security/policy) on how to report security vulnerabilities.
 
 ## License
 
-Seriazable Closure is open-sourced software licensed under the [MIT license](LICENSE.md).
+Serializable Closure is open-sourced software licensed under the [MIT license](LICENSE.md).

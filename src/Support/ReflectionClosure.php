@@ -61,9 +61,11 @@ class ReflectionClosure extends ReflectionFunction
     {
         if ($this->isShortClosure === null) {
             $code = $this->getCode();
+
             if ($this->isStatic()) {
                 $code = substr($code, 6);
             }
+
             $this->isShortClosure = strtolower(substr(trim($code), 0, 2)) === 'fn';
         }
 
@@ -122,6 +124,7 @@ class ReflectionClosure extends ReflectionFunction
 
         for ($i = 0, $l = count($tokens); $i < $l; $i++) {
             $token = $tokens[$i];
+
             switch ($state) {
                 case 'start':
                     if ($token[0] === T_FUNCTION || $token[0] === T_STATIC) {
