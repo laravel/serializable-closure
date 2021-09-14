@@ -82,6 +82,7 @@ class Native implements Serializable
     public function __construct(Closure $closure)
     {
         $this->closure = $closure;
+
         if (static::$context !== null) {
             $this->scope = static::$context->scope;
             $this->scope->toSerialize++;
@@ -150,11 +151,11 @@ class Native implements Serializable
         $this->mapByReference($use);
 
         $data = [
-            'use'      => $use,
+            'use' => $use,
             'function' => $code,
-            'scope'    => $scope,
-            'this'     => $object,
-            'self'     => $this->reference,
+            'scope' => $scope,
+            'this' => $object,
+            'self' => $this->reference,
         ];
 
         if (! --$this->scope->serializations && ! --$this->scope->toSerialize) {
@@ -186,7 +187,9 @@ class Native implements Serializable
             }
 
             $this->mapPointers($this->code['use']);
+
             extract($this->code['use'], EXTR_OVERWRITE | EXTR_REFS);
+
             $this->scope = null;
         }
 
@@ -226,13 +229,16 @@ class Native implements Serializable
             if (isset($data[self::ARRAY_RECURSIVE_KEY])) {
                 return;
             }
+
             $data[self::ARRAY_RECURSIVE_KEY] = true;
+
             foreach ($data as $key => &$value) {
                 if ($key === self::ARRAY_RECURSIVE_KEY) {
                     continue;
                 }
                 static::wrapClosures($value, $storage);
             }
+
             unset($value);
             unset($data[self::ARRAY_RECURSIVE_KEY]);
         } elseif ($data instanceof \stdClass) {
@@ -241,10 +247,13 @@ class Native implements Serializable
 
                 return;
             }
+
             $data = $storage[$data] = clone $data;
+
             foreach ($data as &$value) {
                 static::wrapClosures($value, $storage);
             }
+
             unset($value);
         } elseif (is_object($data) && ! $data instanceof static) {
             if (isset($storage[$data])) {
@@ -252,31 +261,40 @@ class Native implements Serializable
 
                 return;
             }
+
             $instance = $data;
             $reflection = new ReflectionObject($instance);
+
             if (! $reflection->isUserDefined()) {
                 $storage[$instance] = $data;
 
                 return;
             }
+
             $storage[$instance] = $data = $reflection->newInstanceWithoutConstructor();
 
             do {
                 if (! $reflection->isUserDefined()) {
                     break;
                 }
+
                 foreach ($reflection->getProperties() as $property) {
                     if ($property->isStatic() || ! $property->getDeclaringClass()->isUserDefined()) {
                         continue;
                     }
+
                     $property->setAccessible(true);
+
                     if (PHP_VERSION >= 7.4 && ! $property->isInitialized($instance)) {
                         continue;
                     }
+
                     $value = $property->getValue($instance);
+
                     if (is_array($value) || is_object($value)) {
                         static::wrapClosures($value, $storage);
                     }
+
                     $property->setValue($data, $value);
                 }
             } while ($reflection = $reflection->getParentClass());
@@ -314,7 +332,9 @@ class Native implements Serializable
             if (isset($data[self::ARRAY_RECURSIVE_KEY])) {
                 return;
             }
+
             $data[self::ARRAY_RECURSIVE_KEY] = true;
+
             foreach ($data as $key => &$value) {
                 if ($key === self::ARRAY_RECURSIVE_KEY) {
                     continue;
@@ -326,13 +346,16 @@ class Native implements Serializable
                     $this->mapPointers($value);
                 }
             }
+
             unset($value);
             unset($data[self::ARRAY_RECURSIVE_KEY]);
         } elseif ($data instanceof \stdClass) {
             if (isset($scope[$data])) {
                 return;
             }
+
             $scope[$data] = true;
+
             foreach ($data as $key => &$value) {
                 if ($value instanceof SelfReference && $value->hash === $this->code['self']) {
                     $data->{$key} = &$this->closure;
@@ -340,31 +363,39 @@ class Native implements Serializable
                     $this->mapPointers($value);
                 }
             }
+
             unset($value);
         } elseif (is_object($data) && ! ($data instanceof Closure)) {
             if (isset($scope[$data])) {
                 return;
             }
+
             $scope[$data] = true;
             $reflection = new ReflectionObject($data);
+
             do {
                 if (! $reflection->isUserDefined()) {
                     break;
                 }
+
                 foreach ($reflection->getProperties() as $property) {
                     if ($property->isStatic() || ! $property->getDeclaringClass()->isUserDefined()) {
                         continue;
                     }
+
                     $property->setAccessible(true);
+
                     if (PHP_VERSION >= 7.4 && ! $property->isInitialized($data)) {
                         continue;
                     }
+
                     $item = $property->getValue($data);
+
                     if ($item instanceof SerializableClosure || ($item instanceof SelfReference && $item->hash === $this->code['self'])) {
                         $this->code['objects'][] = [
                             'instance' => $data,
                             'property' => $property,
-                            'object'   => $item instanceof SelfReference ? $this : $item,
+                            'object' => $item instanceof SelfReference ? $this : $item,
                         ];
                     } elseif (is_array($item) || is_object($item)) {
                         $this->mapPointers($item);
@@ -408,13 +439,17 @@ class Native implements Serializable
             if (isset($data[self::ARRAY_RECURSIVE_KEY])) {
                 return;
             }
+
             $data[self::ARRAY_RECURSIVE_KEY] = true;
+
             foreach ($data as $key => &$value) {
                 if ($key === self::ARRAY_RECURSIVE_KEY) {
                     continue;
                 }
+
                 $this->mapByReference($value);
             }
+
             unset($value);
             unset($data[self::ARRAY_RECURSIVE_KEY]);
         } elseif ($data instanceof \stdClass) {
@@ -423,12 +458,14 @@ class Native implements Serializable
 
                 return;
             }
+
             $instance = $data;
             $this->scope[$instance] = $data = clone $data;
 
             foreach ($data as &$value) {
                 $this->mapByReference($value);
             }
+
             unset($value);
         } elseif (is_object($data) && ! $data instanceof SerializableClosure) {
             if (isset($this->scope[$data])) {
@@ -439,29 +476,37 @@ class Native implements Serializable
 
             $instance = $data;
             $reflection = new ReflectionObject($data);
+
             if (! $reflection->isUserDefined()) {
                 $this->scope[$instance] = $data;
 
                 return;
             }
+
             $this->scope[$instance] = $data = $reflection->newInstanceWithoutConstructor();
 
             do {
                 if (! $reflection->isUserDefined()) {
                     break;
                 }
+
                 foreach ($reflection->getProperties() as $property) {
                     if ($property->isStatic() || ! $property->getDeclaringClass()->isUserDefined()) {
                         continue;
                     }
+
                     $property->setAccessible(true);
+
                     if (PHP_VERSION >= 7.4 && ! $property->isInitialized($instance)) {
                         continue;
                     }
+
                     $value = $property->getValue($instance);
+
                     if (is_array($value) || is_object($value)) {
                         $this->mapByReference($value);
                     }
+
                     $property->setValue($data, $value);
                 }
             } while ($reflection = $reflection->getParentClass());

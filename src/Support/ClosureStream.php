@@ -63,6 +63,7 @@ class ClosureStream
     public function stream_read($count)
     {
         $value = substr($this->content, $this->pointer, $count);
+        
         $this->pointer += $count;
 
         return $value;
