@@ -39,14 +39,3 @@ test('signed closure without signer', function () {
     $closure = unserialize($value)->getClosure();
     expect($closure())->toBeTrue();
 });
-
-test('invalid signed closure without signer', function () {
-    SerializableClosure::setSecretKey('secret');
-    $closure = function () {
-        /*x*/
-    };
-
-    $value = serialize(new SerializableClosure($closure));
-    $value = str_replace('.', ',', $value);
-    SerializableClosure::setSecretKey(null);
-})->skip('Should this test fail?');
