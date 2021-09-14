@@ -1,9 +1,4 @@
 <?php
-/* ===========================================================================
- * Copyright (c) 2018-2021 Zindex Software
- *
- * Licensed under the MIT License
- * =========================================================================== */
 
 use Laravel\SerializableClosure\Exceptions\InvalidSignatureException;
 use Laravel\SerializableClosure\SerializableClosure;
