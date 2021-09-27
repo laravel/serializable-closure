@@ -37,7 +37,7 @@ test('mixed type', function () {
     expect($f1)->toBeCode($e1);
 });
 
-test('null safe operator', function () {
+test('null safe operator with methods', function () {
     $f1 = function () {
         $obj = new \stdClass();
 
@@ -47,6 +47,21 @@ test('null safe operator', function () {
         $obj = new \stdClass();
 
         return $obj?->invalid();
+    }';
+
+    expect($f1)->toBeCode($e1);
+});
+
+test('null safe operator with properties', function () {
+    $f1 = function () {
+        $obj = new \stdClass();
+
+        return $obj?->invalid;
+    };
+    $e1 = 'function () {
+        $obj = new \stdClass();
+
+        return $obj?->invalid;
     }';
 
     expect($f1)->toBeCode($e1);
