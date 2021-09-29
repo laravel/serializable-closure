@@ -210,7 +210,7 @@ class Native implements Serializable
     public static function wrapClosures(&$data, $storage)
     {
         if ($data instanceof Closure) {
-            $data = static::from($data);
+            $data = new static($data);
         } elseif (is_array($data)) {
             if (isset($data[self::ARRAY_RECURSIVE_KEY])) {
                 return;

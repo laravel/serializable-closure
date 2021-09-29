@@ -367,6 +367,23 @@ test('use objects with serializable closures properties', function () {
     expect($r)->toEqual('Hi');
 })->with('serializers');
 
+test('rebound closure', function () {
+    $closure = Closure::bind(
+        function () {
+            return $this->hello();
+        },
+        new A3(function () {
+            return 'Hi';
+        }),
+        A3::class
+    );
+
+    $u = s($closure);
+    $r = $u();
+
+    expect($r)->toEqual('Hi');
+})->with('serializers');
+
 class A
 {
     protected static function aStaticProtected()
@@ -419,6 +436,21 @@ class A2
         $c = $this->closure3;
 
         return $c();
+    }
+}
+
+class A3
+{
+    private $closure;
+
+    public function __construct($closure)
+    {
+        $this->closure = $closure;
+    }
+
+    public function hello()
+    {
+        return ($this->closure)();
     }
 }
 
