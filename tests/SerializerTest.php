@@ -367,7 +367,6 @@ test('use objects with serializable closures properties', function () {
     expect($r)->toEqual('Hi');
 })->with('serializers');
 
-
 test('rebound closure', function () {
     $closure = Closure::bind(
         function () {
