@@ -4,6 +4,7 @@ namespace Laravel\SerializableClosure\Serializers;
 
 use Closure;
 use Laravel\SerializableClosure\Contracts\Serializable;
+use Laravel\SerializableClosure\SerializableClosure;
 use Laravel\SerializableClosure\Support\ClosureScope;
 use Laravel\SerializableClosure\Support\ClosureStream;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
@@ -43,7 +44,7 @@ class Native implements Serializable
     /**
      * The closure's code.
      *
-     * @var string
+     * @var array|null
      */
     protected $code;
 
@@ -57,16 +58,9 @@ class Native implements Serializable
     /**
      * The closure's scope.
      *
-     * @var string
+     * @var \Laravel\SerializableClosure\Support\ClosureScope|null
      */
     protected $scope;
-
-    /**
-     * Holds the context during serialization/unserialization.
-     *
-     * @var \Laravel\SerializableClosure\Support\ClosureContext
-     */
-    protected static $context;
 
     /**
      * The "key" that marks an array as recursive.
@@ -82,11 +76,6 @@ class Native implements Serializable
     public function __construct(Closure $closure)
     {
         $this->closure = $closure;
-
-        if (static::$context !== null) {
-            $this->scope = static::$context->scope;
-            $this->scope->toSerialize++;
-        }
     }
 
     /**
@@ -168,6 +157,7 @@ class Native implements Serializable
     /**
      * Restore the closure after serialization.
      *
+     * @param  array  $data
      * @return void
      */
     public function __unserialize($data)
@@ -214,15 +204,11 @@ class Native implements Serializable
      * Ensures the given closures are serializable.
      *
      * @param  mixed  $data
-     * @param  \Laravel\SerializableClosure\Support\ClosureContext  $storage
+     * @param  \Laravel\SerializableClosure\Support\ClosureScope  $storage
      * @return void
      */
-    public static function wrapClosures(&$data, $storage = null)
+    public static function wrapClosures(&$data, $storage)
     {
-        if ($storage === null) {
-            $storage = static::$context->scope;
-        }
-
         if ($data instanceof Closure) {
             $data = static::from($data);
         } elseif (is_array($data)) {
@@ -304,7 +290,7 @@ class Native implements Serializable
     /**
      * Gets the closure's reflector.
      *
-     * @return \Laravel\SerializableClosure\ReflectionClosure
+     * @return \Laravel\SerializableClosure\Support\ReflectionClosure
      */
     public function getReflector()
     {
@@ -409,7 +395,8 @@ class Native implements Serializable
     /**
      * Internal method used to map closures by reference.
      *
-     * @param  mixed  &$data
+     * @param  mixed  $data
+     * @return void
      */
     protected function mapByReference(&$data)
     {
@@ -428,11 +415,7 @@ class Native implements Serializable
 
             $instance = new static($data);
 
-            if (static::$context !== null) {
-                static::$context->scope->toSerialize--;
-            } else {
-                $instance->scope = $this->scope;
-            }
+            $instance->scope = $this->scope;
 
             $data = $this->scope[$data] = $instance;
         } elseif (is_array($data)) {
