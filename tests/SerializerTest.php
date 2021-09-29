@@ -346,7 +346,7 @@ OEF
     );
 });
 
-test('use objects with closure properties', function () {
+test('use objects with serializable closures properties', function () {
     $a = new stdClass();
 
     if ($this->serializer == Signed::class) {
