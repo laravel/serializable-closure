@@ -201,6 +201,26 @@ class Native implements Serializable
     }
 
     /**
+     * Wraps a closure and sets the serialization context (if any).
+     *
+     * @param  \Closure  $closure
+     * @return static
+     */
+    public static function from($closure)
+    {
+        if (static::$context === null) {
+            $instance = new static($closure);
+        } elseif (isset(static::$context->scope[$closure])) {
+            $instance = static::$context->scope[$closure];
+        } else {
+            $instance = new static($closure);
+            static::$context->scope[$closure] = $instance;
+        }
+
+        return $instance;
+    }
+
+    /**
      * Ensures the given closures are serializable.
      *
      * @param  mixed  $data
