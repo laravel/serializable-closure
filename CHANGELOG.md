@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.0.2...master)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.0.3...master)
+
+## [v1.0.3 (2020-10-07)](https://github.com/laravel/serializable-closure/compare/v1.0.2...v1.0.3)
+
+### Fixed
+- Possible stream protocol collision with `opis/closure` ([#23](https://github.com/laravel/serializable-closure/pull/23))
+
 
 ## [v1.0.2 (2020-09-29)](https://github.com/laravel/serializable-closure/compare/v1.0.1...v1.0.2)
 
