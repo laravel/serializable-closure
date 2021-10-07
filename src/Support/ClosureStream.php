@@ -7,7 +7,7 @@ class ClosureStream
     /**
      * The stream protocol.
      */
-    const STREAM_PROTO = 'closure';
+    const STREAM_PROTO = 'laravel-serializable-closure';
 
     /**
      * Checks if this stream is registered.
@@ -171,7 +171,7 @@ class ClosureStream
      */
     public static function register()
     {
-        if (! static::$isRegistered && ! in_array(static::STREAM_PROTO, stream_get_wrappers())) {
+        if (! static::$isRegistered) {
             static::$isRegistered = stream_wrapper_register(static::STREAM_PROTO, __CLASS__);
         }
     }
