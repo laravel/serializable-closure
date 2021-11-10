@@ -3,14 +3,13 @@
 use Foo\Baz\Qux\Forest;
 use Some\ClassName as ClassAlias;
 
-enum GlobalEnum: string {
-    case Admin = 'Administrator';
-    case Guest = 'Guest';
-    case Moderator = 'Moderator';
+enum GlobalEnum {
+    case Admin;
+    case Guest;
+    case Moderator;
 }
 
 test('enums', function () {
-
     $f = function (GlobalEnum $role) {
         return $role;
     };
@@ -21,10 +20,10 @@ test('enums', function () {
 
     expect($f)->toBeCode($e);
 
-    enum ScopedEnum: string {
-        case Admin = 'Administrator';
-        case Guest = 'Guest';
-        case Moderator = 'Moderator';
+    enum ScopedEnum {
+        case Admin;
+        case Guest;
+        case Moderator;
     }
 
     $f = function (ScopedEnum $role) {
@@ -32,6 +31,42 @@ test('enums', function () {
     };
 
     $e = 'function (\ScopedEnum $role) {
+        return $role;
+    }';
+
+    expect($f)->toBeCode($e);
+});
+
+
+enum GlobalBackedEnum: string {
+    case Admin = 'Administrator';
+    case Guest = 'Guest';
+    case Moderator = 'Moderator';
+}
+
+test('backed enums', function () {
+
+    $f = function (GlobalBackedEnum $role) {
+        return $role;
+    };
+
+    $e = 'function (\GlobalBackedEnum $role) {
+        return $role;
+    }';
+
+    expect($f)->toBeCode($e);
+
+    enum ScopedBackedEnum: string {
+        case Admin = 'Administrator';
+        case Guest = 'Guest';
+        case Moderator = 'Moderator';
+    }
+
+    $f = function (ScopedBackedEnum $role) {
+        return $role;
+    };
+
+    $e = 'function (\ScopedBackedEnum $role) {
         return $role;
     }';
 

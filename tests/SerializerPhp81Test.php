@@ -1,9 +1,9 @@
 <?php
 
-enum SerializerGlobalEnum: string {
-    case Admin = 'Administrator';
-    case Guest = 'Guest';
-    case Moderator = 'Moderator';
+enum SerializerGlobalEnum {
+    case Admin;
+    case Guest;
+    case Moderator;
 }
 
 test('enums', function () {
@@ -17,11 +17,21 @@ test('enums', function () {
         SerializerGlobalEnum::Guest
     );
 
+    $role = SerializerGlobalEnum::Admin;
+
+    $f = function () use ($role) {
+        return $role;
+    };
+
+    $f = s($f);
+
+    expect($f())->toBe(SerializerGlobalEnum::Admin);
+
     if (! enum_exists(SerializerScopedEnum::class)) {
-        enum SerializerScopedEnum: string {
-            case Admin = 'Administrator';
-            case Guest = 'Guest';
-            case Moderator = 'Moderator';
+        enum SerializerScopedEnum {
+            case Admin;
+            case Guest;
+            case Moderator;
         }
     }
 
@@ -31,7 +41,72 @@ test('enums', function () {
 
     $f = s($f);
 
-    expect($f()->value)->toBe('Administrator');
+    expect($f()->name)->toBe('Admin');
+
+    $role = SerializerScopedEnum::Admin;
+
+    $f = function () use ($role) {
+        return $role;
+    };
+
+    $f = s($f);
+
+    expect($f())->toBe(SerializerScopedEnum::Admin);
+})->with('serializers');
+
+enum SerializerGlobalBackedEnum: string {
+    case Admin = 'Administrator';
+    case Guest = 'Guest';
+    case Moderator = 'Moderator';
+}
+
+test('backed enums', function () {
+    $f = function (SerializerGlobalBackedEnum $role) {
+        return $role;
+    };
+
+    $f = s($f);
+
+    expect($f(SerializerGlobalBackedEnum::Guest))->toBe(
+        SerializerGlobalBackedEnum::Guest
+    );
+
+    $role = SerializerGlobalBackedEnum::Admin;
+
+    $f = function () use ($role) {
+        return $role;
+    };
+
+    $f = s($f);
+
+    expect($f())->toBe(SerializerGlobalBackedEnum::Admin);
+
+    if (! enum_exists(SerializerScopedBackedEnum::class)) {
+        enum SerializerScopedBackedEnum: string {
+            case Admin = 'Administrator';
+            case Guest = 'Guest';
+            case Moderator = 'Moderator';
+        }
+    }
+
+    $f = function () {
+        return SerializerScopedBackedEnum::Admin;
+    };
+
+    $f = s($f);
+
+    expect($f())->name->toBe('Admin')
+        ->value->toBe('Administrator');
+
+    $role = SerializerScopedBackedEnum::Admin;
+
+    $f = function () use ($role) {
+        return $role;
+    };
+
+    $f = s($f);
+
+    expect($f())->toBe(SerializerScopedBackedEnum::Admin);
 })->with('serializers');
 
 test('array unpacking', function () {
