@@ -458,6 +458,13 @@ class Native implements Serializable
             }
 
             $instance = $data;
+
+            if (function_exists('enum_exists') && enum_exists(get_class($data))) {
+                $this->scope[$instance] = $data;
+
+                return;
+            }
+
             $reflection = new ReflectionObject($data);
 
             if (! $reflection->isUserDefined()) {
