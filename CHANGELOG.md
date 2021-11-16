@@ -1,6 +1,13 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.0.3...master)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.0.4...master)
+
+
+## [v1.0.4 (2020-11-16)](https://github.com/laravel/serializable-closure/compare/v1.0.3...v1.0.4)
+
+### Fixed
+- Fixes the serialization of Enum objects ([#28](https://github.com/laravel/serializable-closure/pull/28))
+
 
 ## [v1.0.3 (2020-10-07)](https://github.com/laravel/serializable-closure/compare/v1.0.2...v1.0.3)
 
