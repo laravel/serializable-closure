@@ -81,23 +81,32 @@ test('named arguments', function () {
         return $firstName.' '.$lastName;
     };
 
-    expect('Marco Deleu')->toBe(s($f1)(
-        lastName: 'Deleu',
-        firstName: 'Marco'
-    ));
+    $e1 = "function (string \$firstName, string \$lastName) {
+        return \$firstName.' '.\$lastName;
+    }";
+
+    expect($f1)->toBeCode($e1);
 })->with('serializers');
 
-test('constructor property promotion', function () {
-    $class = new PropertyPromotion('public', 'protected', 'private');
+test('named arguments within closures', function () {
+    $f1 = function () {
+        return (new NamedArguments)->publicMethod(namedArgument: 'string');
+    };
 
-    $f1 = fn () => $class;
+    $e1 = "<?php function (string \$firstName, string \$lastName) {
+        return (new \NamedArguments)->publicMethod(namedArgument: 'string');
+    }";
 
-    $object = s($f1)();
-
-    expect($object->public)->toBe('public');
-    expect($object->getProtected())->toBe('protected');
-    expect($object->getPrivate())->toBe('private');
+    expect($f1)->toBeCode($e1);
 })->with('serializers');
+
+class ReflectionClosurePhp80NamedArguments
+{
+    public function publicMethod(string $namedArgument)
+    {
+        return $namedArgument;
+    }
+}
 
 class PropertyPromotion
 {
