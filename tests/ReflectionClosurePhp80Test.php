@@ -93,7 +93,7 @@ test('named arguments within closures', function () {
         return (new NamedArguments)->publicMethod(namedArgument: 'string');
     };
 
-    $e1 = "<?php function (string \$firstName, string \$lastName) {
+    $e1 = "function () {
         return (new \NamedArguments)->publicMethod(namedArgument: 'string');
     }";
 
