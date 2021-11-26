@@ -505,7 +505,7 @@ class ReflectionClosure extends ReflectionFunction
                                 $code .= $id_start.$token;
                             }
 
-                            break 2;
+                            break;
                         case T_NAME_QUALIFIED:
                         case T_NS_SEPARATOR:
                         case T_STRING:
