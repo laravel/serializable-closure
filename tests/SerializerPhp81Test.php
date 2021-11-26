@@ -216,6 +216,18 @@ test('final class constants', function () {
     expect($f())->toBe('foo');
 })->with('serializers');
 
+test('constructor property promotion', function () {
+    $class = new PropertyPromotion('public', 'protected', 'private');
+
+    $f1 = fn () => $class;
+
+    $object = s($f1)();
+
+    expect($object->public)->toBe('public');
+    expect($object->getProtected())->toBe('protected');
+    expect($object->getPrivate())->toBe('private');
+})->with('serializers');
+
 interface SerializerPhp81HasId {}
 interface SerializerPhp81HasName {}
 

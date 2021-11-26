@@ -81,23 +81,64 @@ test('named arguments', function () {
         return $firstName.' '.$lastName;
     };
 
-    expect('Marco Deleu')->toBe(s($f1)(
-        lastName: 'Deleu',
-        firstName: 'Marco'
-    ));
+    $e1 = "function (string \$firstName, string \$lastName) {
+        return \$firstName.' '.\$lastName;
+    }";
+
+    expect($f1)->toBeCode($e1);
 })->with('serializers');
 
-test('constructor property promotion', function () {
-    $class = new PropertyPromotion('public', 'protected', 'private');
+test('single named argument within closures', function () {
+    $f1 = function () {
+        return (new ReflectionClosurePhp80NamedArguments)->publicMethod(namedArgument: 'string');
+    };
 
-    $f1 = fn () => $class;
+    $e1 = "function () {
+        return (new \ReflectionClosurePhp80NamedArguments)->publicMethod(namedArgument: 'string');
+    }";
 
-    $object = s($f1)();
-
-    expect($object->public)->toBe('public');
-    expect($object->getProtected())->toBe('protected');
-    expect($object->getPrivate())->toBe('private');
+    expect($f1)->toBeCode($e1);
 })->with('serializers');
+
+test('multiple named arguments within closures', function () {
+    $f1 = function () {
+        return (new ReflectionClosurePhp80NamedArguments)->publicMethod(namedArgument: 'string', namedArgumentB: 1);
+    };
+
+    $e1 = "function () {
+        return (new \ReflectionClosurePhp80NamedArguments)->publicMethod(namedArgument: 'string', namedArgumentB: 1);
+    }";
+
+    expect($f1)->toBeCode($e1);
+})->with('serializers');
+
+test('multiple named arguments within nested closures', function () {
+    $f1 = function () {
+        $fn = fn ($namedArgument, $namedArgumentB) => (
+            new ReflectionClosurePhp80NamedArguments
+        )->publicMethod(namedArgument: $namedArgument, namedArgumentB: $namedArgumentB);
+
+        return $fn(namedArgument: 'string', namedArgumentB: 1);
+    };
+
+    $e1 = "function () {
+        \$fn = fn (\$namedArgument, \$namedArgumentB) => (
+            new \ReflectionClosurePhp80NamedArguments
+        )->publicMethod(namedArgument: \$namedArgument, namedArgumentB: \$namedArgumentB);
+
+        return \$fn(namedArgument: 'string', namedArgumentB: 1);
+    }";
+
+    expect($f1)->toBeCode($e1);
+})->with('serializers');
+
+class ReflectionClosurePhp80NamedArguments
+{
+    public function publicMethod(string $namedArgument, $namedArgumentB = null)
+    {
+        return $namedArgument.(string) $namedArgumentB;
+    }
+}
 
 class PropertyPromotion
 {

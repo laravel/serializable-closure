@@ -497,6 +497,15 @@ class ReflectionClosure extends ReflectionFunction
                     break;
                 case 'id_name':
                     switch ($token[0]) {
+                        // named arguments...
+                        case ':':
+                            if ($lastState === 'closure' && $context === 'root') {
+                                $state = 'ignore_next';
+                                $lastState = 'closure';
+                                $code .= $id_start.$token;
+                            }
+
+                            break;
                         case T_NAME_QUALIFIED:
                         case T_NS_SEPARATOR:
                         case T_STRING:
