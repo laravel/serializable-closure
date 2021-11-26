@@ -88,13 +88,45 @@ test('named arguments', function () {
     expect($f1)->toBeCode($e1);
 })->with('serializers');
 
-test('named arguments within closures', function () {
+test('single named argument within closures', function () {
     $f1 = function () {
-        return (new NamedArguments)->publicMethod(namedArgument: 'string');
+        return (new ReflectionClosurePhp80NamedArguments)->publicMethod(namedArgument: 'string');
     };
 
     $e1 = "function () {
-        return (new \NamedArguments)->publicMethod(namedArgument: 'string');
+        return (new \ReflectionClosurePhp80NamedArguments)->publicMethod(namedArgument: 'string');
+    }";
+
+    expect($f1)->toBeCode($e1);
+})->with('serializers');
+
+test('multiple named arguments within closures', function () {
+    $f1 = function () {
+        return (new ReflectionClosurePhp80NamedArguments)->publicMethod(namedArgument: 'string', namedArgumentB: 1);
+    };
+
+    $e1 = "function () {
+        return (new \ReflectionClosurePhp80NamedArguments)->publicMethod(namedArgument: 'string', namedArgumentB: 1);
+    }";
+
+    expect($f1)->toBeCode($e1);
+})->with('serializers');
+
+test('multiple named arguments within nested closures', function () {
+    $f1 = function () {
+        $fn = fn ($namedArgument, $namedArgumentB) => (
+            new ReflectionClosurePhp80NamedArguments
+        )->publicMethod(namedArgument: $namedArgument, namedArgumentB: $namedArgumentB);
+
+        return $fn(namedArgument: 'string', namedArgumentB: 1);
+    };
+
+    $e1 = "function () {
+        \$fn = fn (\$namedArgument, \$namedArgumentB) => (
+            new \ReflectionClosurePhp80NamedArguments
+        )->publicMethod(namedArgument: \$namedArgument, namedArgumentB: \$namedArgumentB);
+
+        return \$fn(namedArgument: 'string', namedArgumentB: 1);
     }";
 
     expect($f1)->toBeCode($e1);
@@ -102,9 +134,9 @@ test('named arguments within closures', function () {
 
 class ReflectionClosurePhp80NamedArguments
 {
-    public function publicMethod(string $namedArgument)
+    public function publicMethod(string $namedArgument, $namedArgumentB = null)
     {
-        return $namedArgument;
+        return $namedArgument.(string) $namedArgumentB;
     }
 }
 
