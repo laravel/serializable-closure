@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.0.4...master)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.0.5...master)
+
+
+## [v1.0.5 (2020-11-30)](https://github.com/laravel/serializable-closure/compare/v1.0.4...v1.0.5)
+
+### Fixed
+- Fixes serialisation of closures with named arguments code ([#29](https://github.com/laravel/serializable-closure/pull/29))
 
 
 ## [v1.0.4 (2020-11-16)](https://github.com/laravel/serializable-closure/compare/v1.0.3...v1.0.4)
