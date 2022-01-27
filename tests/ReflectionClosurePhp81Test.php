@@ -107,13 +107,13 @@ test('new in initializers', function () {
 
 test('readonly properties', function () {
     $f = function () {
-        $controller = new SerializerPhp81Controller();
+        $controller = new ReflectionClosurePhp81Controller();
 
         $controller->service = 'foo';
     };
 
     $e = 'function () {
-        $controller = new \SerializerPhp81Controller();
+        $controller = new \ReflectionClosurePhp81Controller();
 
         $controller->service = \'foo\';
     }';
@@ -121,7 +121,7 @@ test('readonly properties', function () {
     expect($f)->toBeCode($e);
 });
 
-test('first-class callable', function () {
+test('first-class callable with closures', function () {
     $f = function ($a) {
         $f = fn ($b) => $a + $b + 1;
 
@@ -132,6 +132,77 @@ test('first-class callable', function () {
         $f = fn ($b) => $a + $b + 1;
 
         return $f(...);
+    }';
+
+    expect($f)->toBeCode($e);
+});
+
+test('first-class callable with methods', function () {
+    $f = (new ReflectionClosurePhp81Controller())->publicGetter(...);
+
+    $e = 'function ()
+    {
+        return $this->privateGetter();
+    }';
+
+    expect($f)->toBeCode($e);
+
+    $f = (new ReflectionClosurePhp81Controller())->publicGetterResolver(...);
+
+    $e = 'function ()
+    {
+        return $this->privateGetterResolver(...);
+    }';
+
+    expect($f)->toBeCode($e);
+});
+
+test('first-class callable with static methods', function () {
+    $f = ReflectionClosurePhp81Controller::publicStaticGetter(...);
+
+    $e = 'static function ()
+    {
+        return static::privateStaticGetter();
+    }';
+
+    expect($f)->toBeCode($e);
+
+    $f = ReflectionClosurePhp81Controller::publicStaticGetterResolver(...);
+
+    $e = 'static function ()
+    {
+        return static::privateStaticGetterResolver(...);
+    }';
+
+    expect($f)->toBeCode($e);
+});
+
+test('first-class callable final method', function () {
+    $f = (new ReflectionClosurePhp81Controller())->finalPublicGetterResolver(...);
+
+    $e = 'function ()
+    {
+        return $this->privateGetterResolver(...);
+    }';
+
+    expect($f)->toBeCode($e);
+
+    $f = ReflectionClosurePhp81Controller::finalPublicStaticGetterResolver(...);
+
+    $e = 'static function ()
+    {
+        return static::privateStaticGetterResolver(...);
+    }';
+
+    expect($f)->toBeCode($e);
+});
+
+test('first-class callable self return type', function () {
+    $f = (new ReflectionClosurePhp81Controller())->getSelf(...);
+
+    $e = 'function (self $instance): self
+    {
+        return $instance;
     }';
 
     expect($f)->toBeCode($e);
@@ -196,5 +267,59 @@ class ReflectionClosurePhp81Controller
     ) {
         // ..
     }
-}
 
+    public function publicGetter()
+    {
+        return $this->privateGetter();
+    }
+
+    private function privateGetter()
+    {
+        return $this->service;
+    }
+
+    public static function publicStaticGetter()
+    {
+        return static::privateStaticGetter();
+    }
+
+    public static function privateStaticGetter()
+    {
+        return (new ReflectionClosurePhp81Controller())->service;
+    }
+
+    public function publicGetterResolver()
+    {
+        return $this->privateGetterResolver(...);
+    }
+
+    private function privateGetterResolver()
+    {
+        return fn () => $this->service;
+    }
+
+    public static function publicStaticGetterResolver()
+    {
+        return static::privateStaticGetterResolver(...);
+    }
+
+    public static function privateStaticGetterResolver()
+    {
+        return fn () => (new ReflectionClosurePhp81Controller())->service;
+    }
+
+    final public function finalPublicGetterResolver()
+    {
+        return $this->privateGetterResolver(...);
+    }
+
+    final public static function finalPublicStaticGetterResolver()
+    {
+        return static::privateStaticGetterResolver(...);
+    }
+
+    public function getSelf(self $instance): self
+    {
+        return $instance;
+    }
+}
