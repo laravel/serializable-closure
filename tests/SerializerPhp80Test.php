@@ -43,6 +43,13 @@ test('multiple named arguments within nested closures', function () {
     expect('string1')->toBe(s($f1)());
 })->with('serializers');
 
+test('sets correct type hint for class within same namespace', function() {
+    $closure = Closure::fromCallable([new Tests\Stub\TypeHinted\IssueFactory, 'reproduceIssue']);
+
+    expect($closure())->toBeInstanceOf(Tests\Stub\TypeHinted\Issue::class);
+    expect(s($closure)())->toBeInstanceOf(Tests\Stub\TypeHinted\Issue::class);
+})->with('serializers');
+
 class SerializerPhp80NamedArguments
 {
     public function publicMethod(string $namedArgument, $namedArgumentB = null)
