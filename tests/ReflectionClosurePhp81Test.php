@@ -258,19 +258,6 @@ test('final class constants', function () {
     expect($f)->toBeCode($e);
 })->skip('Constants in anonymous classes is not supported.');
 
-test('from function first-class callable namespaces', function () {
-    $model = new Model();
-
-    $f = $model->make(...);
-
-    $e = 'function (\Tests\Fixtures\Model $model): \Tests\Fixtures\Model
-    {
-        return new \Tests\Fixtures\Model();
-    }';
-
-    expect($f)->toBeCode($e);
-});
-
 test('first-class callable namespaces', function () {
     $model = new Model();
 
