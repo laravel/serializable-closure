@@ -1,5 +1,7 @@
 <?php
 
+use Tests\Fixtures\Model;
+
 enum SerializerGlobalEnum {
     case Admin;
     case Guest;
@@ -278,6 +280,26 @@ test('constructor property promotion', function () {
     expect($object->public)->toBe('public');
     expect($object->getProtected())->toBe('protected');
     expect($object->getPrivate())->toBe('private');
+})->with('serializers');
+
+test('first-class callable namespaces', function () {
+    $model = new Model();
+
+    $f = $model->make(...);
+
+    $f = s($f);
+
+    expect($f(new Model))->toBeInstanceOf(Model::class);
+})->with('serializers');
+
+test('static first-class callable namespaces', function () {
+    $model = new Model();
+
+    $f = $model->staticMake(...);
+
+    $f = s($f);
+
+    expect($f(new Model))->toBeInstanceOf(Model::class);
 })->with('serializers');
 
 interface SerializerPhp81HasId {}
