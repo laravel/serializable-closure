@@ -3,8 +3,8 @@
 use Foo\Bar as Baz;
 use Foo\Baz\Qux;
 use Foo\Baz\Qux\Forest;
-use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Tests\Fixtures\Model;
+use Laravel\SerializableClosure\Support\ReflectionClosure;
 
 test('is short closure', function () {
     $f1 = fn () => 1;
@@ -165,7 +165,7 @@ test('from callable namespaces', function () {
 });
 
 test('from static callable namespaces', function () {
-    $f = Closure::fromCallable([new Model, 'staticMake']);
+    $f = Closure::fromCallable([Model::class, 'staticMake']);
 
     $e = 'static function (\Tests\Fixtures\Model $model): \Tests\Fixtures\Model
     {
