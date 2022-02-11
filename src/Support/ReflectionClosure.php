@@ -96,7 +96,7 @@ class ReflectionClosure extends ReflectionFunction
         $builtin_types = self::getBuiltinTypes();
         $class_keywords = ['self', 'static', 'parent'];
 
-        $ns = $this->getNamespaceName();
+        $ns = $this->getClosureNamespaceName();
         $nsf = $ns == '' ? '' : ($ns[0] == '\\' ? $ns : '\\'.$ns);
 
         $_file = var_export($fileName, true);
@@ -1131,6 +1131,23 @@ class ReflectionClosure extends ReflectionFunction
         static::$functions[$key] = $functions;
         static::$constants[$key] = $constants;
         static::$structures[$key] = $structures;
+    }
+
+    /**
+     * Returns the namespace associated to the closure.
+     *
+     * @return string
+     */
+    protected function getClosureNamespaceName()
+    {
+        $ns = $this->getNamespaceName();
+
+        // First class callables...
+        if ($this->getName() !== '{closure}' && empty($ns) && ! is_null($this->getClosureScopeClass())) {
+            $ns = $this->getClosureScopeClass()->getNamespaceName();
+        }
+
+        return $ns;
     }
 
     /**

@@ -2,6 +2,8 @@
 
 use Foo\Baz\Qux\Forest;
 use Some\ClassName as ClassAlias;
+use Tests\Fixtures\Model;
+use function Tests\Fixtures\{makeModel};
 
 enum GlobalEnum {
     case Admin;
@@ -255,6 +257,45 @@ test('final class constants', function () {
 
     expect($f)->toBeCode($e);
 })->skip('Constants in anonymous classes is not supported.');
+
+test('from function first-class callable namespaces', function () {
+    $model = new Model();
+
+    $f = $model->make(...);
+
+    $e = 'function (\Tests\Fixtures\Model $model): \Tests\Fixtures\Model
+    {
+        return new \Tests\Fixtures\Model();
+    }';
+
+    expect($f)->toBeCode($e);
+});
+
+test('first-class callable namespaces', function () {
+    $model = new Model();
+
+    $f = $model->make(...);
+
+    $e = 'function (\Tests\Fixtures\Model $model): \Tests\Fixtures\Model
+    {
+        return new \Tests\Fixtures\Model();
+    }';
+
+    expect($f)->toBeCode($e);
+});
+
+test('static first-class callable namespaces', function () {
+    $model = new Model();
+
+    $f = $model->staticMake(...);
+
+    $e = 'static function (\Tests\Fixtures\Model $model): \Tests\Fixtures\Model
+    {
+        return new \Tests\Fixtures\Model();
+    }';
+
+    expect($f)->toBeCode($e);
+});
 
 class ReflectionClosurePhp81Service
 {

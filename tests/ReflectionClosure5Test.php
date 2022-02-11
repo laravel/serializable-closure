@@ -4,6 +4,7 @@ use Foo\Bar as Baz;
 use Foo\Baz\Qux;
 use Foo\Baz\Qux\Forest;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
+use Tests\Fixtures\Model;
 
 test('is short closure', function () {
     $f1 = fn () => 1;
@@ -148,6 +149,28 @@ test('typed properties', function () {
 test('group namespaces', function () {
     $f = fn (): Forest => new Forest();
     $e = 'fn (): \Foo\Baz\Qux\Forest => new \Foo\Baz\Qux\Forest()';
+
+    expect($f)->toBeCode($e);
+});
+
+test('from callable namespaces', function () {
+    $f = Closure::fromCallable([new Model, 'make']);
+
+    $e = 'function (\Tests\Fixtures\Model $model): \Tests\Fixtures\Model
+    {
+        return new \Tests\Fixtures\Model();
+    }';
+
+    expect($f)->toBeCode($e);
+});
+
+test('from static callable namespaces', function () {
+    $f = Closure::fromCallable([new Model, 'staticMake']);
+
+    $e = 'static function (\Tests\Fixtures\Model $model): \Tests\Fixtures\Model
+    {
+        return new \Tests\Fixtures\Model();
+    }';
 
     expect($f)->toBeCode($e);
 });

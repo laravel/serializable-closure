@@ -3,6 +3,7 @@
 use Laravel\SerializableClosure\SerializableClosure;
 use Laravel\SerializableClosure\Serializers\Signed;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
+use Tests\Fixtures\Model;
 
 test('closure use return value', function () {
     $a = 100;
@@ -382,6 +383,22 @@ test('rebound closure', function () {
     $r = $u();
 
     expect($r)->toEqual('Hi');
+})->with('serializers');
+
+test('from callable namespaces', function () {
+    $f = Closure::fromCallable([new Model, 'make']);
+
+    $f = s($f);
+
+    expect($f(new Model))->toBeInstanceOf(Model::class);
+})->with('serializers');
+
+test('from static callable namespaces', function () {
+    $f = Closure::fromCallable([new Model, 'staticMake']);
+
+    $f = s($f);
+
+    expect($f(new Model))->toBeInstanceOf(Model::class);
 })->with('serializers');
 
 class A
