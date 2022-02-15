@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.1.0...HEAD)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.1.1...master)
+
+## [v1.1.1](https://github.com/laravel/serializable-closure/compare/v1.1.0...v1.1.1) - 2022-02-15
+
+### Fixed
+
+- Fixes first class callables namespaces by @nunomaduro in https://github.com/laravel/serializable-closure/pull/39
 
 ## [v1.1.0](https://github.com/laravel/serializable-closure/compare/v1.0.5...v1.1.0) - 2022-02-01
 
