@@ -67,8 +67,8 @@ test('null safe operator with properties', function () {
     expect($f1)->toBeCode($e1);
 });
 
-test('trailling comma', function () {
-    $f1 = function (string $param) {
+test('trailing comma', function () {
+    $f1 = function (string $param, ) {
     };
     $e1 = 'function (string $param, ) {
     }';
