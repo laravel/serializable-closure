@@ -68,7 +68,7 @@ test('null safe operator with properties', function () {
 });
 
 test('trailing comma', function () {
-    $f1 = function (string $param, ) {
+    $f1 = function (string $param) {
     };
     $e1 = 'function (string $param, ) {
     }';
