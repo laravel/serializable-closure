@@ -5,5 +5,6 @@ php:
     - no_trailing_comma_in_singleline_function_call
   finder:
     not-name:
+      - ReflectionClosurePhp80Test.php
       - ReflectionClosurePhp81Test.php
       - SerializerPhp81Test.php
