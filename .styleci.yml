@@ -1,5 +1,5 @@
 php:
-  version: 8
+  version: 8.1
   preset: laravel
   finder:
     not-name:
