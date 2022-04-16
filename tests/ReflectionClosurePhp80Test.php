@@ -132,6 +132,19 @@ test('multiple named arguments within nested closures', function () {
     expect($f1)->toBeCode($e1);
 })->with('serializers');
 
+test('attributes', function () {
+    $f = #[MyAttribute] function () {};
+    $serializedF = s($f);
+
+    expect(countAttributes($f))->toBe(countAttributes($serializedF));
+})->with('serializers');
+
+#[\Attribute] class MyAttribute { }
+
+function countAttributes($closure) {
+    return count((new \ReflectionFunction($closure))->getAttributes());
+}
+
 class ReflectionClosurePhp80NamedArguments
 {
     public function publicMethod(string $namedArgument, $namedArgumentB = null)
