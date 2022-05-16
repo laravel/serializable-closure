@@ -348,6 +348,8 @@ test('function attributes with arguments', function () {
 test('function attributes with first-class callable with methods', function () {
     $f = (new SerializerPhp81Controller())->publicGetter(...);
 
+    $f = s($f);
+
     $reflector = new ReflectionFunction($f);
 
     expect($reflector->getAttributes())->sequence(
