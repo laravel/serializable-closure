@@ -676,6 +676,22 @@ class ReflectionClosure extends ReflectionFunction
         $this->isShortClosure = $isShortClosure;
         $this->isBindingRequired = $isUsingThisObject;
         $this->isScopeRequired = $isUsingScope;
+
+        if (PHP_VERSION_ID >= 80100) {
+            $attributesCode = array_map(function ($attribute) {
+                $name = $attribute->getName();
+                $arguments = implode(', ', array_map(function ($argument) {
+                    return sprintf("'%s'", str_replace("'", "\\'", $argument));
+                }, $attribute->getArguments()));
+
+                return "#[$name($arguments)]";
+            }, $this->getAttributes());
+
+            if (! empty($attributesCode)) {
+                $code = implode("\n", array_merge($attributesCode, [$code]));
+            }
+        }
+
         $this->code = $code;
 
         return $this->code;

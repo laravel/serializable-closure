@@ -284,6 +284,57 @@ test('static first-class callable namespaces', function () {
     expect($f)->toBeCode($e);
 });
 
+test('function attributes without arguments', function () {
+    $model = new Model();
+
+    $f = #[MyAttribute] function () {
+        return true;
+    };
+
+    $e = <<<EOF
+#[MyAttribute()]
+function () {
+        return true;
+    }
+EOF;
+
+    expect($f)->toBeCode($e);
+});
+
+test('function attributes with arguments', function () {
+    $model = new Model();
+
+    $f = #[MyAttribute('My " \' Argument 1', Model::class)] function () {
+        return true;
+    };
+
+    $e = <<<EOF
+#[MyAttribute('My " \' Argument 1', 'Tests\Fixtures\Model')]
+function () {
+        return true;
+    }
+EOF;
+
+    expect($f)->toBeCode($e);
+});
+
+test('function attributes with first-class callable with methods', function () {
+    $model = new Model();
+
+    $f = (new SerializerPhp81Controller())->publicGetter(...);
+
+    $e = <<<EOF
+#[Tests\Fixtures\ModelAttribute()]
+#[MyAttribute('My " \' Argument 1', 'Tests\Fixtures\Model')]
+function ()
+    {
+        return \$this->privateGetter();
+    }
+EOF;
+
+    expect($f)->toBeCode($e);
+});
+
 class ReflectionClosurePhp81Service
 {
 }
