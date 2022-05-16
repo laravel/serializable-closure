@@ -3,12 +3,6 @@
 use Tests\Fixtures\Model;
 use Tests\Fixtures\ModelAttribute;
 
-enum SerializerGlobalEnum {
-    case Admin;
-    case Guest;
-    case Moderator;
-}
-
 test('enums', function () {
     $f = function (SerializerGlobalEnum $role) {
         return $role;
@@ -57,11 +51,16 @@ test('enums', function () {
     expect($f())->toBe(SerializerScopedEnum::Admin);
 })->with('serializers');
 
-enum SerializerGlobalBackedEnum: string {
-    case Admin = 'Administrator';
-    case Guest = 'Guest';
-    case Moderator = 'Moderator';
-}
+test('enums properties', function () {
+    $object = new ClassWithEnumProperty();
+    $f = $object->getClosure();
+
+    $f = s($f);
+
+    expect($f())
+        ->name->toBe('Admin')
+        ->value->toBeNull();
+})->with('serializers');
 
 test('backed enums', function () {
     $f = function (SerializerGlobalBackedEnum $role) {
@@ -110,6 +109,17 @@ test('backed enums', function () {
     $f = s($f);
 
     expect($f())->toBe(SerializerScopedBackedEnum::Admin);
+})->with('serializers');
+
+test('backed enums properties', function () {
+    $object = new ClassWithBackedEnumProperty();
+    $f = $object->getClosure();
+
+    $f = s($f);
+
+    expect($f())
+        ->name->toBe('Admin')
+        ->value->toBe('Administrator');
 })->with('serializers');
 
 test('array unpacking', function () {
@@ -394,15 +404,6 @@ test('function attributes with first-class callable with methods', function () {
     expect($f())->toBeInstanceOf(SerializerPhp81Service::class);
 })->with('serializers');
 
-test('closure defined inside class with enum property', function () {
-    $object = new ClassWithEnumField();
-    $f = $object->getClosure();
-
-    $f = s($f);
-
-    expect($f()->name)->toBe('Admin');
-})->with('serializers');
-
 interface SerializerPhp81HasId {}
 interface SerializerPhp81HasName {}
 
@@ -477,6 +478,18 @@ class SerializerPhp81Controller
     }
 }
 
+enum SerializerGlobalEnum {
+    case Admin;
+    case Guest;
+    case Moderator;
+}
+
+enum SerializerGlobalBackedEnum: string {
+    case Admin = 'Administrator';
+    case Guest = 'Guest';
+    case Moderator = 'Moderator';
+}
+
 #[Attribute(Attribute::TARGET_METHOD|Attribute::TARGET_FUNCTION)]
 class MyAttribute
 {
@@ -486,9 +499,21 @@ class MyAttribute
     }
 }
 
-class ClassWithEnumField
+class ClassWithEnumProperty
 {
     public SerializerGlobalEnum $enum = SerializerGlobalEnum::Admin;
+
+    public function getClosure()
+    {
+        return function () {
+            return $this->enum;
+        };
+    }
+}
+
+class ClassWithBackedEnumProperty
+{
+    public SerializerGlobalBackedEnum $enum = SerializerGlobalBackedEnum::Admin;
 
     public function getClosure()
     {
