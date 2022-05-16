@@ -1,6 +1,7 @@
 <?php
 
 use Tests\Fixtures\Model;
+use Tests\Fixtures\ModelAttribute;
 
 enum SerializerGlobalEnum {
     case Admin;
@@ -302,6 +303,97 @@ test('static first-class callable namespaces', function () {
     expect($f(new Model))->toBeInstanceOf(Model::class);
 })->with('serializers');
 
+test('function attributes without arguments', function () {
+    $model = new Model();
+
+    $f = #[MyAttribute] function () {
+        return true;
+    };
+
+    $f = s($f);
+
+    $reflector = new ReflectionFunction($f);
+
+    expect($reflector->getAttributes())->sequence(
+        fn ($attribute) => $attribute
+            ->getName()->toBe(MyAttribute::class)
+            ->getArguments()->toBeEmpty(),
+    );
+
+    expect($f())->toBeTrue();
+})->with('serializers');
+
+test('function attributes with arguments', function () {
+    $model = new Model();
+
+    $f = #[MyAttribute('My " \' Argument 1', Model::class)] function () {
+        return false;
+    };
+
+    $f = s($f);
+
+    $reflector = new ReflectionFunction($f);
+
+    expect($reflector->getAttributes())->sequence(
+        fn ($attribute) => $attribute
+            ->getName()->toBe(MyAttribute::class)
+            ->getArguments()->toBe([
+                'My " \' Argument 1', Model::class,
+            ])
+    );
+
+    expect($f())->toBeFalse();
+})->with('serializers');
+
+test('function attributes with named arguments', function () {
+    $model = new Model();
+
+    $f = #[MyAttribute(string: 'My " \' Argument 1', model:Model::class)] function () {
+        return false;
+    };
+
+    $f = s($f);
+
+    $reflector = new ReflectionFunction($f);
+
+    expect($reflector->getAttributes())->sequence(function ($attribute) {
+
+        $attribute
+            ->getName()->toBe(MyAttribute::class)
+            ->getArguments()->toBe([
+                'string' => 'My " \' Argument 1',
+                'model' => Model::class,
+            ]);
+
+        expect($attribute->value->newInstance())
+            ->string->toBe('My " \' Argument 1')
+            ->model->toBe(Model::class);
+    });
+
+    expect($f())->toBeFalse();
+})->with('serializers');
+
+test('function attributes with first-class callable with methods', function () {
+    $f = (new SerializerPhp81Controller())->publicGetter(...);
+
+    $f = s($f);
+
+    $reflector = new ReflectionFunction($f);
+
+    expect($reflector->getAttributes())->sequence(
+        fn ($attribute) => $attribute
+            ->getName()->toBe(ModelAttribute::class)
+            ->getArguments()->toBe([]),
+        fn ($attribute) => $attribute
+            ->getName()->toBe(MyAttribute::class)
+            ->getArguments()->toBe([
+                'My " \' Argument 1', Model::class,
+            ])
+    );
+
+    expect($f())->toBeInstanceOf(SerializerPhp81Service::class);
+})->with('serializers');
+
 interface SerializerPhp81HasId {}
 interface SerializerPhp81HasName {}
 
@@ -318,6 +410,8 @@ class SerializerPhp81Controller
         // ..
     }
 
+    #[ModelAttribute]
+    #[MyAttribute('My " \' Argument 1', Model::class)]
     public function publicGetter()
     {
         return $this->privateGetter();
@@ -371,6 +465,15 @@ class SerializerPhp81Controller
     public function getSelf(self $instance): self
     {
         return $instance;
+    }
+}
+
+#[Attribute(Attribute::TARGET_METHOD|Attribute::TARGET_FUNCTION)]
+class MyAttribute
+{
+    public function __construct(public $string, public $model)
+    {
+        // ..
     }
 }
 
