@@ -394,6 +394,15 @@ test('function attributes with first-class callable with methods', function () {
     expect($f())->toBeInstanceOf(SerializerPhp81Service::class);
 })->with('serializers');
 
+test('closure defined inside class with enum property', function () {
+    $object = new ClassWithEnumField();
+    $f = $object->getClosure();
+
+    $f = s($f);
+
+    expect($f()->name)->toBe('Admin');
+})->with('serializers');
+
 interface SerializerPhp81HasId {}
 interface SerializerPhp81HasName {}
 
@@ -477,3 +486,14 @@ class MyAttribute
     }
 }
 
+class ClassWithEnumField
+{
+    public SerializerGlobalEnum $enum = SerializerGlobalEnum::Admin;
+
+    public function getClosure()
+    {
+        return function () {
+            return $this->enum;
+        };
+    }
+}
