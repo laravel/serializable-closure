@@ -318,6 +318,23 @@ EOF;
     expect($f)->toBeCode($e);
 });
 
+test('function attributes with named arguments', function () {
+    $model = new Model();
+
+    $f = #[MyAttribute(string: 'My " \' Argument 1', model:Model::class)] function () {
+        return false;
+    };
+
+    $e = <<<EOF
+#[MyAttribute(string: 'My " \' Argument 1', model: 'Tests\Fixtures\Model')]
+function () {
+        return false;
+    }
+EOF;
+
+    expect($f)->toBeCode($e);
+});
+
 test('function attributes with first-class callable with methods', function () {
     $model = new Model();
 

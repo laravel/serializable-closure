@@ -345,6 +345,34 @@ test('function attributes with arguments', function () {
     expect($f())->toBeFalse();
 })->with('serializers');
 
+test('function attributes with named arguments', function () {
+    $model = new Model();
+
+    $f = #[MyAttribute(string: 'My " \' Argument 1', model:Model::class)] function () {
+        return false;
+    };
+
+    $f = s($f);
+
+    $reflector = new ReflectionFunction($f);
+
+    expect($reflector->getAttributes())->sequence(function ($attribute) {
+
+        $attribute
+            ->getName()->toBe(MyAttribute::class)
+            ->getArguments()->toBe([
+                'string' => 'My " \' Argument 1',
+                'model' => Model::class,
+            ]);
+
+        expect($attribute->value->newInstance())
+            ->string->toBe('My " \' Argument 1')
+            ->model->toBe(Model::class);
+    });
+
+    expect($f())->toBeFalse();
+})->with('serializers');
+
 test('function attributes with first-class callable with methods', function () {
     $f = (new SerializerPhp81Controller())->publicGetter(...);
 
@@ -443,6 +471,9 @@ class SerializerPhp81Controller
 #[Attribute(Attribute::TARGET_METHOD|Attribute::TARGET_FUNCTION)]
 class MyAttribute
 {
-    // ..
+    public function __construct(public $string, public $model)
+    {
+        // ..
+    }
 }
 

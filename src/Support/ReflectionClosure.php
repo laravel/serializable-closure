@@ -679,10 +679,18 @@ class ReflectionClosure extends ReflectionFunction
 
         if (PHP_VERSION_ID >= 80100) {
             $attributesCode = array_map(function ($attribute) {
+                $arguments = $attribute->getArguments();
+
                 $name = $attribute->getName();
-                $arguments = implode(', ', array_map(function ($argument) {
-                    return sprintf("'%s'", str_replace("'", "\\'", $argument));
-                }, $attribute->getArguments()));
+                $arguments = implode(', ', array_map(function ($argument, $key) {
+                    $argument = sprintf("'%s'", str_replace("'", "\\'", $argument));
+
+                    if (is_string($key)) {
+                        $argument = sprintf('%s: %s', $key, $argument);
+                    }
+
+                    return $argument;
+                }, $arguments, array_keys($arguments)));
 
                 return "#[$name($arguments)]";
             }, $this->getAttributes());
