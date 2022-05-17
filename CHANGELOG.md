@@ -1,6 +1,13 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.1.1...master)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.2.0...master)
+
+## [v1.2.0](https://github.com/laravel/serializable-closure/compare/v1.1.1...v1.2.0) - 2022-05-16
+
+### Added
+
+- Adds Function Attributes support by @nunomaduro in https://github.com/laravel/serializable-closure/pull/46
+- Adds support for closure inside context with enum property by @ksassnowski in https://github.com/laravel/serializable-closure/pull/47
 
 ## [v1.1.1](https://github.com/laravel/serializable-closure/compare/v1.1.0...v1.1.1) - 2022-02-15
 
