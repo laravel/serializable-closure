@@ -1,4 +1,4 @@
-name: types
+name: static analysis
 
 on:
   push:
@@ -7,15 +7,13 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  linux_tests:
+  src:
     runs-on: ubuntu-20.04
 
     strategy:
       fail-fast: true
-      matrix:
-        php: [8.0]
 
-    name: PHP ${{ matrix.php }}
+    name: Source Code
 
     steps:
       - name: Checkout code
@@ -24,7 +22,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
+          php-version: 8.0
           tools: composer:v2
           coverage: none
 
