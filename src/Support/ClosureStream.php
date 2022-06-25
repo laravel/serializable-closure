@@ -30,6 +30,8 @@ class ClosureStream
      */
     protected $length;
 
+    public mixed $context;
+
     /**
      * The stream pointer.
      *
