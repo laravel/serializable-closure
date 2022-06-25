@@ -64,6 +64,11 @@ class Native implements Serializable
     protected $scope;
 
     /**
+     * @var class-string<Serializable>
+     */
+    private string $serializer;
+
+    /**
      * The "key" that marks an array as recursive.
      */
     const ARRAY_RECURSIVE_KEY = 'LARAVEL_SERIALIZABLE_RECURSIVE_KEY';
@@ -502,5 +507,13 @@ class Native implements Serializable
                 }
             } while ($reflection = $reflection->getParentClass());
         }
+    }
+
+    /**
+     * @param  class-string<Serializable>  $serializer
+     */
+    public function setSerializerClass(string $serializer): void
+    {
+        $this->serializer = $serializer;
     }
 }

@@ -9,6 +9,11 @@ use Laravel\SerializableClosure\Exceptions\MissingSecretKeyException;
 class Signed implements Serializable
 {
     /**
+     * @var class-string<Serializable>
+     */
+    private string $serializer;
+
+    /**
      * The signer that will sign and verify the closure's signature.
      *
      * @var \Laravel\SerializableClosure\Contracts\Signer|null
@@ -84,5 +89,13 @@ class Signed implements Serializable
         }
 
         $this->closure = unserialize($signature['serializable'])->getClosure();
+    }
+
+    /**
+     * @param  class-string<Serializable>  $serializer
+     */
+    public function setSerializerClass(string $serializer): void
+    {
+        $this->serializer = $serializer;
     }
 }
