@@ -249,6 +249,10 @@ class Native implements Serializable
                 return;
             }
 
+            if ($data instanceof \DateTime) {
+                return;
+            }
+
             $instance = $data;
             $reflection = new ReflectionObject($instance);
 
