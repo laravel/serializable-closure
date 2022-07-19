@@ -249,10 +249,8 @@ class Native implements Serializable
                 return;
             }
 
-            if (PHP_VERSION >= 7.1) {
-                if ($data instanceof \DateTime) {
-                    return;
-                }
+            if ($data instanceof \DateTime) {
+                return;
             }
 
             $instance = $data;
