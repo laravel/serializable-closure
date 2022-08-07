@@ -115,7 +115,7 @@ test('closure resolve arguments', function () {
     expect($f6)->toBeCode($e6);
 });
 
-test('cloure resolve in body', function () {
+test('closure resolve in body', function () {
     $f1 = function () {
         return new Bar();
     };
