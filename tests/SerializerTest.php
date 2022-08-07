@@ -401,7 +401,7 @@ test('from static callable namespaces', function () {
     expect($f(new Model))->toBeInstanceOf(Model::class);
 })->with('serializers');
 
-test('serializes datetime objects', function (){
+test('serializes datetime objects', function () {
     $closure = function () {
         return new DateTime('now');
     };
@@ -411,7 +411,7 @@ test('serializes datetime objects', function (){
     expect($r)->toBeInstanceOf(DateTime::class);
 })->with('serializers');
 
-test('serializes formatted datetime objects', function (){
+test('serializes formatted datetime objects', function () {
     $closure = function () {
         return date('Y-m-d');
     };
