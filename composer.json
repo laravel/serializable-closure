@@ -21,9 +21,9 @@
         "php": "^7.3|^8.0"
     },
     "require-dev": {
-        "pestphp/pest": "^1.18",
-        "phpstan/phpstan": "^0.12.98",
-        "symfony/var-dumper": "^5.3"
+        "pestphp/pest": "^1.21.3",
+        "phpstan/phpstan": "^1.8.2",
+        "symfony/var-dumper": "^5.4.11"
     },
     "autoload": {
         "psr-4": {
