@@ -414,6 +414,19 @@ test('serializes carbon objects', function () {
     expect($r)->toEqual($carbon);
 })->with('serializers');
 
+test('serializes carbon immutable objects', function () {
+    $carbon = new \Carbon\CarbonImmutable('now');
+
+    $closure = function () use ($carbon) {
+        return $carbon;
+    };
+
+    $u = s($closure);
+    $r = $u();
+
+    expect($r)->toEqual($carbon);
+})->with('serializers');
+
 class A
 {
     protected static function aStaticProtected()
