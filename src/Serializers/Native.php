@@ -3,13 +3,13 @@
 namespace Laravel\SerializableClosure\Serializers;
 
 use Closure;
+use DateTimeInterface;
 use Laravel\SerializableClosure\Contracts\Serializable;
 use Laravel\SerializableClosure\SerializableClosure;
 use Laravel\SerializableClosure\Support\ClosureScope;
 use Laravel\SerializableClosure\Support\ClosureStream;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Laravel\SerializableClosure\Support\SelfReference;
-use DateTimeInterface;
 use ReflectionObject;
 use UnitEnum;
 
