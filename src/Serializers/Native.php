@@ -462,7 +462,7 @@ class Native implements Serializable
 
             if ($data instanceof \DateTime) {
                 $this->scope[$instance] = $data;
-                
+
                 return;
             }
 

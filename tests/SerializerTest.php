@@ -404,7 +404,7 @@ test('from static callable namespaces', function () {
 test('serializes carbon objects', function () {
     $carbon = new \Carbon\Carbon('now');
 
-    $closure = function () use ($carbon){
+    $closure = function () use ($carbon) {
         return $carbon;
     };
 
