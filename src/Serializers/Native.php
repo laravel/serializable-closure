@@ -9,6 +9,7 @@ use Laravel\SerializableClosure\Support\ClosureScope;
 use Laravel\SerializableClosure\Support\ClosureStream;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Laravel\SerializableClosure\Support\SelfReference;
+use DateTimeInterface;
 use ReflectionObject;
 use UnitEnum;
 
@@ -460,7 +461,7 @@ class Native implements Serializable
 
             $instance = $data;
 
-            if ($data instanceof \DateTime) {
+            if ($data instanceof DateTimeInterface) {
                 $this->scope[$instance] = $data;
 
                 return;
