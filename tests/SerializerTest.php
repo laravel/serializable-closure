@@ -401,6 +401,19 @@ test('from static callable namespaces', function () {
     expect($f(new Model))->toBeInstanceOf(Model::class);
 })->with('serializers');
 
+test('serializes carbon objects', function () {
+    $carbon = new \Carbon\Carbon('now');
+
+    $closure = function () use ($carbon){
+        return $carbon;
+    };
+
+    $u = s($closure);
+    $r = $u();
+
+    expect($r)->toEqual($carbon);
+})->with('serializers');
+
 class A
 {
     protected static function aStaticProtected()

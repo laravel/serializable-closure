@@ -460,6 +460,12 @@ class Native implements Serializable
 
             $instance = $data;
 
+            if ($data instanceof \DateTime) {
+                $this->scope[$instance] = $data;
+                
+                return;
+            }
+
             if ($data instanceof UnitEnum) {
                 $this->scope[$instance] = $data;
 
