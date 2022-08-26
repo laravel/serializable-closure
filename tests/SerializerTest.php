@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Laravel\SerializableClosure\SerializableClosure;
 use Laravel\SerializableClosure\Serializers\Signed;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
@@ -400,6 +402,41 @@ test('from static callable namespaces', function () {
 
     expect($f(new Model))->toBeInstanceOf(Model::class);
 })->with('serializers');
+
+test('serializes used dates', function ($_, $date) {
+    $closure = function () use ($date) {
+        return $date;
+    };
+
+    $u = s($closure);
+    $r = $u();
+
+    expect($r)->toEqual($date);
+})->with('serializers')->with([
+    new DateTime,
+    new DateTimeImmutable,
+    new Carbon,
+    new CarbonImmutable,
+]);
+
+test('serializes with used object date properties', function ($_, $date) {
+    $obj = new ObjSelf;
+    $obj->o = $date;
+
+    $closure = function () use ($obj) {
+        return $obj;
+    };
+
+    $u = s($closure);
+    $r = $u();
+
+    expect($r->o)->toEqual($date);
+})->with('serializers')->with([
+    new DateTime,
+    new DateTimeImmutable,
+    new Carbon,
+    new CarbonImmutable,
+]);
 
 class A
 {
