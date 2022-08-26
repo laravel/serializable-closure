@@ -21,6 +21,7 @@
         "php": "^7.3|^8.0"
     },
     "require-dev": {
+        "nesbot/carbon": "^2.61",
         "pestphp/pest": "^1.21.3",
         "phpstan/phpstan": "^1.8.2",
         "symfony/var-dumper": "^5.4.11"
