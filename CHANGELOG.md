@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.2.0...master)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.2.1...master)
+
+## [v1.2.1](https://github.com/laravel/serializable-closure/compare/v1.2.0...v1.2.1) - 2022-08-26
+
+### Fixed
+
+- Fixes serialization of date carbon objects by @nunomaduro in https://github.com/laravel/serializable-closure/pull/56
 
 ## [v1.2.0](https://github.com/laravel/serializable-closure/compare/v1.1.1...v1.2.0) - 2022-05-16
 
