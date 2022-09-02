@@ -24,6 +24,13 @@ class ClosureStream
     protected $content;
 
     /**
+     * The stream context.
+     *
+     * @var string
+     */
+    protected $context;
+
+    /**
      * The stream content.
      *
      * @var int
