@@ -275,10 +275,19 @@ test('parent inside closure', function () {
 });
 
 test('interpolation1', function () {
-    $f1 = function () {
-        return "${foo}${bar}{$foobar}";
-    };
-    $e1 = 'function () {
-        return "${foo}${bar}{$foobar}";
-    }';
+    if (PHP_VERSION_ID >= 80200) {
+        $f1 = function () {
+            return "{$foo}{$bar}{$foobar}";
+        };
+        $e1 = 'function () {
+            return "{$foo}{$bar}{$foobar}";
+        }';
+    } else {
+        $f1 = function () {
+            return "${foo}${bar}{$foobar}";
+        };
+        $e1 = 'function () {
+            return "${foo}${bar}{$foobar}";
+        }';
+    }
 });
