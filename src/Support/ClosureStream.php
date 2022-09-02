@@ -24,13 +24,6 @@ class ClosureStream
     protected $content;
 
     /**
-     * The stream context.
-     *
-     * @var string
-     */
-    protected $context;
-
-    /**
      * The stream content.
      *
      * @var int
@@ -43,6 +36,13 @@ class ClosureStream
      * @var int
      */
     protected $pointer = 0;
+
+    /**
+     * The stream context.
+     *
+     * @var string
+     */
+    public $context;
 
     /**
      * Opens file or URL.
