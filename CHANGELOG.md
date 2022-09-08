@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.2.1...master)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.2.2...master)
+
+## [v1.2.2](https://github.com/laravel/serializable-closure/compare/v1.2.1...v1.2.2) - 2022-09-08
+
+### Changed
+
+- Adds PHP 8.2 Support by @driesvints in https://github.com/laravel/serializable-closure/pull/57
 
 ## [v1.2.1](https://github.com/laravel/serializable-closure/compare/v1.2.0...v1.2.1) - 2022-08-26
 
