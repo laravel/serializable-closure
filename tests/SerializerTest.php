@@ -317,7 +317,7 @@ test('closure scope remains the same', function () {
 
 test('mixed encodings', function () {
     $a = iconv('utf-8', 'utf-16', 'Düsseldorf');
-    $b = utf8_decode('Düsseldorf');
+    $b = mb_convert_encoding('Düsseldorf', 'ISO-8859-1', 'UTF-8');
 
     $closure = function () use ($a, $b) {
         return [$a, $b];

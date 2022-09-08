@@ -276,9 +276,9 @@ test('parent inside closure', function () {
 
 test('interpolation1', function () {
     $f1 = function () {
-        return "${foo}${bar}{$foobar}";
+        return "{$foo}{$bar}{$foobar}";
     };
     $e1 = 'function () {
-        return "${foo}${bar}{$foobar}";
+        return "{$foo}{$bar}{$foobar}";
     }';
 });
