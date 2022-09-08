@@ -2,6 +2,7 @@
 
 namespace Laravel\SerializableClosure\Support;
 
+#[\AllowDynamicProperties]
 class ClosureStream
 {
     /**
@@ -36,13 +37,6 @@ class ClosureStream
      * @var int
      */
     protected $pointer = 0;
-
-    /**
-     * The stream context.
-     *
-     * @var string
-     */
-    public $context;
 
     /**
      * Opens file or URL.
