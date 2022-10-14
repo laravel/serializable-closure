@@ -1,5 +1,6 @@
 <?php
 
+use Laravel\SerializableClosure\SerializableClosure;
 use Tests\Fixtures\Model;
 use Tests\Fixtures\ModelAttribute;
 
@@ -153,18 +154,20 @@ test('new in initializers', function () {
 
 test('readonly properties', function () {
     $f = function () {
-        $controller = new SerializerPhp81Controller();
-
-        $controller->service = 'foo';
+        return new SerializerPhp81Controller(
+            services: [
+                new SerializerPhp81Service(),
+                new SerializerPhp81ServiceWithReadonlyProperty(),
+                new InvokableService(new SerializableClosure(function () {})),
+            ]
+        );
     };
 
     $f = s($f);
 
-    expect($f)->toThrow(function (Error $e) {
-        expect($e->getMessage())->toBe(
-            'Cannot modify readonly property SerializerPhp81Controller::$service',
-        );
-    });
+    expect($f()->service)->toBeInstanceOf(
+        SerializerPhp81Service::class,
+    );
 })->with('serializers');
 
 test('first-class callable with closures', function () {
@@ -412,10 +415,34 @@ class SerializerPhp81Service implements SerializerPhp81HasId, SerializerPhp81Has
     final public const X = 'foo';
 }
 
+class SerializerPhp81ServiceWithReadonlyProperty
+{
+    public function __construct(
+        public readonly SerializerPhp81Service $service = new SerializerPhp81Service(),
+    ) {
+        // ..
+    }
+}
+
+class InvokableService {
+    public function __construct(private Closure|SerializableClosure $closure) {
+    }
+
+    public function __invoke(): mixed
+    {
+        return ($this->closure)();
+    }
+}
+
 class SerializerPhp81Controller
 {
     public function __construct(
         public readonly SerializerPhp81Service $service = new SerializerPhp81Service(),
+        public readonly SerializerPhp81ServiceWithReadonlyProperty $anotherService = new SerializerPhp81ServiceWithReadonlyProperty(),
+        public readonly array $services = [
+            new SerializerPhp81Service(),
+            new SerializerPhp81ServiceWithReadonlyProperty(),
+        ],
     ) {
         // ..
     }
