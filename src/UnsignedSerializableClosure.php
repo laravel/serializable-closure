@@ -3,12 +3,9 @@
 namespace Laravel\SerializableClosure;
 
 use Closure;
-use Laravel\SerializableClosure\Exceptions\InvalidSignatureException;
 use Laravel\SerializableClosure\Exceptions\PhpVersionNotSupportedException;
-use Laravel\SerializableClosure\Serializers\Signed;
-use Laravel\SerializableClosure\Signers\Hmac;
 
-class SerializableClosure
+class UnsignedSerializableClosure
 {
     /**
      * The closure's serializable.
@@ -29,9 +26,7 @@ class SerializableClosure
             throw new PhpVersionNotSupportedException();
         }
 
-        $this->serializable = Serializers\Signed::$signer
-            ? new Serializers\Signed($closure)
-            : new Serializers\Native($closure);
+        $this->serializable = new Serializers\Native($closure);
     }
 
     /**
@@ -63,41 +58,6 @@ class SerializableClosure
     }
 
     /**
-     * Sets the serializable closure secret key.
-     *
-     * @param  string|null  $secret
-     * @return void
-     */
-    public static function setSecretKey($secret)
-    {
-        Serializers\Signed::$signer = $secret
-            ? new Hmac($secret)
-            : null;
-    }
-
-    /**
-     * Sets the serializable closure secret key.
-     *
-     * @param  \Closure|null  $transformer
-     * @return void
-     */
-    public static function transformUseVariablesUsing($transformer)
-    {
-        Serializers\Native::$transformUseVariables = $transformer;
-    }
-
-    /**
-     * Sets the serializable closure secret key.
-     *
-     * @param  \Closure|null  $resolver
-     * @return void
-     */
-    public static function resolveUseVariablesUsing($resolver)
-    {
-        Serializers\Native::$resolveUseVariables = $resolver;
-    }
-
-    /**
      * Get the serializable representation of the closure.
      *
      * @return array
@@ -114,15 +74,9 @@ class SerializableClosure
      *
      * @param  array  $data
      * @return void
-     *
-     * @throws \Laravel\SerializableClosure\Exceptions\InvalidSignatureException
      */
     public function __unserialize($data)
     {
-        if (Signed::$signer && ! $data['serializable'] instanceof Signed) {
-            throw new InvalidSignatureException();
-        }
-
         $this->serializable = $data['serializable'];
     }
 }
