@@ -18,18 +18,28 @@ class SerializableClosure
     protected $serializable;
 
     /**
+     * Checks if the Closure should be signed.
+     * If set to `null` it will be based on if a signer exists.
+     *
+     * @var bool|null
+     */
+    protected $shouldSign;
+
+    /**
      * Creates a new serializable closure instance.
      *
      * @param  \Closure  $closure
      * @return void
      */
-    public function __construct(Closure $closure)
+    public function __construct(Closure $closure, ?bool $shouldSign = null)
     {
+        $this->shouldSign = $shouldSign;
+
         if (\PHP_VERSION_ID < 70400) {
             throw new PhpVersionNotSupportedException();
         }
 
-        $this->serializable = Serializers\Signed::$signer
+        $this->serializable = Serializers\Signed::$signer && $this->shouldSign !== false
             ? new Serializers\Signed($closure)
             : new Serializers\Native($closure);
     }
@@ -106,6 +116,7 @@ class SerializableClosure
     {
         return [
             'serializable' => $this->serializable,
+            'shouldSign' => $this->shouldSign,
         ];
     }
 
@@ -119,7 +130,7 @@ class SerializableClosure
      */
     public function __unserialize($data)
     {
-        if (Signed::$signer && ! $data['serializable'] instanceof Signed) {
+        if (Signed::$signer && ($data['shouldSign'] ?? null) !== false && ! $data['serializable'] instanceof Signed) {
             throw new InvalidSignatureException();
         }
 
