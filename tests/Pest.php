@@ -3,6 +3,7 @@
 use Laravel\SerializableClosure\SerializableClosure;
 use Laravel\SerializableClosure\Serializers;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
+use Laravel\SerializableClosure\UnsignedSerializableClosure;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +69,9 @@ function s($closure)
         case Serializers\Signed::class:
             SerializableClosure::setSecretKey('secret');
             $closure = new SerializableClosure($closure);
+            break;
+        case UnsignedSerializableClosure::class:
+            $closure = SerializableClosure::unsigned($closure);
             break;
         default:
             throw new Exception('Please use the [serializers] dataset.');
