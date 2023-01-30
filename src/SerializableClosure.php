@@ -63,7 +63,7 @@ class SerializableClosure
     }
 
     /**
-     * Creates a new unsigned serializable closure instance.
+     * Create a new unsigned serializable closure instance.
      *
      * @param  Closure  $closure
      * @return \Laravel\SerializableClosure\UnsignedSerializableClosure
