@@ -1,6 +1,13 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.2.2...master)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.3.0...master)
+
+## [v1.3.0](https://github.com/laravel/serializable-closure/compare/v1.2.2...v1.3.0) - 2023-01-30
+
+### Changed
+
+- Add support for specifying if it should sign by @olivernybroe in https://github.com/laravel/serializable-closure/pull/62
+- Fixes and tests unsigned closures by @nunomaduro in https://github.com/laravel/serializable-closure/pull/64
 
 ## [v1.2.2](https://github.com/laravel/serializable-closure/compare/v1.2.1...v1.2.2) - 2022-09-08
 
