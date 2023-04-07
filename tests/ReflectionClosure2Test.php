@@ -149,7 +149,8 @@ test('closure inside closure', function () {
 
 test('anonymous inside closure', function () {
     $f1 = function () {
-        return new class() extends A {
+        return new class() extends A
+        {
         };
     };
     $e1 = 'function () {
@@ -159,7 +160,8 @@ test('anonymous inside closure', function () {
     }';
 
     $f2 = function () {
-        return new class() extends A implements B {
+        return new class() extends A implements B
+        {
         };
     };
     $e2 = 'function () {
@@ -277,7 +279,8 @@ test('closure resolve traits names in anonymous classes', function () {
         function a(Qux $q): Bar
         {
             f1();
-            $a = new class() extends Bar {
+            $a = new class() extends Bar
+            {
             };
         }
     };
