@@ -651,7 +651,7 @@ class ReflectionClosure extends ReflectionFunction
                             $state = 'id_name';
                             $context = 'extends';
                             $lastState = 'anonymous';
-                        break;
+                            break;
                         case '{':
                             $state = 'closure';
                             if (! $inside_structure) {
