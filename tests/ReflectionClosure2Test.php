@@ -149,23 +149,17 @@ test('closure inside closure', function () {
 
 test('anonymous inside closure', function () {
     $f1 = function () {
-        return new class() extends A {
-        };
+        return new class() extends A {};
     };
     $e1 = 'function () {
-        return new class() extends \A
-        {
-        };
+        return new class() extends \A {};
     }';
 
     $f2 = function () {
-        return new class() extends A implements B {
-        };
+        return new class() extends A implements B {};
     };
     $e2 = 'function () {
-        return new class() extends \A implements \B
-        {
-        };
+        return new class() extends \A implements \B {};
     }';
 
     $f3 = function () {
