@@ -271,8 +271,7 @@ test('closure resolve traits names in anonymous classes', function () {
         function a(Qux $q): Bar
         {
             f1();
-            $a = new class() extends Bar {
-            };
+            $a = new class() extends Bar {};
         }
     };
     $e7 = 'function () {
@@ -283,9 +282,7 @@ test('closure resolve traits names in anonymous classes', function () {
         function a(\Foo\Baz $q): \Foo\Bar
         {
             \Foo\f1();
-            $a = new class() extends \Foo\Bar
-            {
-            };
+            $a = new class() extends \Foo\Bar {};
         }
     }';
 
