@@ -453,7 +453,6 @@ class ReflectionClosure extends ReflectionFunction
                         case T_NEW:
                         case T_STATIC:
                         case T_VARIABLE:
-                        case T_STRING:
                         case T_CLASS_C:
                         case T_FILE:
                         case T_DIR:
@@ -467,6 +466,16 @@ class ReflectionClosure extends ReflectionFunction
                         case T_USE:
                             $code .= $token[1];
                             $state = $lastState;
+                            break;
+                        case T_STRING:
+                            if ($context !== 'root' || $context === 'fetch') {
+                                $code .= $token[1];
+                                $state = $lastState;
+                                break;
+                            }
+
+                            $state = 'id_start';
+                            $i--;
                             break;
                         default:
                             $state = $lastState;
@@ -588,6 +597,8 @@ class ReflectionClosure extends ReflectionFunction
 
                             $code .= $id_start.$id_name.$token[1];
                             $state = $token[0] === T_DOUBLE_COLON ? 'ignore_next' : $lastState;
+                            // fetch for "Class::CONST"
+                            $context = $token[0] === T_DOUBLE_COLON ? 'fetch' : $context;
                             break;
                         default:
                             if ($id_start !== '\\' && ! defined($id_start)) {
