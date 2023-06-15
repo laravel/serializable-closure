@@ -1,5 +1,7 @@
 <?php
 
+use Tests\Fixtures\Sample;
+
 test('named arguments', function () {
     $f1 = function (string $firstName, string $lastName) {
         return $firstName.' '.$lastName;
@@ -41,6 +43,14 @@ test('multiple named arguments within nested closures', function () {
     };
 
     expect('string1')->toBe(s($f1)());
+})->with('serializers');
+
+test('named arguments with namespaced parameter', function () {
+    $f1 = function () {
+        return new Sample(a2: Sample::C);
+    };
+
+    expect(s($f1)())->toBeInstanceOf(Sample::class);
 })->with('serializers');
 
 class SerializerPhp80NamedArguments
