@@ -1,7 +1,6 @@
 <?php
 
 use Tests\Fixtures\RegularClass;
-use Tests\Fixtures\Sample;
 
 test('named arguments', function () {
     $f1 = function (string $firstName, string $lastName) {
