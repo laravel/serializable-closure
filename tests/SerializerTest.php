@@ -7,6 +7,17 @@ use Laravel\SerializableClosure\Serializers\Signed;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Laravel\SerializableClosure\UnsignedSerializableClosure;
 use Tests\Fixtures\Model;
+use Tests\Fixtures\RegularClass;
+
+test('closure with simple const', function () {
+    $c = function () {
+        return RegularClass::C;
+    };
+
+    $u = s($c)();
+
+    expect($u)->toBe('CONST');
+})->with('serializers');
 
 test('closure use return value', function () {
     $a = 100;
