@@ -77,6 +77,18 @@ test('trailing comma', function () {
     expect($f1)->toBeCode($e1);
 });
 
+test('named arguments', function () {
+    $f1 = function (string $firstName, string $lastName) {
+        return $firstName.' '.$lastName;
+    };
+
+    $e1 = "function (string \$firstName, string \$lastName) {
+        return \$firstName.' '.\$lastName;
+    }";
+
+    expect($f1)->toBeCode($e1);
+})->with('serializers');
+
 test('single named argument within closures', function () {
     $f1 = function () {
         return (new ReflectionClosurePhp80NamedArguments)->publicMethod(namedArgument: 'string');
