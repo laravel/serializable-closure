@@ -2,7 +2,6 @@
 
 // Fake
 use Some\ClassName as ClassAlias;
-use Tests\Fixtures\RegularClass;
 
 test('union types', function () {
     $f1 = fn (): string|int|false|Bar|null => 1;
