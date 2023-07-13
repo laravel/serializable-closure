@@ -3,6 +3,7 @@
 // Fake
 use Foo\Bar;
 use Foo\Baz as Qux;
+use Tests\Fixtures\RegularClass;
 
 test('new instance', function () {
     $f = function () {
@@ -281,4 +282,18 @@ test('interpolation1', function () {
     $e1 = 'function () {
         return "{$foo}{$bar}{$foobar}";
     }';
+
+    expect($f1)->toBeCode($e1);
+});
+
+test('consts', function () {
+    $f1 = function () {
+        return RegularClass::C;
+    };
+
+    $e1 = 'function () {
+        return \Tests\Fixtures\RegularClass::C;
+    }';
+
+    expect($f1)->toBeCode($e1);
 });

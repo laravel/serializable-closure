@@ -8,6 +8,16 @@ use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Laravel\SerializableClosure\UnsignedSerializableClosure;
 use Tests\Fixtures\Model;
 
+test('closure with simple const', function () {
+    $c = function () {
+        return ObjWithConst::FOO;
+    };
+
+    $u = s($c)();
+
+    expect($u)->toBe('bar');
+})->with('serializers');
+
 test('closure use return value', function () {
     $a = 100;
     $c = function () use ($a) {
@@ -551,4 +561,9 @@ class A3
 class ObjSelf
 {
     public $o;
+}
+
+class ObjWithConst
+{
+    const FOO = 'bar';
 }

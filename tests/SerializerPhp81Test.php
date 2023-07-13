@@ -2,6 +2,7 @@
 
 use Tests\Fixtures\Model;
 use Tests\Fixtures\ModelAttribute;
+use Tests\Fixtures\RegularClass;
 
 test('enums', function () {
     $f = function (SerializerGlobalEnum $role) {
@@ -355,6 +356,167 @@ test('function attributes with arguments', function () {
     expect($f())->toBeFalse();
 })->with('serializers');
 
+test('named arguments', function () {
+    $variable = 'variableValue';
+
+    $f = function (string $a1) use ($variable) {
+        return new RegularClass(
+            a1: $a1,
+            a2: 'string',
+            a3: 1,
+            a4: 1.1,
+            a5: true,
+            a6: null,
+            a7: ['string'],
+            a8: ['string', $a1, 1, null, true],
+            a9: [[[[['string', $a1, 1, null, true]]]]],
+            a10: new RegularClass(
+                a1: $a1,
+                a2: 'string',
+                a3: 1,
+                a4: 1.1,
+                a5: true,
+                a6: null,
+                a7: ['string'],
+                a8: ['string', $a1, 1, null, true],
+                a9: [[[[['string', $a1, 1, null, true]]]]],
+                a10: new RegularClass(),
+                a11: RegularClass::C,
+                a12: RegularClass::staticMethod(),
+                a13: (new RegularClass())->instanceMethod(),
+                a14: [new RegularClass(), RegularClass::C, RegularClass::staticMethod(), (new RegularClass())->instanceMethod()],
+            ),
+            a11: RegularClass::C,
+            a12: [new RegularClass(), RegularClass::C],
+            a13: RegularClass::staticMethod(),
+            a14: (new RegularClass())->instanceMethod(),
+            a15: fn () => new RegularClass(
+                a1: $a1,
+                a2: 'string',
+                a3: 1,
+                a4: 1.1,
+                a5: true,
+                a6: null,
+                a7: ['string'],
+                a8: ['string', $a1, 1, null, true],
+                a9: [[[[['string', $a1, 1, null, true]]]]],
+                a10: new RegularClass(
+                    a1: $a1,
+                    a2: 'string',
+                    a3: 1,
+                    a4: 1.1,
+                    a5: true,
+                    a6: null,
+                    a7: ['string'],
+                    a8: ['string', $a1, 1, null, true],
+                    a9: [[[[['string', $a1, 1, null, true]]]]],
+                    a10: new RegularClass(),
+                    a11: RegularClass::C,
+                    a12: RegularClass::staticMethod(),
+                    a13: (new RegularClass())->instanceMethod(),
+                    a14: [new RegularClass(), RegularClass::C, RegularClass::staticMethod(), (new RegularClass())->instanceMethod()],
+                ),
+                a11: RegularClass::C,
+                a12: [new RegularClass(), RegularClass::C],
+                a13: RegularClass::staticMethod(),
+                a14: (new RegularClass())->instanceMethod(),
+            ),
+            a16: fn () => fn () => new RegularClass(
+                a1: $a1,
+                a2: 'string',
+                a3: 1,
+                a4: 1.1,
+                a5: true,
+                a6: null,
+                a7: ['string'],
+                a8: ['string', $a1, 1, null, true],
+                a9: [[[[['string', $a1, 1, null, true]]]]],
+                a10: new RegularClass(
+                    a1: $a1,
+                    a2: 'string',
+                    a3: 1,
+                    a4: 1.1,
+                    a5: true,
+                    a6: null,
+                    a7: ['string'],
+                    a8: ['string', $a1, 1, null, true],
+                    a9: [[[[['string', $a1, 1, null, true]]]]],
+                    a10: new RegularClass(),
+                    a11: RegularClass::C,
+                    a12: RegularClass::staticMethod(),
+                    a13: (new RegularClass())->instanceMethod(),
+                    a14: [new RegularClass(), RegularClass::C, RegularClass::staticMethod(), (new RegularClass())->instanceMethod()],
+                ),
+                a11: RegularClass::C,
+                a12: [new RegularClass(), RegularClass::C],
+                a13: RegularClass::staticMethod(),
+                a14: (new RegularClass())->instanceMethod(),
+            ),
+            a17: function () use ($variable) {
+                return new RegularClass(
+                    a1: $a1,
+                    a2: 'string',
+                    a3: 1,
+                    a4: 1.1,
+                    a5: true,
+                    a6: null,
+                    a7: ['string'],
+                    a8: ['string', $a1, 1, null, true],
+                    a9: [[[[['string', $a1, 1, null, true]]]]],
+                    a10: new RegularClass(
+                        a1: $a1,
+                        a2: 'string',
+                        a3: 1,
+                        a4: 1.1,
+                        a5: true,
+                        a6: null,
+                        a7: ['string'],
+                        a8: ['string', $a1, 1, null, true],
+                        a9: [[[[['string', $a1, 1, null, true]]]]],
+                        a10: new RegularClass(),
+                        a11: RegularClass::C,
+                        a12: RegularClass::staticMethod(),
+                        a13: (new RegularClass())->instanceMethod(),
+                        a14: [new RegularClass(), RegularClass::C, RegularClass::staticMethod(), (new RegularClass())->instanceMethod()],
+                    ),
+                    a11: RegularClass::C,
+                    a12: [new RegularClass(), RegularClass::C],
+                    a13: RegularClass::staticMethod(),
+                    a14: (new RegularClass())->instanceMethod(),
+                );
+            },
+            a18: serializer_my_function(),
+            a19: serializer_my_function(SerializerGlobalEnum::Guest),
+            a20: serializer_my_function(enum: SerializerGlobalEnum::Guest),
+        );
+    };
+
+    $f = s($f);
+
+    $instance = $f('a1');
+
+    $expectedArray = [
+        'a1' => 'a1',
+        'a2' => 'string',
+        'a3' => 1,
+        'a4' => 1.1,
+        'a5' => true,
+        'a6' => null,
+        'a7' => ['string'],
+        'a8' => ['string', 'a1', 1, null, true],
+        'a9' => [[[[['string', 'a1', 1, null, true]]]]],
+    ];
+
+    expect($instance)
+        ->toMatchArray($expectedArray)
+        ->toMatchArray([
+            'a18' => SerializerGlobalEnum::Admin,
+            'a19' => SerializerGlobalEnum::Guest,
+            'a20' => SerializerGlobalEnum::Guest,
+        ])
+        ->and($instance->a15->__invoke())->toMatchArray($expectedArray);
+})->with('serializers');
+
 test('function attributes with named arguments', function () {
     $model = new Model();
 
@@ -511,6 +673,14 @@ class ClassWithEnumProperty
     }
 }
 
+test('named arguments with namespaced enum parameter', function () {
+    $f1 = function () {
+        return new RegularClass(a2: RegularClass::C);
+    };
+
+    expect(s($f1)())->toBeInstanceOf(RegularClass::class);
+})->with('serializers');
+
 class ClassWithBackedEnumProperty
 {
     public SerializerGlobalBackedEnum $enum = SerializerGlobalBackedEnum::Admin;
@@ -521,4 +691,9 @@ class ClassWithBackedEnumProperty
             return $this->enum;
         };
     }
+}
+
+function serializer_my_function(SerializerGlobalEnum $enum = SerializerGlobalEnum::Admin)
+{
+    return $enum;
 }

@@ -3,6 +3,7 @@
 use Foo\Baz\Qux\Forest;
 use Some\ClassName as ClassAlias;
 use Tests\Fixtures\Model;
+use Tests\Fixtures\RegularClass;
 use function Tests\Fixtures\{makeModel};
 
 enum GlobalEnum {
@@ -10,6 +11,276 @@ enum GlobalEnum {
     case Guest;
     case Moderator;
 }
+
+test('named arguments', function () {
+    $variable = new RegularClass();
+
+    $f1 = function (string $a1) use ($variable) {
+        return new RegularClass(
+            a1: $a1,
+            a2: 'string',
+            a3: 1,
+            a4: 1.1,
+            a5: true,
+            a6: null,
+            a7: ['string'],
+            a8: ['string', $a1, 1, null, true],
+            a9: [[[[['string', $a1, 1, null, true]]]]],
+            a10: new RegularClass(
+                a1: $a1,
+                a2: 'string',
+                a3: 1,
+                a4: 1.1,
+                a5: true,
+                a6: null,
+                a7: ['string'],
+                a8: ['string', $a1, 1, null, true],
+                a9: [[[[['string', $a1, 1, null, true]]]]],
+                a10: new RegularClass(),
+                a11: RegularClass::C,
+                a12: RegularClass::staticMethod(),
+                a13: (new RegularClass())->instanceMethod(),
+                a14: [new RegularClass(), RegularClass::C, RegularClass::staticMethod(), (new RegularClass())->instanceMethod()],
+            ),
+            a11: RegularClass::C,
+            a12: [new RegularClass(), RegularClass::C],
+            a13: RegularClass::staticMethod(),
+            a14: (new RegularClass())->instanceMethod(),
+            a15: fn () => new RegularClass(
+                a1: $a1,
+                a2: 'string',
+                a3: 1,
+                a4: 1.1,
+                a5: true,
+                a6: null,
+                a7: ['string'],
+                a8: ['string', $a1, 1, null, true],
+                a9: [[[[['string', $a1, 1, null, true]]]]],
+                a10: new RegularClass(
+                    a1: $a1,
+                    a2: 'string',
+                    a3: 1,
+                    a4: 1.1,
+                    a5: true,
+                    a6: null,
+                    a7: ['string'],
+                    a8: ['string', $a1, 1, null, true],
+                    a9: [[[[['string', $a1, 1, null, true]]]]],
+                    a10: new RegularClass(),
+                    a11: RegularClass::C,
+                    a12: RegularClass::staticMethod(),
+                    a13: (new RegularClass())->instanceMethod(),
+                    a14: [new RegularClass(), RegularClass::C, RegularClass::staticMethod(), (new RegularClass())->instanceMethod()],
+                ),
+                a11: RegularClass::C,
+                a12: [new RegularClass(), RegularClass::C],
+                a13: RegularClass::staticMethod(),
+                a14: (new RegularClass())->instanceMethod(),
+            ),
+            a16: fn () => fn () => new RegularClass(
+                a1: $a1,
+                a2: 'string',
+                a3: 1,
+                a4: 1.1,
+                a5: true,
+                a6: null,
+                a7: ['string'],
+                a8: ['string', $a1, 1, null, true],
+                a9: [[[[['string', $a1, 1, null, true]]]]],
+                a10: new RegularClass(
+                    a1: $a1,
+                    a2: 'string',
+                    a3: 1,
+                    a4: 1.1,
+                    a5: true,
+                    a6: null,
+                    a7: ['string'],
+                    a8: ['string', $a1, 1, null, true],
+                    a9: [[[[['string', $a1, 1, null, true]]]]],
+                    a10: new RegularClass(),
+                    a11: RegularClass::C,
+                    a12: RegularClass::staticMethod(),
+                    a13: (new RegularClass())->instanceMethod(),
+                    a14: [new RegularClass(), RegularClass::C, RegularClass::staticMethod(), (new RegularClass())->instanceMethod()],
+                ),
+                a11: RegularClass::C,
+                a12: [new RegularClass(), RegularClass::C],
+                a13: RegularClass::staticMethod(),
+                a14: (new RegularClass())->instanceMethod(),
+            ),
+            a17: function () use ($variable) {
+                return new RegularClass(
+                    a1: $a1,
+                    a2: 'string',
+                    a3: 1,
+                    a4: 1.1,
+                    a5: true,
+                    a6: null,
+                    a7: ['string'],
+                    a8: ['string', $a1, 1, null, true],
+                    a9: [[[[['string', $a1, 1, null, true]]]]],
+                    a10: new RegularClass(
+                        a1: $a1,
+                        a2: 'string',
+                        a3: 1,
+                        a4: 1.1,
+                        a5: true,
+                        a6: null,
+                        a7: ['string'],
+                        a8: ['string', $a1, 1, null, true],
+                        a9: [[[[['string', $a1, 1, null, true]]]]],
+                        a10: new RegularClass(),
+                        a11: RegularClass::C,
+                        a12: RegularClass::staticMethod(),
+                        a13: (new RegularClass())->instanceMethod(),
+                        a14: [new RegularClass(), RegularClass::C, RegularClass::staticMethod(), (new RegularClass())->instanceMethod()],
+                    ),
+                    a11: RegularClass::C,
+                    a12: [new RegularClass(), RegularClass::C],
+                    a13: RegularClass::staticMethod(),
+                    a14: (new RegularClass())->instanceMethod(),
+                );
+            },
+            a18: reflection_closure_my_function(),
+            a19: reflection_closure_my_function(ReflectionClosureGlobalEnum::Guest),
+            a20: reflection_closure_my_function(enum: ReflectionClosureGlobalEnum::Guest),
+        );
+    };
+
+    $e1 = "function (string \$a1) use (\$variable) {
+        return new \Tests\Fixtures\RegularClass(
+            a1: \$a1,
+            a2: 'string',
+            a3: 1,
+            a4: 1.1,
+            a5: true,
+            a6: null,
+            a7: ['string'],
+            a8: ['string', \$a1, 1, null, true],
+            a9: [[[[['string', \$a1, 1, null, true]]]]],
+            a10: new \Tests\Fixtures\RegularClass(
+                a1: \$a1,
+                a2: 'string',
+                a3: 1,
+                a4: 1.1,
+                a5: true,
+                a6: null,
+                a7: ['string'],
+                a8: ['string', \$a1, 1, null, true],
+                a9: [[[[['string', \$a1, 1, null, true]]]]],
+                a10: new \Tests\Fixtures\RegularClass(),
+                a11: \Tests\Fixtures\RegularClass::C,
+                a12: \Tests\Fixtures\RegularClass::staticMethod(),
+                a13: (new \Tests\Fixtures\RegularClass())->instanceMethod(),
+                a14: [new \Tests\Fixtures\RegularClass(), \Tests\Fixtures\RegularClass::C, \Tests\Fixtures\RegularClass::staticMethod(), (new \Tests\Fixtures\RegularClass())->instanceMethod()],
+            ),
+            a11: \Tests\Fixtures\RegularClass::C,
+            a12: [new \Tests\Fixtures\RegularClass(), \Tests\Fixtures\RegularClass::C],
+            a13: \Tests\Fixtures\RegularClass::staticMethod(),
+            a14: (new \Tests\Fixtures\RegularClass())->instanceMethod(),
+            a15: fn () => new \Tests\Fixtures\RegularClass(
+                a1: \$a1,
+                a2: 'string',
+                a3: 1,
+                a4: 1.1,
+                a5: true,
+                a6: null,
+                a7: ['string'],
+                a8: ['string', \$a1, 1, null, true],
+                a9: [[[[['string', \$a1, 1, null, true]]]]],
+                a10: new \Tests\Fixtures\RegularClass(
+                    a1: \$a1,
+                    a2: 'string',
+                    a3: 1,
+                    a4: 1.1,
+                    a5: true,
+                    a6: null,
+                    a7: ['string'],
+                    a8: ['string', \$a1, 1, null, true],
+                    a9: [[[[['string', \$a1, 1, null, true]]]]],
+                    a10: new \Tests\Fixtures\RegularClass(),
+                    a11: \Tests\Fixtures\RegularClass::C,
+                    a12: \Tests\Fixtures\RegularClass::staticMethod(),
+                    a13: (new \Tests\Fixtures\RegularClass())->instanceMethod(),
+                    a14: [new \Tests\Fixtures\RegularClass(), \Tests\Fixtures\RegularClass::C, \Tests\Fixtures\RegularClass::staticMethod(), (new \Tests\Fixtures\RegularClass())->instanceMethod()],
+                ),
+                a11: \Tests\Fixtures\RegularClass::C,
+                a12: [new \Tests\Fixtures\RegularClass(), \Tests\Fixtures\RegularClass::C],
+                a13: \Tests\Fixtures\RegularClass::staticMethod(),
+                a14: (new \Tests\Fixtures\RegularClass())->instanceMethod(),
+            ),
+            a16: fn () => fn () => new \Tests\Fixtures\RegularClass(
+                a1: \$a1,
+                a2: 'string',
+                a3: 1,
+                a4: 1.1,
+                a5: true,
+                a6: null,
+                a7: ['string'],
+                a8: ['string', \$a1, 1, null, true],
+                a9: [[[[['string', \$a1, 1, null, true]]]]],
+                a10: new \Tests\Fixtures\RegularClass(
+                    a1: \$a1,
+                    a2: 'string',
+                    a3: 1,
+                    a4: 1.1,
+                    a5: true,
+                    a6: null,
+                    a7: ['string'],
+                    a8: ['string', \$a1, 1, null, true],
+                    a9: [[[[['string', \$a1, 1, null, true]]]]],
+                    a10: new \Tests\Fixtures\RegularClass(),
+                    a11: \Tests\Fixtures\RegularClass::C,
+                    a12: \Tests\Fixtures\RegularClass::staticMethod(),
+                    a13: (new \Tests\Fixtures\RegularClass())->instanceMethod(),
+                    a14: [new \Tests\Fixtures\RegularClass(), \Tests\Fixtures\RegularClass::C, \Tests\Fixtures\RegularClass::staticMethod(), (new \Tests\Fixtures\RegularClass())->instanceMethod()],
+                ),
+                a11: \Tests\Fixtures\RegularClass::C,
+                a12: [new \Tests\Fixtures\RegularClass(), \Tests\Fixtures\RegularClass::C],
+                a13: \Tests\Fixtures\RegularClass::staticMethod(),
+                a14: (new \Tests\Fixtures\RegularClass())->instanceMethod(),
+            ),
+            a17: function () use (\$variable) {
+                return new \Tests\Fixtures\RegularClass(
+                    a1: \$a1,
+                    a2: 'string',
+                    a3: 1,
+                    a4: 1.1,
+                    a5: true,
+                    a6: null,
+                    a7: ['string'],
+                    a8: ['string', \$a1, 1, null, true],
+                    a9: [[[[['string', \$a1, 1, null, true]]]]],
+                    a10: new \Tests\Fixtures\RegularClass(
+                        a1: \$a1,
+                        a2: 'string',
+                        a3: 1,
+                        a4: 1.1,
+                        a5: true,
+                        a6: null,
+                        a7: ['string'],
+                        a8: ['string', \$a1, 1, null, true],
+                        a9: [[[[['string', \$a1, 1, null, true]]]]],
+                        a10: new \Tests\Fixtures\RegularClass(),
+                        a11: \Tests\Fixtures\RegularClass::C,
+                        a12: \Tests\Fixtures\RegularClass::staticMethod(),
+                        a13: (new \Tests\Fixtures\RegularClass())->instanceMethod(),
+                        a14: [new \Tests\Fixtures\RegularClass(), \Tests\Fixtures\RegularClass::C, \Tests\Fixtures\RegularClass::staticMethod(), (new \Tests\Fixtures\RegularClass())->instanceMethod()],
+                    ),
+                    a11: \Tests\Fixtures\RegularClass::C,
+                    a12: [new \Tests\Fixtures\RegularClass(), \Tests\Fixtures\RegularClass::C],
+                    a13: \Tests\Fixtures\RegularClass::staticMethod(),
+                    a14: (new \Tests\Fixtures\RegularClass())->instanceMethod(),
+                );
+            },
+            a18: \\reflection_closure_my_function(),
+            a19: \\reflection_closure_my_function(\ReflectionClosureGlobalEnum::Guest),
+            a20: \\reflection_closure_my_function(enum: \ReflectionClosureGlobalEnum::Guest),
+        );
+    }";
+
+    expect($f1)->toBeCode($e1);
+})->with('serializers');
 
 test('enums', function () {
     $f = function (GlobalEnum $role) {
@@ -418,4 +689,15 @@ class ReflectionClosurePhp81Controller
     {
         return $instance;
     }
+}
+
+enum ReflectionClosureGlobalEnum {
+    case Admin;
+    case Guest;
+    case Moderator;
+}
+
+function reflection_closure_my_function(SerializerGlobalEnum $enum = SerializerGlobalEnum::Admin)
+{
+    return $enum;
 }
