@@ -141,6 +141,9 @@ test('named arguments', function () {
                     a14: (new RegularClass())->instanceMethod(),
                 );
             },
+            a18: reflection_closure_my_function(),
+            a19: reflection_closure_my_function(ReflectionClosureGlobalEnum::Guest),
+            a20: reflection_closure_my_function(enum: ReflectionClosureGlobalEnum::Guest),
         );
     };
 
@@ -270,6 +273,9 @@ test('named arguments', function () {
                     a14: (new \Tests\Fixtures\RegularClass())->instanceMethod(),
                 );
             },
+            a18: \\reflection_closure_my_function(),
+            a19: \\reflection_closure_my_function(\ReflectionClosureGlobalEnum::Guest),
+            a20: \\reflection_closure_my_function(enum: \ReflectionClosureGlobalEnum::Guest),
         );
     }";
 
@@ -683,4 +689,15 @@ class ReflectionClosurePhp81Controller
     {
         return $instance;
     }
+}
+
+enum ReflectionClosureGlobalEnum {
+    case Admin;
+    case Guest;
+    case Moderator;
+}
+
+function reflection_closure_my_function(SerializerGlobalEnum $enum = SerializerGlobalEnum::Admin)
+{
+    return $enum;
 }

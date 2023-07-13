@@ -485,6 +485,9 @@ test('named arguments', function () {
                     a14: (new RegularClass())->instanceMethod(),
                 );
             },
+            a18: serializer_my_function(),
+            a19: serializer_my_function(SerializerGlobalEnum::Guest),
+            a20: serializer_my_function(enum: SerializerGlobalEnum::Guest),
         );
     };
 
@@ -504,7 +507,13 @@ test('named arguments', function () {
         'a9' => [[[[['string', 'a1', 1, null, true]]]]],
     ];
 
-    expect($instance)->toMatchArray($expectedArray)
+    expect($instance)
+        ->toMatchArray($expectedArray)
+        ->toMatchArray([
+            'a18' => SerializerGlobalEnum::Admin,
+            'a19' => SerializerGlobalEnum::Guest,
+            'a20' => SerializerGlobalEnum::Guest,
+        ])
         ->and($instance->a15->__invoke())->toMatchArray($expectedArray);
 })->with('serializers');
 
@@ -682,4 +691,9 @@ class ClassWithBackedEnumProperty
             return $this->enum;
         };
     }
+}
+
+function serializer_my_function(SerializerGlobalEnum $enum = SerializerGlobalEnum::Admin)
+{
+    return $enum;
 }

@@ -24,6 +24,9 @@ class RegularClass
         public $a15 = null,
         public $a16 = null,
         public $a17 = null,
+        public $a18 = null,
+        public $a19 = null,
+        public $a20 = null,
     ) {
     }
 
