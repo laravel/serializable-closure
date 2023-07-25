@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.3.0...master)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.3.1...master)
+
+## [v1.3.1](https://github.com/laravel/serializable-closure/compare/v1.3.0...v1.3.1) - 2023-07-14
+
+- Fixes namespace resolution on named arguments by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/serializable-closure/pull/69
 
 ## [v1.3.0](https://github.com/laravel/serializable-closure/compare/v1.2.2...v1.3.0) - 2023-01-30
 
