@@ -56,10 +56,22 @@ test('resolve types', function () {
     $f4 = fn () => new Qux();
     $e4 = 'fn () => new \Foo\Baz\Qux()';
 
+    $f5 = fn () => new class extends Baz\Qux {};
+    $e5 = 'fn () => new class extends \Foo\Bar\Qux {}';
+
+    $f6 = fn () => new class extends Baz\Qux implements Baz\Qux {};
+    $e6 = 'fn () => new class extends \Foo\Bar\Qux implements \Foo\Bar\Qux {}';
+
+    $f7 = fn () => new class implements Baz\Qux, Baz\Qux {};
+    $e7 = 'fn () => new class implements \Foo\Bar\Qux, \Foo\Bar\Qux {}';
+
     expect($f1)->toBeCode($e1);
     expect($f2)->toBeCode($e2);
     expect($f3)->toBeCode($e3);
     expect($f4)->toBeCode($e4);
+    expect($f5)->toBeCode($e5);
+    expect($f6)->toBeCode($e6);
+    expect($f7)->toBeCode($e7);
 });
 
 test('class keywords instantiation', function () {
