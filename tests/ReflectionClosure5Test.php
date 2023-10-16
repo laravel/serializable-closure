@@ -101,7 +101,8 @@ test('resolve types', function () {
     $e9 = 'function () {
         $a = new class implements \Foo\Bar\Qux, \Foo\Bar\Qux {};
 
-        $b = new class extends \Foo\Baz\Qux\Forest implements \Foo\Bar\Qux {
+        $b = new class extends \Foo\Baz\Qux\Forest implements \Foo\Bar\Qux
+        {
             public \Foo\Bar\Qux $qux;
 
             public function foo()
