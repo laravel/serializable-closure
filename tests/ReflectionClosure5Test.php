@@ -65,6 +65,58 @@ test('resolve types', function () {
     $f7 = fn () => new class implements Baz\Qux, Baz\Qux {};
     $e7 = 'fn () => new class implements \Foo\Bar\Qux, \Foo\Bar\Qux {}';
 
+    $f8 = function () {
+        $a = new class implements Baz\Qux, Baz\Qux {};
+
+        $b = new class implements Baz\Qux {};
+    };
+
+    $e8 = 'function () {
+        $a = new class implements \Foo\Bar\Qux, \Foo\Bar\Qux {};
+
+        $b = new class implements \Foo\Bar\Qux {};
+    }';
+
+    $f9 = function () {
+        $a = new class implements Baz\Qux, Baz\Qux {};
+
+        $b = new class extends Forest implements Baz\Qux {
+            public Baz\Qux $qux;
+
+            public function foo()
+            {
+                return new class {};
+            }
+
+            public function qux(Baz\Qux $qux): Baz\Qux
+            {
+                return static fn () => new class extends Forest implements Baz\Qux {
+                    //
+                };
+            }
+        };
+    };
+
+    $e9 = 'function () {
+        $a = new class implements \Foo\Bar\Qux, \Foo\Bar\Qux {};
+
+        $b = new class extends \Foo\Baz\Qux\Forest implements \Foo\Bar\Qux {
+            public \Foo\Bar\Qux $qux;
+
+            public function foo()
+            {
+                return new class {};
+            }
+
+            public function qux(\Foo\Bar\Qux $qux): \Foo\Bar\Qux
+            {
+                return static fn () => new class extends \Foo\Baz\Qux\Forest implements \Foo\Bar\Qux {
+                    //
+                };
+            }
+        };
+    }';
+
     expect($f1)->toBeCode($e1);
     expect($f2)->toBeCode($e2);
     expect($f3)->toBeCode($e3);
@@ -72,6 +124,8 @@ test('resolve types', function () {
     expect($f5)->toBeCode($e5);
     expect($f6)->toBeCode($e6);
     expect($f7)->toBeCode($e7);
+    expect($f8)->toBeCode($e8);
+    expect($f9)->toBeCode($e9);
 });
 
 test('class keywords instantiation', function () {
