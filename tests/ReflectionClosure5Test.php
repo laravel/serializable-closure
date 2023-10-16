@@ -80,7 +80,8 @@ test('resolve types', function () {
     $f9 = function () {
         $a = new class implements Baz\Qux, Baz\Qux {};
 
-        $b = new class extends Forest implements Baz\Qux {
+        $b = new class extends Forest implements Baz\Qux
+        {
             public Baz\Qux $qux;
 
             public function foo()
