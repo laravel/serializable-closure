@@ -1,6 +1,6 @@
 <?php
 
-test('closure with switch', function () {
+test('closure with switch containing an instanceof case', function () {
     $c = function () {
         $var = new \stdClass();
 

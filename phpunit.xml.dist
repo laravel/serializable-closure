@@ -24,6 +24,7 @@
             <file phpVersion="7.4.0" phpVersionOperator=">=">./tests/ReflectionClosure3Test.php</file>
             <file phpVersion="7.4.0" phpVersionOperator=">=">./tests/ReflectionClosure4Test.php</file>
             <file phpVersion="7.4.0" phpVersionOperator=">=">./tests/ReflectionClosure5Test.php</file>
+            <file phpVersion="7.4.0" phpVersionOperator=">=">./tests/SwitchCaseInstanceofClosureTest.php</file>
         </testsuite>
         <testsuite name="php80">
             <file phpVersion="8.0.0-dev" phpVersionOperator=">=">./tests/ReflectionClosurePhp80Test.php</file>
