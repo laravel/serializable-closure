@@ -503,7 +503,9 @@ class SerializerPhp74SwitchStatementClass
     }
 }
 
-class SerializerPhp74Class {};
+class SerializerPhp74Class
+{
+};
 
 test('instanceof', function () {
     $closure = function ($a) {
@@ -511,8 +513,10 @@ test('instanceof', function () {
 
         return [
             $b,
-            ($a instanceof DateTime || $a instanceof SerializerPhp74Class),
-            (function ($a) { return ($a instanceof DateTime || $a instanceof SerializerPhp74Class) === true; })($a),
+            $a instanceof DateTime || $a instanceof InstanceOfTestClass,
+            (function ($a) {
+                return ($a instanceof DateTime || $a instanceof InstanceOfTestClass) === true;
+            })($a),
         ];
     };
 
