@@ -503,7 +503,9 @@ class SwitchStatementClass
     }
 }
 
-class InstanceOfTestClass {};
+class InstanceOfTestClass
+{
+}
 
 test('instanceof', function () {
     $closure = function ($a) {
@@ -511,10 +513,11 @@ test('instanceof', function () {
 
         return [
             $b,
-            ($a instanceof DateTime || $a instanceof InstanceOfTestClass),
-            (function ($a) { return ($a instanceof DateTime || $a instanceof InstanceOfTestClass) === true; })($a),
+            $a instanceof DateTime || $a instanceof InstanceOfTestClass,
+            (function ($a) {
+                return ($a instanceof DateTime || $a instanceof InstanceOfTestClass) === true;
+            })($a),
         ];
-
     };
 
     $u = s($closure);
