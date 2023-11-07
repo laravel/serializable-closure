@@ -485,6 +485,56 @@ test('serializes with used object date properties', function ($_, $date) {
     new CarbonImmutable,
 ]);
 
+function switch_statement_test_is_two($a)
+{
+    return $a === 2;
+};
+
+class SwitchStatementClass
+{
+    public static function isThree($a)
+    {
+        return $a === 3;
+    }
+
+    public function isFour($a)
+    {
+        return $a === 4;
+    }
+}
+
+test('switch statement', function () {
+    $closure = function ($a) {
+        switch (true) {
+            // all possible cases, and returns...
+            case $a === 1:
+                return 'one';
+            case switch_statement_test_is_two($a):
+                return 'two';
+            case SwitchStatementClass::isThree($a):
+                return 'three';
+            case (new SwitchStatementClass)->isFour($a):
+                return 'four';
+            case $a instanceof SwitchStatementClass:
+                return 'five';
+            case $a instanceof DateTime:
+                return 'six';
+            default:
+                return 'other';
+        }
+    };
+
+    $u = s($closure);
+
+    expect($u(1))->toEqual('one')
+        ->and($u(2))->toEqual('two')
+        ->and($u(3))->toEqual('three')
+        ->and($u(4))->toEqual('four')
+        ->and($u(new SwitchStatementClass))->toEqual('five')
+        ->and($u(new DateTime))->toEqual('six')
+        ->and($u(999))->toEqual('other');
+})->with('serializers');
+
 class A
 {
     protected static function aStaticProtected()
@@ -567,3 +617,4 @@ class ObjWithConst
 {
     const FOO = 'bar';
 }
+
