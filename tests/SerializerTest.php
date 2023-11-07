@@ -505,7 +505,7 @@ class SerializerPhp74SwitchStatementClass
 
 class SerializerPhp74Class
 {
-};
+}
 
 test('instanceof', function () {
     $closure = function ($a) {
