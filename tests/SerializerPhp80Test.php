@@ -123,7 +123,7 @@ test('switch statement', function () {
         switch (true) {
             case $a === 1:
                 return 'one';
-            case serializer_php_74_switch_statement_test_is_two(a: $a):
+            case serializer_php_80_switch_statement_test_is_two(a: $a):
                 return 'two';
             case SerializerPhp80SwitchStatementClass::isThree(a: $a):
                 return 'three';
@@ -149,12 +149,12 @@ test('switch statement', function () {
         ->and($u(999))->toEqual('other');
 })->with('serializers');
 
-function match_statement_test_is_two($a)
+function serializer_php_80_match_statement_test_is_two($a)
 {
     return $a === 2;
 }
 
-class MatchStatementClass
+class SerializerPhp80MatchStatementTest
 {
     public static function isThree($a)
     {
@@ -171,10 +171,10 @@ test('match statement', function () {
     $closure = function ($a) {
         return match (true) {
             $a === 1 => 'one',
-            match_statement_test_is_two($a) => 'two',
-            MatchStatementClass::isThree($a) => 'three',
-            (new MatchStatementClass)->isFour(a: $a) => 'four',
-            $a instanceof MatchStatementClass => 'five',
+            serializer_php_80_match_statement_test_is_two($a) => 'two',
+            SerializerPhp80MatchStatementTest::isThree($a) => 'three',
+            (new SerializerPhp80MatchStatementTest)->isFour(a: $a) => 'four',
+            $a instanceof SerializerPhp80MatchStatementTest => 'five',
             $a instanceof DateTime => 'six',
             default => 'other',
         };
@@ -186,7 +186,7 @@ test('match statement', function () {
         ->and($u(2))->toEqual('two')
         ->and($u(3))->toEqual('three')
         ->and($u(4))->toEqual('four')
-        ->and($u(new MatchStatementClass))->toEqual('five')
+        ->and($u(new SerializerPhp80MatchStatementTest))->toEqual('five')
         ->and($u(new DateTime))->toEqual('six')
         ->and($u(999))->toEqual('other');
 })->with('serializers');

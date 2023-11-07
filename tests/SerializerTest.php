@@ -513,9 +513,9 @@ test('instanceof', function () {
 
         return [
             $b,
-            $a instanceof DateTime || $a instanceof InstanceOfTestClass,
+            $a instanceof DateTime || $a instanceof SerializerPhp74Class,
             (function ($a) {
-                return ($a instanceof DateTime || $a instanceof InstanceOfTestClass) === true;
+                return ($a instanceof DateTime || $a instanceof SerializerPhp74Class) === true;
             })($a),
         ];
     };
