@@ -7,6 +7,7 @@ use Laravel\SerializableClosure\Serializers\Signed;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Laravel\SerializableClosure\UnsignedSerializableClosure;
 use Tests\Fixtures\Model;
+use Tests\Fixtures\RegularClass;
 
 test('closure with simple const', function () {
     $c = function () {
@@ -509,13 +510,13 @@ class SerializerPhp74Class
 
 test('instanceof', function () {
     $closure = function ($a) {
-        $b = $a instanceof DateTime || $a instanceof SerializerPhp74Class;
+        $b = $a instanceof DateTime || $a instanceof SerializerPhp74Class || $a instanceof RegularClass;
 
         return [
             $b,
-            $a instanceof DateTime || $a instanceof SerializerPhp74Class,
+            $a instanceof DateTime || $a instanceof SerializerPhp74Class || $a instanceof RegularClass,
             (function ($a) {
-                return ($a instanceof DateTime || $a instanceof SerializerPhp74Class) === true;
+                return ($a instanceof DateTime || $a instanceof SerializerPhp74Class || $a instanceof RegularClass) === true;
             })($a),
         ];
     };
@@ -524,6 +525,7 @@ test('instanceof', function () {
 
     expect($u(new DateTime))->toEqual([true, true, true])
         ->and($u(new SerializerPhp74Class))->toEqual([true, true, true])
+        ->and($u(new RegularClass))->toEqual([true, true, true])
         ->and($u(new stdClass))->toEqual([false, false, false]);
 })->with('serializers');
 
@@ -542,6 +544,8 @@ test('switch statement', function () {
                 return 'five';
             case $a instanceof DateTime:
                 return 'six';
+            case $a instanceof RegularClass:
+                return 'seven';
             default:
                 return 'other';
         }
@@ -555,6 +559,7 @@ test('switch statement', function () {
         ->and($u(4))->toEqual('four')
         ->and($u(new SerializerPhp74SwitchStatementClass))->toEqual('five')
         ->and($u(new DateTime))->toEqual('six')
+        ->and($u(new RegularClass()))->toEqual('seven')
         ->and($u(999))->toEqual('other');
 })->with('serializers');
 

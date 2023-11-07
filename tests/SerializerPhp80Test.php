@@ -177,6 +177,7 @@ test('match statement', function () {
             (new SerializerPhp80MatchStatementTest)->isFour(a: $a) => 'four',
             $a instanceof SerializerPhp80MatchStatementTest => 'five',
             $a instanceof DateTime => 'six',
+            $a instanceof RegularClass => 'seven',
             default => 'other',
         };
     };
@@ -189,5 +190,6 @@ test('match statement', function () {
         ->and($u(4))->toEqual('four')
         ->and($u(new SerializerPhp80MatchStatementTest))->toEqual('five')
         ->and($u(new DateTime))->toEqual('six')
+        ->and($u(new RegularClass))->toEqual('seven')
         ->and($u(999))->toEqual('other');
 })->with('serializers');
