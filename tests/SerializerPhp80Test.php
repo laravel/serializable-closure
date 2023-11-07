@@ -95,7 +95,9 @@ class SerializerPhp80SwitchStatementClass
     }
 }
 
-class SerializerPhp80Class {};
+class SerializerPhp80Class
+{
+}
 
 test('instanceof', function () {
     $closure = function (object $a): array {
@@ -103,12 +105,11 @@ test('instanceof', function () {
 
         return [
             $b,
-            ($a instanceof DateTime || $a instanceof SerializerPhp80Class),
+            $a instanceof DateTime || $a instanceof SerializerPhp80Class,
             (function (object $a): bool {
                 return ($a instanceof DateTime || $a instanceof SerializerPhp80Class) === true;
             })(a: $a),
         ];
-
     };
 
     $u = s($closure);
@@ -129,9 +130,9 @@ test('switch statement', function () {
                 return 'three';
             case (new SerializerPhp80SwitchStatementClass)->isFour(a: $a):
                 return 'four';
-            case ($a instanceof SerializerPhp80SwitchStatementClass):
+            case $a instanceof SerializerPhp80SwitchStatementClass:
                 return 'five';
-            case ($a instanceof DateTime):
+            case $a instanceof DateTime:
                 return 'six';
             default:
                 return 'other';
