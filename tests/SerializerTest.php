@@ -503,10 +503,30 @@ class SwitchStatementClass
     }
 }
 
+class InstanceOfTestClass {};
+
+test('instanceof', function () {
+    $closure = function ($a) {
+        $b = $a instanceof DateTime || $a instanceof InstanceOfTestClass;
+
+        return [
+            $b,
+            ($a instanceof DateTime || $a instanceof InstanceOfTestClass),
+            (function ($a) { return ($a instanceof DateTime || $a instanceof InstanceOfTestClass) === true; })($a),
+        ];
+
+    };
+
+    $u = s($closure);
+
+    expect($u(new DateTime))->toEqual([true, true, true])
+        ->and($u(new InstanceOfTestClass))->toEqual([true, true, true])
+        ->and($u(new stdClass))->toEqual([false, false, false]);
+})->with('serializers');
+
 test('switch statement', function () {
     $closure = function ($a) {
         switch (true) {
-            // all possible cases, and returns...
             case $a === 1:
                 return 'one';
             case switch_statement_test_is_two($a):

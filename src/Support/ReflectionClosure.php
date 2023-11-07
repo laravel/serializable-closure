@@ -508,9 +508,8 @@ class ReflectionClosure extends ReflectionFunction
                     break;
                 case 'id_name':
                     switch ($token[0]) {
-                        // named arguments...
                         case ':':
-                            if ($lastState === 'closure' && $context === 'root') {
+                            if ($lastState === 'closure' && in_array($context, ['root', 'instanceof'], true)) {
                                 $state = 'closure';
                                 $code .= $id_start.$token;
                             }
