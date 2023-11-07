@@ -329,8 +329,10 @@ test('instanceof', function () {
 
         return [
             $b,
-            ($a instanceof \DateTime || $a instanceof \ReflectionClosurePhp74InstanceOfTest || $a instanceof \Tests\Fixtures\RegularClass),
-            (function ($a) { return ($a instanceof \DateTime || $a instanceof \ReflectionClosurePhp74InstanceOfTest || $a instanceof \Tests\Fixtures\RegularClass) === true; })($a),
+            $a instanceof \DateTime || $a instanceof \ReflectionClosurePhp74InstanceOfTest || $a instanceof \Tests\Fixtures\RegularClass,
+            (function ($a) {
+                return ($a instanceof \DateTime || $a instanceof \ReflectionClosurePhp74InstanceOfTest || $a instanceof \Tests\Fixtures\RegularClass) === true;
+            })($a),
         ];
     }';
 
