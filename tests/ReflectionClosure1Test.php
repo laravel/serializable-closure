@@ -305,7 +305,7 @@ function reflection_closure_php_74_switch_statement_test_is_two($a)
 
 class ReflectionClosurePhp74InstanceOfTest
 {
-};
+}
 
 class ReflectionClosurePhp74SwitchStatementTest
 {
@@ -317,8 +317,10 @@ test('instanceof', function () {
 
         return [
             $b,
-            ($a instanceof DateTime || $a instanceof ReflectionClosurePhp74InstanceOfTest || $a instanceof RegularClass),
-            (function ($a) { return ($a instanceof DateTime || $a instanceof ReflectionClosurePhp74InstanceOfTest || $a instanceof RegularClass) === true; })($a),
+            $a instanceof DateTime || $a instanceof ReflectionClosurePhp74InstanceOfTest || $a instanceof RegularClass,
+            (function ($a) {
+                return ($a instanceof DateTime || $a instanceof ReflectionClosurePhp74InstanceOfTest || $a instanceof RegularClass) === true;
+            })($a),
         ];
     };
 
