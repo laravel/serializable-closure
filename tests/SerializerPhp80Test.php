@@ -80,7 +80,7 @@ class SerializerPhp80NamedArguments
 function match_statement_test_is_two($a)
 {
     return $a === 2;
-};
+}
 
 class MatchStatementClass
 {
@@ -97,7 +97,7 @@ class MatchStatementClass
 
 test('match statement', function () {
     $closure = function ($a) {
-        return match(true) {
+        return match (true) {
             $a === 1 => 'one',
             match_statement_test_is_two($a) => 'two',
             MatchStatementClass::isThree($a) => 'three',

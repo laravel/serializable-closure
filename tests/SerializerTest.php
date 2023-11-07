@@ -488,7 +488,7 @@ test('serializes with used object date properties', function ($_, $date) {
 function switch_statement_test_is_two($a)
 {
     return $a === 2;
-};
+}
 
 class SwitchStatementClass
 {
@@ -617,4 +617,3 @@ class ObjWithConst
 {
     const FOO = 'bar';
 }
-
