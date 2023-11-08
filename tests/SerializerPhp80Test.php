@@ -78,6 +78,23 @@ test('named arguments with match statements', function () {
         ->and($instance->a2)->toBeNull();
 })->with('serializers');
 
+test('named arguments with switch cases and instanceof', function () {
+    $f1 = function ($a) {
+        switch (true) {
+            case (new RegularClass(a2: $a))->a2 instanceof RegularClass:
+                return (new RegularClass(a2: $a))->a2;
+            default:
+                return new DateTime();
+        }
+    };
+
+    $instance = s($f1)('anything');
+    expect($instance)->toBeInstanceOf(DateTime::class);
+
+    $instance = s($f1)(new RegularClass());
+    expect($instance)->toBeInstanceOf(RegularClass::class);
+})->with('serializers');
+
 test('named arguments with namespaced class instance parameter', function () {
     $f1 = function () {
         return new RegularClass(a2: new RegularClass());

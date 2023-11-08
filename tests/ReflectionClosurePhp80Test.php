@@ -87,7 +87,7 @@ test('named arguments', function () {
     }";
 
     expect($f1)->toBeCode($e1);
-})->with('serializers');
+});
 
 test('single named argument within closures', function () {
     $f1 = function () {
@@ -99,7 +99,7 @@ test('single named argument within closures', function () {
     }";
 
     expect($f1)->toBeCode($e1);
-})->with('serializers');
+});
 
 test('multiple named arguments within closures', function () {
     $f1 = function () {
@@ -111,7 +111,29 @@ test('multiple named arguments within closures', function () {
     }";
 
     expect($f1)->toBeCode($e1);
-})->with('serializers');
+});
+
+test('named arguments with switch cases and instanceof', function () {
+    $f1 = function ($a) {
+        switch (true) {
+            case (new RegularClass(a2: $a))->a2 instanceof RegularClass:
+                return (new RegularClass(a2: $a))->a2;
+            default:
+                return new RegularClass(a2: RegularClass::C);
+        }
+    };
+
+    $e1 = 'function ($a) {
+        switch (true) {
+            case (new \Tests\Fixtures\RegularClass(a2: $a))->a2 instanceof \Tests\Fixtures\RegularClass:
+                return (new \Tests\Fixtures\RegularClass(a2: $a))->a2;
+            default:
+                return new \Tests\Fixtures\RegularClass(a2: \Tests\Fixtures\RegularClass::C);
+        }
+    }';
+
+    expect($f1)->toBeCode($e1);
+});
 
 test('multiple named arguments within nested closures', function () {
     $f1 = function () {
