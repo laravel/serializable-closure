@@ -59,7 +59,7 @@ test('named arguments with namespaced class const parameter', function () {
 
 test('named arguments with match statements', function () {
     $f1 = function ($a) {
-        return new RegularClass(a2: match($a) {
+        return new RegularClass(a2: match ($a) {
             1 => RegularClass::C,
             2 => null,
         });
