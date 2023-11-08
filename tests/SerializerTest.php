@@ -7,7 +7,6 @@ use Laravel\SerializableClosure\Serializers\Signed;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Laravel\SerializableClosure\UnsignedSerializableClosure;
 use Tests\Fixtures\Model;
-use Tests\Fixtures\RegularClass;
 
 test('closure with simple const', function () {
     $c = function () {
