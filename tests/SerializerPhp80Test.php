@@ -57,6 +57,27 @@ test('named arguments with namespaced class const parameter', function () {
         ->and($instance->a2)->toBe('CONST');
 })->with('serializers');
 
+test('named arguments with match statements', function () {
+    $f1 = function ($a) {
+        return new RegularClass(a2: match($a) {
+            1 => RegularClass::C,
+            2 => null,
+        });
+    };
+
+    $instance = s($f1)(1);
+
+    expect($instance)->toBeInstanceOf(RegularClass::class)
+        ->and($instance->a1)->toBeNull()
+        ->and($instance->a2)->toBe('CONST');
+
+    $instance = s($f1)(2);
+
+    expect($instance)->toBeInstanceOf(RegularClass::class)
+        ->and($instance->a1)->toBeNull()
+        ->and($instance->a2)->toBeNull();
+})->with('serializers');
+
 test('named arguments with namespaced class instance parameter', function () {
     $f1 = function () {
         return new RegularClass(a2: new RegularClass());

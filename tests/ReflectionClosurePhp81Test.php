@@ -144,6 +144,10 @@ test('named arguments', function () {
             a18: reflection_closure_my_function(),
             a19: reflection_closure_my_function(ReflectionClosureGlobalEnum::Guest),
             a20: reflection_closure_my_function(enum: ReflectionClosureGlobalEnum::Guest),
+            a21: match (true) {
+                true => new RegularClass(),
+                default => reflection_closure_my_function(enum: ReflectionClosureGlobalEnum::Guest),
+            },
         );
     };
 
@@ -276,6 +280,10 @@ test('named arguments', function () {
             a18: \\reflection_closure_my_function(),
             a19: \\reflection_closure_my_function(\ReflectionClosureGlobalEnum::Guest),
             a20: \\reflection_closure_my_function(enum: \ReflectionClosureGlobalEnum::Guest),
+            a21: match (true) {
+                true => new \Tests\Fixtures\RegularClass(),
+                default => \\reflection_closure_my_function(enum: \ReflectionClosureGlobalEnum::Guest),
+            },
         );
     }";
 
