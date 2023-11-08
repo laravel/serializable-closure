@@ -297,3 +297,90 @@ test('consts', function () {
 
     expect($f1)->toBeCode($e1);
 });
+
+function reflection_closure_php_74_switch_statement_test_is_two($a)
+{
+    return $a === 2;
+}
+
+class ReflectionClosurePhp74InstanceOfTest
+{
+}
+
+class ReflectionClosurePhp74SwitchStatementTest
+{
+}
+
+test('instanceof', function () {
+    $f1 = function ($a) {
+        $b = $a instanceof DateTime || $a instanceof ReflectionClosurePhp74InstanceOfTest || $a instanceof RegularClass;
+
+        return [
+            $b,
+            $a instanceof DateTime || $a instanceof ReflectionClosurePhp74InstanceOfTest || $a instanceof RegularClass,
+            (function ($a) {
+                return ($a instanceof DateTime || $a instanceof ReflectionClosurePhp74InstanceOfTest || $a instanceof RegularClass) === true;
+            })($a),
+        ];
+    };
+
+    $e1 = 'function ($a) {
+        $b = $a instanceof \DateTime || $a instanceof \ReflectionClosurePhp74InstanceOfTest || $a instanceof \Tests\Fixtures\RegularClass;
+
+        return [
+            $b,
+            $a instanceof \DateTime || $a instanceof \ReflectionClosurePhp74InstanceOfTest || $a instanceof \Tests\Fixtures\RegularClass,
+            (function ($a) {
+                return ($a instanceof \DateTime || $a instanceof \ReflectionClosurePhp74InstanceOfTest || $a instanceof \Tests\Fixtures\RegularClass) === true;
+            })($a),
+        ];
+    }';
+
+    expect($f1)->toBeCode($e1);
+});
+
+test('switch statement', function () {
+    $f1 = function ($a) {
+        switch (true) {
+            case $a === 1:
+                return 'one';
+            case reflection_closure_php_74_switch_statement_test_is_two($a):
+                return 'two';
+            case ReflectionClosurePhp74SwitchStatementTest::isThree($a):
+                return 'three';
+            case (new ReflectionClosurePhp74SwitchStatementTest)->isFour($a):
+                return 'four';
+            case $a instanceof ReflectionClosurePhp74SwitchStatementTest:
+                return 'five';
+            case $a instanceof DateTime:
+                return 'six';
+            case $a instanceof RegularClass:
+                return 'seven';
+            default:
+                return 'other';
+        }
+    };
+
+    $e1 = 'function ($a) {
+        switch (true) {
+            case $a === 1:
+                return \'one\';
+            case \reflection_closure_php_74_switch_statement_test_is_two($a):
+                return \'two\';
+            case \ReflectionClosurePhp74SwitchStatementTest::isThree($a):
+                return \'three\';
+            case (new \ReflectionClosurePhp74SwitchStatementTest)->isFour($a):
+                return \'four\';
+            case $a instanceof \ReflectionClosurePhp74SwitchStatementTest:
+                return \'five\';
+            case $a instanceof \DateTime:
+                return \'six\';
+            case $a instanceof \Tests\Fixtures\RegularClass:
+                return \'seven\';
+            default:
+                return \'other\';
+        }
+    }';
+
+    expect($f1)->toBeCode($e1);
+});
