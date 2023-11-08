@@ -146,6 +146,7 @@ test('named arguments', function () {
             a20: reflection_closure_my_function(enum: ReflectionClosureGlobalEnum::Guest),
             a21: match (true) {
                 true => new RegularClass(),
+                false => (new RegularClass()) instanceof RegularClass,
                 default => reflection_closure_my_function(enum: ReflectionClosureGlobalEnum::Guest),
             },
         );
@@ -282,6 +283,7 @@ test('named arguments', function () {
             a20: \\reflection_closure_my_function(enum: \ReflectionClosureGlobalEnum::Guest),
             a21: match (true) {
                 true => new \Tests\Fixtures\RegularClass(),
+                false => (new \Tests\Fixtures\RegularClass()) instanceof \Tests\Fixtures\RegularClass,
                 default => \\reflection_closure_my_function(enum: \ReflectionClosureGlobalEnum::Guest),
             },
         );
