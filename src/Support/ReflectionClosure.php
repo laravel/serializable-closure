@@ -511,7 +511,6 @@ class ReflectionClosure extends ReflectionFunction
                         case $token[0] === ':' && $context !== 'instanceof':
                             if ($lastState === 'closure' && $context === 'root') {
                                 $state = 'closure';
-
                                 $code .= $id_start.$token;
                             }
 
