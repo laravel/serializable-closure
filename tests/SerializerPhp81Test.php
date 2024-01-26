@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Carbon;
 use Tests\Fixtures\Model;
 use Tests\Fixtures\ModelAttribute;
 use Tests\Fixtures\RegularClass;
@@ -679,6 +680,20 @@ test('named arguments with namespaced enum parameter', function () {
     };
 
     expect(s($f1)())->toBeInstanceOf(RegularClass::class);
+})->with('serializers');
+
+test('carbon serialization', function () {
+    $now = Carbon::createFromDate(2011, 1, 1);
+
+    Carbon::setTestNow($now);
+
+    $startDate = Carbon::now();
+
+    $f1 = fn () => $startDate;
+
+    expect(s($f1)())
+        ->toBeInstanceOf(Carbon::class)
+        ->format('Y-m-d')->toBe('2011-01-01');
 })->with('serializers');
 
 class ClassWithBackedEnumProperty
