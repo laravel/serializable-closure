@@ -683,7 +683,11 @@ test('named arguments with namespaced enum parameter', function () {
 })->with('serializers');
 
 test('carbon serialization', function () {
-    $startDate = Carbon::createFromDate(2011, 1, 1);
+    $now = Carbon::createFromDate(2011, 1, 1);
+
+    Carbon::setTestNow($now);
+
+    $startDate = Carbon::now();
 
     $f1 = fn () => $startDate;
 
