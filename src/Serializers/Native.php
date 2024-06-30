@@ -194,13 +194,33 @@ class Native implements Serializable
 
         $this->closure = $this->closure->bindTo($this->code['this'], $this->code['scope']);
 
-        if (! empty($this->code['objects'])) {
-            foreach ($this->code['objects'] as $item) {
-                $item['property']->setValue($item['instance'], $item['object']->getClosure());
-            }
-        }
+        $this->bindObjectsIfNeeded();
 
         $this->code = $this->code['function'];
+    }
+
+    private function bindObjectsIfNeeded()
+    {
+        if (! empty($this->code['objects'])) {
+            $this->bindObjects();
+        }
+    }
+
+    private function bindObjects()
+    {
+        foreach ($this->code['objects'] as $item) {
+            $item['property']->setValue($item['instance'], $this->calculateObjectValue($item));
+        }
+    }
+
+    private function calculateObjectValue($item)
+    {
+        return $this->isSerializableClosure($item['object']) ? $item['object'] : $item['object']->getClosure();
+    }
+
+    private function isSerializableClosure($object): bool
+    {
+        return $object instanceof SerializableClosure || $object instanceof UnsignedSerializableClosure;
     }
 
     /**
