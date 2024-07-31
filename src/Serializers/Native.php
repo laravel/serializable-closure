@@ -368,13 +368,17 @@ class Native implements Serializable
                 }
 
                 foreach ($reflection->getProperties() as $property) {
-                    if ($property->isStatic() || ! $property->getDeclaringClass()->isUserDefined() || $property->isReadOnly()) {
+                    if ($property->isStatic() || ! $property->getDeclaringClass()->isUserDefined()) {
                         continue;
                     }
 
                     $property->setAccessible(true);
 
                     if (PHP_VERSION >= 7.4 && ! $property->isInitialized($data)) {
+                        continue;
+                    }
+
+                    if (PHP_VERSION >= 8.1 && $property->isReadOnly()) {
                         continue;
                     }
 
