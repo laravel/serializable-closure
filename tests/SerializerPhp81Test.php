@@ -169,6 +169,20 @@ test('readonly properties', function () {
     });
 })->with('serializers');
 
+test('readonly properties from parent scope variable', function () {
+    $controller = new SerializerPhp81Controller();
+
+    $f = static function () use ($controller) {
+        return $controller;
+    };
+
+    $f = s($f);
+
+    expect($f()->service)->toBeInstanceOf(
+        SerializerPhp81Service::class,
+    );
+})->with('serializers');
+
 test('first-class callable with closures', function () {
     $f = function ($value) {
         return $value;
