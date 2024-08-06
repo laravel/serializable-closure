@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.3.3...master)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.3.4...master)
+
+## [v1.3.4](https://github.com/laravel/serializable-closure/compare/v1.3.3...v1.3.4) - 2024-08-02
+
+* [1.x] Adds tests regarding carbon instances by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/serializable-closure/pull/82
+* Fix bug related to readonly properties by [@rust17](https://github.com/rust17) in https://github.com/laravel/serializable-closure/pull/87
 
 ## [v1.3.3](https://github.com/laravel/serializable-closure/compare/v1.3.2...v1.3.3) - 2023-11-08
 
