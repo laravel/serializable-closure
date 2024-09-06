@@ -53,8 +53,13 @@ jobs:
           echo "::add-matcher::${{ runner.tool_cache }}/php.json"
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-      - name: Install PHP dependencies
+      - name: Install PHP dependencies (< PHP 8.4)
+        if: matrix.php < 8.4
         run: composer update --prefer-stable --no-interaction --no-progress
+
+      - name: Install PHP dependencies (== PHP 8.4)
+        if: matrix.php == 8.4
+        run: composer update --prefer-stable --no-interaction --no-progress --ignore-platform-req=php+
 
       - name: Execute tests
         run: vendor/bin/pest tests/Php73Test.php
