@@ -57,7 +57,7 @@ jobs:
 
       - name: Install Pest v2
         run: composer require "pestphp/pest:^2.0" --no-install
-        if: matrix.php <= 8.1
+        if: matrix.php == 8.1
 
       - name: Install Pest v3
         run: composer require "pestphp/pest:^3.0" --no-install
