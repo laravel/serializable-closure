@@ -16,8 +16,6 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        # php: [7.3, 7.4, '8.0', 8.1, 8.2, 8.3, 8.4]
-        # laravel: [8, 9, 10, 11]
         php: [8.2, 8.3]
         laravel: [10, 11]
         include:
@@ -50,18 +48,6 @@ jobs:
         run: |
           echo "::add-matcher::${{ runner.tool_cache }}/php.json"
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-
-      - name: Install Pest v1
-        run: composer require "pestphp/pest:^1.0" --no-install
-        if: matrix.php <= '8.0'
-
-      - name: Install Pest v2
-        run: composer require "pestphp/pest:^2.0" --no-install
-        if: matrix.php >= 8.1
-
-      # - name: Install Pest v3
-      #   run: composer require "pestphp/pest:^3.0" --no-install
-      #   if: matrix.php >= 8.2
 
       - name: Install PHP dependencies
         run: composer update --prefer-stable --no-interaction --no-progress
