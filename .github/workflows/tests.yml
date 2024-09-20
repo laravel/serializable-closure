@@ -32,7 +32,6 @@ jobs:
           - php: 8.4
             laravel: 11
 
-
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 
     steps:
