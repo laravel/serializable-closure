@@ -52,7 +52,7 @@ jobs:
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
       - name: Install PHP dependencies
-        run: composer update --prefer-stable --no-interaction --no-progress
+        run: composer update --prefer-stable --no-interaction --no-progress --with="illuminate/support:^${{ matrix.laravel }}"
 
       - name: Execute tests
         run: vendor/bin/pest tests/Php73Test.php
