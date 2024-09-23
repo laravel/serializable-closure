@@ -22,9 +22,15 @@ jobs:
           - php: 7.4
             laravel: 8
           - php: '8.0'
-            laravel: [8, 9]
+            laravel: 8
+          - php: '8.0'
+            laravel: 9
           - php: 8.1
-            laravel: [8, 9, 10]
+            laravel: 8
+          - php: 8.1
+            laravel: 9
+          - php: 8.1
+            laravel: 10
           - php: 8.2
             laravel: 9
 
