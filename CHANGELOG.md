@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.3.4...master)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.3.5...master)
+
+## [v1.3.5](https://github.com/laravel/serializable-closure/compare/v1.3.4...v1.3.5) - 2024-09-23
+
+* CI Improvements by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/serializable-closure/pull/94
 
 ## [v1.3.4](https://github.com/laravel/serializable-closure/compare/v1.3.3...v1.3.4) - 2024-08-02
 
