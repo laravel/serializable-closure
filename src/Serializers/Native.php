@@ -140,6 +140,11 @@ class Native implements Serializable
 
         $code = $reflector->getCode();
 
+
+        if (PHP_VERSION >= 8.4) {
+            $code = str_replace('\{closure:', '', $code);
+        }
+
         $this->mapByReference($use);
 
         $data = [
