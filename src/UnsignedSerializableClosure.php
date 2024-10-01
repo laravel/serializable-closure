@@ -3,7 +3,6 @@
 namespace Laravel\SerializableClosure;
 
 use Closure;
-use Laravel\SerializableClosure\Exceptions\PhpVersionNotSupportedException;
 
 class UnsignedSerializableClosure
 {
@@ -22,10 +21,6 @@ class UnsignedSerializableClosure
      */
     public function __construct(Closure $closure)
     {
-        if (\PHP_VERSION_ID < 70400) {
-            throw new PhpVersionNotSupportedException();
-        }
-
         $this->serializable = new Serializers\Native($closure);
     }
 
@@ -36,10 +31,6 @@ class UnsignedSerializableClosure
      */
     public function __invoke()
     {
-        if (\PHP_VERSION_ID < 70400) {
-            throw new PhpVersionNotSupportedException();
-        }
-
         return call_user_func_array($this->serializable, func_get_args());
     }
 
@@ -50,10 +41,6 @@ class UnsignedSerializableClosure
      */
     public function getClosure()
     {
-        if (\PHP_VERSION_ID < 70400) {
-            throw new PhpVersionNotSupportedException();
-        }
-
         return $this->serializable->getClosure();
     }
 
