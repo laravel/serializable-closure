@@ -60,9 +60,9 @@ expect()->extend('toBeCode', function ($expected) {
  * @param  \Closure  $closure
  * @return \Closure
  */
-function s($closure)
+function s($closure, $serializer = null)
 {
-    switch (test()->serializer) {
+    switch ($serializer ?? test()->serializer) {
         case Serializers\Native::class:
             $closure = new SerializableClosure($closure);
             break;
