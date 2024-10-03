@@ -10,19 +10,8 @@
          cacheDirectory=".phpunit.cache"
          backupStaticProperties="false">
     <testsuites>
-      <testsuite name="php81">
-        <file phpVersion="7.4.0" phpVersionOperator=">=">tests/SerializerTest.php</file>
-        <file phpVersion="7.4.0" phpVersionOperator=">=">tests/SignedSerializerTest.php</file>
-        <file phpVersion="7.4.0" phpVersionOperator=">=">tests/SignedSerializerTest.php</file>
-        <file phpVersion="7.4.0" phpVersionOperator=">=">tests/ReflectionClosure1Test.php</file>
-        <file phpVersion="7.4.0" phpVersionOperator=">=">tests/ReflectionClosure2Test.php</file>
-        <file phpVersion="7.4.0" phpVersionOperator=">=">tests/ReflectionClosure3Test.php</file>
-        <file phpVersion="7.4.0" phpVersionOperator=">=">tests/ReflectionClosure4Test.php</file>
-        <file phpVersion="7.4.0" phpVersionOperator=">=">tests/ReflectionClosure5Test.php</file>
-        <file phpVersion="8.0.0" phpVersionOperator=">=">tests/ReflectionClosurePhp80Test.php</file>
-        <file phpVersion="8.0.0" phpVersionOperator=">=">tests/SerializerPhp80Test.php</file>
-        <file phpVersion="8.1.0" phpVersionOperator=">=">tests/ReflectionClosurePhp81Test.php</file>
-        <file phpVersion="8.1.0" phpVersionOperator=">=">tests/SerializerPhp81Test.php</file>
-      </testsuite>
+        <testsuite name="Tests">
+            <directory>tests</directory>
+        </testsuite>
     </testsuites>
 </phpunit>
