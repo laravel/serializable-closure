@@ -1,8 +1,8 @@
 <?php
 
 use Tests\Fixtures\Model;
-use Tests\Fixtures\Route;
 use Tests\Fixtures\RegularClass;
+use Tests\Fixtures\Route;
 
 test('named arguments', function () {
     $f1 = function (string $firstName, string $lastName) {
