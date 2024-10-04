@@ -28,7 +28,9 @@ test('single named argument within closures', function () {
 test('serializing closures under namespace', function () {
     $f1 = Route::make();
 
-    expect('Tests\Fixtures\Route::Tests\Fixtures\{closure}')->toBe(s($f1)(new Model));
+    $s1 = s($f1);
+
+    expect('Tests\Fixtures\Route::Tests\Fixtures\{closure}')->toBe($s1(new Model));
 })->with('serializers');
 
 test('multiple named arguments within closures', function () {
