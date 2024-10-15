@@ -49,7 +49,7 @@ jobs:
         if: matrix.php != 8.4
         run: composer update --prefer-stable --no-interaction --no-progress --with="illuminate/support:^${{ matrix.laravel }}"
 
-      - name: Install PHP dependencies (== PHP 8.4)
+      - name: Install PHP dependencies (--ignore-platform-req)
         if: matrix.php == 8.4
         run: composer update --prefer-stable --no-interaction --no-progress --ignore-platform-req=php+ --with="illuminate/support:^${{ matrix.laravel }}"
 
