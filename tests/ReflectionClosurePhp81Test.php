@@ -4,8 +4,6 @@ use Foo\Baz\Qux\Forest;
 use Some\ClassName as ClassAlias;
 use Tests\Fixtures\Model;
 use Tests\Fixtures\RegularClass;
-use Tests\SerializerPhp81Controller;
-
 use function Tests\Fixtures\{makeModel};
 
 enum GlobalEnum {
@@ -625,7 +623,7 @@ test('function attributes with first-class callable with methods', function () {
 
     $e = <<<EOF
 #[Tests\Fixtures\ModelAttribute()]
-#[Tests\MyAttribute('My " \' Argument 1', 'Tests\Fixtures\Model')]
+#[MyAttribute('My " \' Argument 1', 'Tests\Fixtures\Model')]
 function ()
     {
         return \$this->privateGetter();

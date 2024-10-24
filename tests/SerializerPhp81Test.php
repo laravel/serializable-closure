@@ -1,13 +1,6 @@
 <?php
 
-namespace Tests;
-
-use Attribute;
-use Error;
 use Illuminate\Support\Carbon;
-use PropertyPromotion;
-use ReflectionFunction;
-use RuntimeException;
 use Tests\Fixtures\Model;
 use Tests\Fixtures\ModelAttribute;
 use Tests\Fixtures\RegularClass;
@@ -171,7 +164,7 @@ test('readonly properties', function () {
 
     expect($f)->toThrow(function (Error $e) {
         expect($e->getMessage())->toBe(
-            'Cannot modify readonly property Tests\SerializerPhp81Controller::$service',
+            'Cannot modify readonly property SerializerPhp81Controller::$service',
         );
     });
 })->with('serializers');
@@ -558,9 +551,6 @@ test('function attributes with named arguments', function () {
                 'string' => 'My " \' Argument 1',
                 'model' => Model::class,
             ]);
-
-        var_dump($attribute->value);
-        var_dump($attribute->value->newInstance()->string);
 
         expect($attribute->value->newInstance())
             ->string->toBe('My " \' Argument 1')
