@@ -183,6 +183,20 @@ test('readonly properties from parent scope variable', function () {
     );
 })->with('serializers');
 
+test('readonly properties declared in parent', function () {
+    $controller = new SerializerPhp81ControllerChild();
+
+    $f = static function () use ($controller) {
+        return $controller;
+    };
+
+    $f = s($f);
+
+    expect($f()->service)->toBeInstanceOf(
+        SerializerPhp81Service::class,
+    );
+})->with('serializers');
+
 test('first-class callable with closures', function () {
     $f = function ($value) {
         return $value;
@@ -588,6 +602,8 @@ class SerializerPhp81Service implements SerializerPhp81HasId, SerializerPhp81Has
 {
     final public const X = 'foo';
 }
+
+class SerializerPhp81ControllerChild extends SerializerPhp81Controller {}
 
 class SerializerPhp81Controller
 {
