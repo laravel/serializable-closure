@@ -1169,8 +1169,14 @@ class ReflectionClosure extends ReflectionFunction
     {
         $ns = $this->getNamespaceName();
 
+        $name = $this->getName();
+
         // First class callables...
-        if ($this->getName() !== '{closure}' && empty($ns) && ! is_null($this->getClosureScopeClass())) {
+        if ($name !== '{closure}'
+            && ! str_contains($name, '{closure:/')
+            && ! str_contains($name, '{closure:\\')
+            && empty($ns)
+            && ! is_null($this->getClosureScopeClass())) {
             $ns = $this->getClosureScopeClass()->getNamespaceName();
         }
 
