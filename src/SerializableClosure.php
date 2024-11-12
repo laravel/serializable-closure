@@ -98,7 +98,7 @@ class SerializableClosure
     /**
      * Get the serializable representation of the closure.
      *
-     * @return array
+     * @return array{serializable: \Laravel\SerializableClosure\Serializers\Signed|\Laravel\SerializableClosure\Contracts\Serializable}
      */
     public function __serialize()
     {
@@ -110,7 +110,7 @@ class SerializableClosure
     /**
      * Restore the closure after serialization.
      *
-     * @param  array  $data
+     * @param  array{serializable: \Laravel\SerializableClosure\Serializers\Signed|\Laravel\SerializableClosure\Contracts\Serializable}  $data
      * @return void
      *
      * @throws \Laravel\SerializableClosure\Exceptions\InvalidSignatureException

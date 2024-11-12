@@ -47,7 +47,7 @@ class UnsignedSerializableClosure
     /**
      * Get the serializable representation of the closure.
      *
-     * @return array
+     * @return array{serializable: \Laravel\SerializableClosure\Contracts\Serializable}
      */
     public function __serialize()
     {
@@ -59,7 +59,7 @@ class UnsignedSerializableClosure
     /**
      * Restore the closure after serialization.
      *
-     * @param  array  $data
+     * @param  array{serializable: \Laravel\SerializableClosure\Contracts\Serializable}  $data
      * @return void
      */
     public function __unserialize($data)

@@ -24,7 +24,7 @@
         "illuminate/support": "^10.0|^11.0",
         "nesbot/carbon": "^2.67|^3.0",
         "pestphp/pest": "^2.36",
-        "phpstan/phpstan": "^1.11.5",
+        "phpstan/phpstan": "^2.0",
         "symfony/var-dumper": "^6.2.0|^7.0.0"
     },
     "autoload": {
