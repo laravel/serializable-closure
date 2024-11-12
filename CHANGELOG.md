@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.3.5...master)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.3.6...master)
+
+## [v1.3.6](https://github.com/laravel/serializable-closure/compare/v1.3.5...v1.3.6) - 2024-11-11
+
+* Fix repeated word "the" in code comment by [@caendesilva](https://github.com/caendesilva) in https://github.com/laravel/serializable-closure/pull/98
 
 ## [v1.3.5](https://github.com/laravel/serializable-closure/compare/v1.3.4...v1.3.5) - 2024-09-23
 
