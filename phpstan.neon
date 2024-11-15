@@ -2,9 +2,10 @@ parameters:
     level: max
     paths:
         - src
-    checkMissingIterableValueType: false
-    checkGenericClassInNonGenericObjectType: false
+    ignoreErrors:
+        - identifier: missingType.iterableValue
+        - identifier: missingType.generics
     reportUnmatchedIgnoredErrors: true
     excludePaths:
-        - 'src/Support/ReflectionClosure'
-        - 'src/Serializers/Native'
+        - 'src/Support/ReflectionClosure.php'
+        - 'src/Serializers/Native.php'

@@ -12,7 +12,9 @@ dataset('serializers', function () {
         }
 
         yield $serializerShortName => function () use ($serializer) {
-            $this->serializer = $serializer;
+            test()->serializer = $serializer;
+
+            return $serializer;
         };
     }
 });

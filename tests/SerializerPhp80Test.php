@@ -1,6 +1,8 @@
 <?php
 
+use Tests\Fixtures\Model;
 use Tests\Fixtures\RegularClass;
+use Tests\Fixtures\Route;
 
 test('named arguments', function () {
     $f1 = function (string $firstName, string $lastName) {
@@ -21,6 +23,14 @@ test('single named argument within closures', function () {
     };
 
     expect('string')->toBe(s($f1)());
+})->with('serializers');
+
+test('serializing closures under namespace', function () {
+    $f1 = Route::make();
+
+    $s1 = s($f1);
+
+    expect('Tests\Fixtures\Route::Tests\Fixtures\{closure}')->toBe($s1(new Model));
 })->with('serializers');
 
 test('multiple named arguments within closures', function () {
