@@ -6,6 +6,7 @@ use Laravel\SerializableClosure\SerializableClosure;
 use Laravel\SerializableClosure\Serializers\Signed;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Laravel\SerializableClosure\UnsignedSerializableClosure;
+use Tests\Fixtures\ClassWithPublicProperty;
 use Tests\Fixtures\Model;
 
 test('closure with simple const', function () {
@@ -484,6 +485,34 @@ test('serializes with used object date properties', function ($_, $date) {
     new Carbon,
     new CarbonImmutable,
 ]);
+
+test('SerializableClosure in the class property', function () {
+    SerializableClosure::setSecretKey('foo');
+
+    $innerClosure = new ClassWithPublicProperty(new SerializableClosure(function () {
+    }));
+    $outerClosure = new SerializableClosure(function () use ($innerClosure) {
+        return $innerClosure->closure;
+    });
+
+    $unSerializedOuterClosure = unserialize(serialize($outerClosure));
+
+    expect($outerClosure())->toBeInstanceOf(SerializableClosure::class);
+    expect($unSerializedOuterClosure())->toBeInstanceOf(SerializableClosure::class);
+});
+
+test('UnsignedSerializableClosure in the class property', function () {
+    $innerClosure = new ClassWithPublicProperty(SerializableClosure::unsigned(function () {
+    }));
+    $outerClosure = SerializableClosure::unsigned(function () use ($innerClosure) {
+        return $innerClosure->closure;
+    });
+
+    $unSerializedOuterClosure = unserialize(serialize($outerClosure));
+
+    expect($outerClosure())->toBeInstanceOf(UnsignedSerializableClosure::class);
+    expect($unSerializedOuterClosure())->toBeInstanceOf(UnsignedSerializableClosure::class);
+});
 
 function serializer_php_74_switch_statement_test_is_two($a)
 {
