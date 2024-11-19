@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.3.6...master)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.3.7...1.x)
+
+## [v1.3.7](https://github.com/laravel/serializable-closure/compare/v1.3.6...v1.3.7) - 2024-11-14
+
+* Fix for readonly properties that declared in parent by [@MrMeshok](https://github.com/MrMeshok) in https://github.com/laravel/serializable-closure/pull/96
 
 ## [v1.3.6](https://github.com/laravel/serializable-closure/compare/v1.3.5...v1.3.6) - 2024-11-11
 
