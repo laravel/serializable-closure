@@ -1,6 +1,14 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v1.3.6...master)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.0...2.x)
+
+## [v2.0.0](https://github.com/laravel/serializable-closure/compare/v1.3.6...v2.0.0) - 2024-11-19
+
+* [2.x] Fix namespaced closures being considered first class callables by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/serializable-closure/pull/97
+* [2.x] Cleanup phpunit.xml by [@Jubeki](https://github.com/Jubeki) in https://github.com/laravel/serializable-closure/pull/95
+* [2.x] PHP 8.4 support by [@Jubeki](https://github.com/Jubeki) in https://github.com/laravel/serializable-closure/pull/90
+* [2.x] Supports PHPStan 2 by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/serializable-closure/pull/100
+* Prepare `2.0.0` release by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/serializable-closure/pull/99
 
 ## [v1.3.6](https://github.com/laravel/serializable-closure/compare/v1.3.5...v1.3.6) - 2024-11-11
 
