@@ -5,6 +5,7 @@ use Foo\Baz\Qux;
 use Foo\Baz\Qux\Forest;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Tests\Fixtures\Model;
+use Tests\Fixtures\RegularClass;
 
 test('is short closure', function () {
     $f1 = fn () => 1;
@@ -238,6 +239,21 @@ test('from static callable namespaces', function () {
     $e = 'static function (\Tests\Fixtures\Model $model): \Tests\Fixtures\Model
     {
         return new \Tests\Fixtures\Model();
+    }';
+
+    expect($f)->toBeCode($e);
+});
+
+test('ternanry operator new without constructor', function () {
+    $f = function () {
+        $flag = true;
+
+        return $flag ? new RegularClass : new RegularClass;
+    };
+    $e = 'function () {
+        $flag = true;
+
+        return $flag ? new \Tests\Fixtures\RegularClass : new \Tests\Fixtures\RegularClass;
     }';
 
     expect($f)->toBeCode($e);
