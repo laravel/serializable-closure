@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.0...2.x)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.1...2.x)
+
+## [v2.0.1](https://github.com/laravel/serializable-closure/compare/v2.0.0...v2.0.1) - 2024-12-16
+
+* Fix broken code for ternary operator with class instantiation with omitted parentheses by [@panzer-punk](https://github.com/panzer-punk) in https://github.com/laravel/serializable-closure/pull/102
 
 ## [v2.0.0](https://github.com/laravel/serializable-closure/compare/v1.3.6...v2.0.0) - 2024-11-19
 
