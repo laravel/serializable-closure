@@ -7,7 +7,7 @@ use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Tests\Fixtures\Model;
 use Tests\Fixtures\RegularClass;
 
-test('resolve instanceof with class_exists()', function () {
+test('resolve instanceof with expression', function () {
 	$f1 = fn (Baz $a) => $this instanceof (Forest::class); // Turning `instanceof` into an expression results into this incorrect compilation
 	$e1 = 'fn (\Foo\Bar $a) => $this instanceof (\Foo\Baz\Qux\Forest::class)';
 	
