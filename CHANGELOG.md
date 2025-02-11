@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.2...2.x)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.3...2.x)
+
+## [v2.0.3](https://github.com/laravel/serializable-closure/compare/v2.0.2...v2.0.3) - 2025-02-11
+
+* Fix unable to serialize PHP8.4 object with virtual property by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/serializable-closure/pull/108
 
 ## [v2.0.2](https://github.com/laravel/serializable-closure/compare/v2.0.1...v2.0.2) - 2025-01-24
 
