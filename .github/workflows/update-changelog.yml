@@ -1,5 +1,8 @@
 name: update changelog
 
+permissions:
+  contents: write
+
 on:
   release:
     types: [released]
