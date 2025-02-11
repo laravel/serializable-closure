@@ -491,13 +491,17 @@ class Native implements Serializable
                 }
 
                 foreach ($reflection->getProperties() as $property) {
-                    if ($property->isStatic() || $this->isVirtualProperty($property) || ! $property->getDeclaringClass()->isUserDefined()) {
+                    if ($property->isStatic() || ! $property->getDeclaringClass()->isUserDefined()) {
                         continue;
                     }
 
                     $property->setAccessible(true);
 
                     if (! $property->isInitialized($instance) || ($property->isReadOnly() && $property->class !== $reflection->name)) {
+                        continue;
+                    }
+
+                    if ($this->isVirtualProperty($property)) {
                         continue;
                     }
 
