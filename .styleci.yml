@@ -4,3 +4,6 @@ php:
   finder:
     not-name:
       - Php84Test.php
+      - ReflectionClosurePhp80Test.php
+      - ReflectionClosurePhp81Test.php
+      - SerializerPhp81Test.php
