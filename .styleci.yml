@@ -3,6 +3,4 @@ php:
   preset: laravel
   finder:
     not-name:
-      - ReflectionClosurePhp80Test.php
-      - ReflectionClosurePhp81Test.php
-      - SerializerPhp81Test.php
+      - Php84Test.php
