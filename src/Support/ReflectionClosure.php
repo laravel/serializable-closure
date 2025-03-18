@@ -945,14 +945,33 @@ class ReflectionClosure extends ReflectionFunction
         $alias = '';
         $isFunc = $isConst = false;
 
-        $startLine = $endLine = 0;
+        $startLine = $lastKnownLine = 0;
         $structType = $structName = '';
         $structIgnore = false;
 
+        $namespace = '';
+        $namespaceStartLine = 0;
+        $namespaceBraced = false;
+
         foreach ($tokens as $token) {
+            if (is_array($token)) {
+                $lastKnownLine = $token[2];
+            }
+
             switch ($state) {
                 case 'start':
                     switch ($token[0]) {
+                        case T_NAMESPACE:
+                            $structures[] = [
+                                'type' => 'namespace',
+                                'name' => $namespace,
+                                'start' => $namespaceStartLine,
+                                'end' => $token[2] - 1,
+                            ];
+                            $namespace = '';
+                            $state = 'namespace';
+                            $namespaceStartLine = $token[2];
+                            break;
                         case T_CLASS:
                         case T_INTERFACE:
                         case T_TRAIT:
@@ -977,6 +996,31 @@ class ReflectionClosure extends ReflectionFunction
                         case T_OBJECT_OPERATOR:
                         case T_DOUBLE_COLON:
                             $state = 'invoke';
+                            break;
+                        case '}':
+                            if ($namespaceBraced) {
+                                $structures[] = [
+                                    'type' => 'namespace',
+                                    'name' => $namespace,
+                                    'start' => $namespaceStartLine,
+                                    'end' => $lastKnownLine,
+                                ];
+                                $namespaceBraced = false;
+                                $namespace = '';
+                            }
+                            break;
+                    }
+                    break;
+                case 'namespace':
+                    switch ($token[0]) {
+                        case T_STRING:
+                        case T_NAME_QUALIFIED:
+                            $namespace = $token[1];
+                            break;
+                        case ';':
+                        case '{':
+                            $state = 'start';
+                            $namespaceBraced = $token[0] === '{';
                             break;
                     }
                     break;
@@ -1118,21 +1162,24 @@ class ReflectionClosure extends ReflectionFunction
                                         'type' => $structType,
                                         'name' => $structName,
                                         'start' => $startLine,
-                                        'end' => $endLine,
+                                        'end' => $lastKnownLine,
                                     ];
                                 }
                                 $structIgnore = false;
                                 $state = 'start';
                             }
                             break;
-                        default:
-                            if (is_array($token)) {
-                                $endLine = $token[2];
-                            }
                     }
                     break;
             }
         }
+
+        $structures[] = [
+            'type' => 'namespace',
+            'name' => $namespace,
+            'start' => $namespaceStartLine,
+            'end' => PHP_INT_MAX,
+        ];
 
         static::$classes[$key] = $classes;
         static::$functions[$key] = $functions;
@@ -1147,20 +1194,19 @@ class ReflectionClosure extends ReflectionFunction
      */
     protected function getClosureNamespaceName()
     {
-        $ns = $this->getNamespaceName();
+        $startLine = $this->getStartLine();
+        $endLine = $this->getEndLine();
 
-        $name = $this->getName();
-
-        // First class callables...
-        if ($name !== '{closure}'
-            && ! str_contains($name, '{closure:/')
-            && ! str_contains($name, '{closure:\\')
-            && empty($ns)
-            && ! is_null($this->getClosureScopeClass())) {
-            $ns = $this->getClosureScopeClass()->getNamespaceName();
+        foreach ($this->getStructures() as $struct) {
+            if ($struct['type'] === 'namespace' &&
+                $struct['start'] <= $startLine &&
+                $struct['end'] >= $endLine
+            ) {
+                return $struct['name'];
+            }
         }
 
-        return $ns;
+        return '';
     }
 
     /**
