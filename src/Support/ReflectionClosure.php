@@ -865,13 +865,18 @@ class ReflectionClosure extends ReflectionFunction
      */
     protected function getClasses()
     {
-        $key = $this->getHashedFileName();
+        $line = $this->getStartLine();
 
-        if (! isset(static::$classes[$key])) {
-            $this->fetchItems();
+        foreach ($this->getStructures() as $struct) {
+            if ($struct['type'] === 'namespace' &&
+                $struct['start'] <= $line &&
+                $struct['end'] >= $line
+            ) {
+                return $struct['classes'];
+            }
         }
 
-        return static::$classes[$key];
+        return [];
     }
 
     /**
@@ -952,6 +957,7 @@ class ReflectionClosure extends ReflectionFunction
         $namespace = '';
         $namespaceStartLine = 0;
         $namespaceBraced = false;
+        $namespaceClasses = [];
 
         foreach ($tokens as $token) {
             if (is_array($token)) {
@@ -967,8 +973,10 @@ class ReflectionClosure extends ReflectionFunction
                                 'name' => $namespace,
                                 'start' => $namespaceStartLine,
                                 'end' => $token[2] - 1,
+                                'classes' => $namespaceClasses,
                             ];
                             $namespace = '';
+                            $namespaceClasses = [];
                             $state = 'namespace';
                             $namespaceStartLine = $token[2];
                             break;
@@ -1004,9 +1012,11 @@ class ReflectionClosure extends ReflectionFunction
                                     'name' => $namespace,
                                     'start' => $namespaceStartLine,
                                     'end' => $lastKnownLine,
+                                    'classes' => $namespaceClasses,
                                 ];
                                 $namespaceBraced = false;
                                 $namespace = '';
+                                $namespaceClasses = [];
                             }
                             break;
                     }
@@ -1066,6 +1076,7 @@ class ReflectionClosure extends ReflectionFunction
                                     $constants[$alias] = $name;
                                 } else {
                                     $classes[strtolower($alias)] = $name;
+                                    $namespaceClasses[strtolower($alias)] = $name;
                                 }
                             }
                             $name = $alias = '';
@@ -1105,6 +1116,7 @@ class ReflectionClosure extends ReflectionFunction
                                     $constants[$alias] = $prefix.$name;
                                 } else {
                                     $classes[strtolower($alias)] = $prefix.$name;
+                                    $namespaceClasses[strtolower($alias)] = $prefix.$name;
                                 }
                             }
                             $name = $alias = '';
@@ -1179,6 +1191,7 @@ class ReflectionClosure extends ReflectionFunction
             'name' => $namespace,
             'start' => $namespaceStartLine,
             'end' => PHP_INT_MAX,
+            'classes' => $namespaceClasses,
         ];
 
         static::$classes[$key] = $classes;

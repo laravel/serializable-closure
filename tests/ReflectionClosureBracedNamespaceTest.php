@@ -31,3 +31,20 @@ namespace {
         expect($f1)->toBeCode($e1);
     });
 }
+
+namespace Irrelevant {
+    // Shouldn't be used below, as not in the same namespace
+    use Wrong as Qux;
+}
+
+namespace Space {
+    test('no using use from other namespace', function () {
+        $f1 = fn (Qux $qux) => true;
+        $e1 = 'fn (\Space\Qux $qux) => true';
+
+        expect($f1)->toBeCode($e1);
+    });
+
+    // Shouldn't be used above, as declared after usage.  Not currently supported though.
+    // use AlsoWrong as Qux;
+}
