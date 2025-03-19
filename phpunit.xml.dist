@@ -16,6 +16,8 @@
             <file>tests/ReflectionClosure3Test.php</file>
             <file>tests/ReflectionClosure4Test.php</file>
             <file>tests/ReflectionClosure5Test.php</file>
+            <file>tests/ReflectionClosureBracedNamespaceTest.php</file>
+            <file>tests/ReflectionClosureNonBracedNamespaceTest.php</file>
             <file>tests/SerializerTest.php</file>
             <file>tests/SignedSerializerTest.php</file>
         </testsuite>
