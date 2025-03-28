@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.3...2.x)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.4...2.x)
+
+## [v2.0.4](https://github.com/laravel/serializable-closure/compare/v2.0.3...v2.0.4) - 2025-03-19
+
+* Fix namespaces for PHP 8.4 by [@jlherren](https://github.com/jlherren) in https://github.com/laravel/serializable-closure/pull/112
 
 ## [v2.0.3](https://github.com/laravel/serializable-closure/compare/v2.0.2...v2.0.3) - 2025-02-11
 
