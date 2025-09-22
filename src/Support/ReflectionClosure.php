@@ -685,7 +685,7 @@ class ReflectionClosure extends ReflectionFunction
 
             $name = $attribute->getName();
             $arguments = implode(', ', array_map(function ($argument, $key) {
-                $argument = sprintf("'%s'", str_replace("'", "\\'", $argument));
+                $argument = var_export($argument, true);
 
                 if (is_string($key)) {
                     $argument = sprintf('%s: %s', $key, $argument);

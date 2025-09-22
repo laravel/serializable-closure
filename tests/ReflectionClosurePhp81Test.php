@@ -589,8 +589,8 @@ test('function attributes with arguments', function () {
         return true;
     };
 
-    $e = <<<EOF
-#[MyAttribute('My " \' Argument 1', 'Tests\Fixtures\Model')]
+    $e = <<<'EOF'
+#[MyAttribute('My " \' Argument 1', 'Tests\\Fixtures\\Model')]
 function () {
         return true;
     }
@@ -606,8 +606,8 @@ test('function attributes with named arguments', function () {
         return false;
     };
 
-    $e = <<<EOF
-#[MyAttribute(string: 'My " \' Argument 1', model: 'Tests\Fixtures\Model')]
+    $e = <<<'EOF'
+#[MyAttribute(string: 'My " \' Argument 1', model: 'Tests\\Fixtures\\Model')]
 function () {
         return false;
     }
@@ -621,12 +621,32 @@ test('function attributes with first-class callable with methods', function () {
 
     $f = (new SerializerPhp81Controller())->publicGetter(...);
 
-    $e = <<<EOF
+    $e = <<<'EOF'
 #[Tests\Fixtures\ModelAttribute()]
-#[MyAttribute('My " \' Argument 1', 'Tests\Fixtures\Model')]
+#[MyAttribute('My " \' Argument 1', 'Tests\\Fixtures\\Model')]
 function ()
     {
-        return \$this->privateGetter();
+        return $this->privateGetter();
+    }
+EOF;
+
+    expect($f)->toBeCode($e);
+});
+
+test('function attributes with array arguments', function () {
+    $model = new Model();
+
+    $f = #[MyAttribute('My Argument', ['one', 'two'])] function (): bool {
+        return true;
+    };
+
+    $e = <<<'EOF'
+#[MyAttribute('My Argument', array (
+  0 => 'one',
+  1 => 'two',
+))]
+function (): bool {
+        return true;
     }
 EOF;
 

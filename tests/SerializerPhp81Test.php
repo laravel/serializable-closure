@@ -386,7 +386,30 @@ test('function attributes with arguments', function () {
         fn ($attribute) => $attribute
             ->getName()->toBe(MyAttribute::class)
             ->getArguments()->toBe([
-                'My " \' Argument 1', Model::class,
+                'My " \' Argument 1', 'Tests\Fixtures\Model',
+            ])
+    );
+
+    expect($f())->toBeFalse();
+})->with('serializers');
+
+test('function attributes with array arguments', function () {
+    $model = new Model();
+
+    $f = #[MyAttribute("My Argument", ["one", "two"])] function () {
+        return false;
+    };
+
+    $f = s($f);
+
+    $reflector = new ReflectionFunction($f);
+
+    expect($reflector->getAttributes())->sequence(
+        fn ($attribute) => $attribute
+            ->getName()->toBe(MyAttribute::class)
+            ->getArguments()->toBe([
+                "My Argument",
+                ["one", "two"],
             ])
     );
 
@@ -571,12 +594,12 @@ test('function attributes with named arguments', function () {
             ->getName()->toBe(MyAttribute::class)
             ->getArguments()->toBe([
                 'string' => 'My " \' Argument 1',
-                'model' => Model::class,
+                'model' => 'Tests\\Fixtures\\Model',
             ]);
 
         expect($attribute->value->newInstance())
             ->string->toBe('My " \' Argument 1')
-            ->model->toBe(Model::class);
+            ->model->toBe('Tests\\Fixtures\\Model');
     });
 
     expect($f())->toBeFalse();
@@ -596,7 +619,7 @@ test('function attributes with first-class callable with methods', function () {
         fn ($attribute) => $attribute
             ->getName()->toBe(MyAttribute::class)
             ->getArguments()->toBe([
-                'My " \' Argument 1', Model::class,
+                'My " \' Argument 1', 'Tests\\Fixtures\\Model',
             ])
     );
 
