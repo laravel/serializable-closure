@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.4...2.x)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.5...2.x)
+
+## [v2.0.5](https://github.com/laravel/serializable-closure/compare/v2.0.4...v2.0.5) - 2025-09-22
+
+* support function attributes with array arguments by [@erikgaal](https://github.com/erikgaal) in https://github.com/laravel/serializable-closure/pull/113
 
 ## [v2.0.4](https://github.com/laravel/serializable-closure/compare/v2.0.3...v2.0.4) - 2025-03-19
 
