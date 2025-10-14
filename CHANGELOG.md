@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.5...2.x)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.6...2.x)
+
+## [v2.0.6](https://github.com/laravel/serializable-closure/compare/v2.0.5...v2.0.6) - 2025-10-09
+
+* Remove setAccessible call for class properties (PHP 8.5) by [@Kanti](https://github.com/Kanti) in https://github.com/laravel/serializable-closure/pull/114
 
 ## [v2.0.5](https://github.com/laravel/serializable-closure/compare/v2.0.4...v2.0.5) - 2025-09-22
 
