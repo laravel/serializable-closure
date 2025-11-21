@@ -43,10 +43,13 @@
         }
     },
     "config": {
-        "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true
-        }
+        },
+        "audit": {
+            "block-insecure": false
+        },
+        "sort-packages": true
     },
     "minimum-stability": "dev",
     "prefer-stable": true
