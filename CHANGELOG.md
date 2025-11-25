@@ -1,6 +1,13 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.6...2.x)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.7...2.x)
+
+## [v2.0.7](https://github.com/laravel/serializable-closure/compare/v2.0.6...v2.0.7) - 2025-11-21
+
+* Allow Pest v4.0 by [@jnoordsij](https://github.com/jnoordsij) in https://github.com/laravel/serializable-closure/pull/117
+* Remove `setAccessible` calls for properties by [@jnoordsij](https://github.com/jnoordsij) in https://github.com/laravel/serializable-closure/pull/115
+* Test on PHP 8.5 by [@jnoordsij](https://github.com/jnoordsij) in https://github.com/laravel/serializable-closure/pull/116
+* Fix GitHub Actions workflow and tweak Composer configuration. by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/serializable-closure/pull/118
 
 ## [v2.0.6](https://github.com/laravel/serializable-closure/compare/v2.0.5...v2.0.6) - 2025-10-09
 
