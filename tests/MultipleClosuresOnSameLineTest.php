@@ -3,7 +3,7 @@
 use Laravel\SerializableClosure\SerializableClosure;
 
 test('multiple closures on same line with different arguments', function () {
-    $c1 = fn ($a) => $a; $c2 = fn ($b) => $b;
+    $c1 = fn ($a) => $a; $c2 = fn ($b) => $b; // @phpstan-ignore-line
 
     $s1 = new SerializableClosure($c1);
     $s2 = new SerializableClosure($c2);
@@ -19,8 +19,9 @@ test('multiple closures on same line with different arguments', function () {
 });
 
 test('multiple closures on same line with different static variables', function () {
-    $a = 1; $b = 2;
-    $c1 = fn () => $a; $c2 = fn () => $b;
+    $a = 1;
+    $b = 2;
+    $c1 = fn () => $a; $c2 = fn () => $b; // @phpstan-ignore-line
 
     $s1 = new SerializableClosure($c1);
     $s2 = new SerializableClosure($c2);
@@ -36,7 +37,7 @@ test('multiple closures on same line with different static variables', function 
 });
 
 test('mixture of static and non-static closures', function () {
-    $c1 = fn () => 1; $c2 = static fn () => 2;
+    $c1 = fn () => 1; $c2 = static fn () => 2; // @phpstan-ignore-line
 
     $s1 = new SerializableClosure($c1);
     $s2 = new SerializableClosure($c2);

@@ -749,22 +749,19 @@ class ReflectionClosure extends ReflectionFunction
             $isUsingThisObject = $candidate['isUsingThisObject'];
             $isUsingScope = $candidate['isUsingScope'];
 
-
-
             // Verify Static
             $isStaticCode = mb_stripos($code, 'static') !== false;
             if (parent::isStatic() !== $isStaticCode) {
-
                 continue;
             }
 
             // Verify Parameters and Used Variables via parsing
-            $tokens = token_get_all("<?php " . $code);
+            $tokens = token_get_all('<?php '.$code);
             $params = [];
             $vars = [];
             $state = 'start';
             foreach ($tokens as $token) {
-                if (!is_array($token)) {
+                if (! is_array($token)) {
                     if ($token === '(' && $state === 'start') {
                         $state = 'params';
                     } elseif ($token === ')' && $state === 'params') {
@@ -786,7 +783,6 @@ class ReflectionClosure extends ReflectionFunction
 
             // Verify Param Count
             if (parent::getNumberOfParameters() !== count($params)) {
-
                 continue;
             }
 
@@ -794,36 +790,27 @@ class ReflectionClosure extends ReflectionFunction
             if ($isShortClosure) {
                 $actualVars = array_keys(parent::getStaticVariables());
                 $foundVars = array_keys($vars);
-                
-                $foundCaptures = array_diff($foundVars, $params);
-                
 
+                $foundCaptures = array_diff($foundVars, $params);
 
                 if (count($foundCaptures) !== count($actualVars)) {
-
                     continue;
                 }
-                
-                if (count(array_diff($foundCaptures, $actualVars)) > 0) {
 
+                if (count(array_diff($foundCaptures, $actualVars)) > 0) {
                     continue;
                 }
             } else {
-                 if (!empty($use)) {
+                if (! empty($use)) {
                     $actualStaticVariables = array_keys(parent::getStaticVariables());
                     if (count(array_diff($use, $actualStaticVariables)) > 0) {
-
                         continue;
                     }
-                 }
-                 if (count($use) !== count(parent::getStaticVariables())) {
-
-                     continue;
-                 }
+                }
+                if (count($use) !== count(parent::getStaticVariables())) {
+                    continue;
+                }
             }
-            
-
-
 
             if ($isShortClosure) {
                 $this->useVariables = $this->getStaticVariables();
@@ -863,6 +850,7 @@ class ReflectionClosure extends ReflectionFunction
 
         return $this->code;
     }
+
     /**
      * Get PHP native built in types.
      *
