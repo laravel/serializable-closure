@@ -125,6 +125,8 @@ class ReflectionClosure extends ReflectionFunction
         $isUsingScope = false;
         $isUsingThisObject = false;
 
+        $candidates = [];
+
         for ($i = 0, $l = count($tokens); $i < $l; $i++) {
             $token = $tokens[$i];
 
@@ -296,7 +298,20 @@ class ReflectionClosure extends ReflectionFunction
                         case '}':
                             $code .= '}';
                             if (--$open === 0 && ! $isShortClosure) {
-                                break 3;
+                                $candidates[] = [
+                                    'code' => $code,
+                                    'use' => $use,
+                                    'isShortClosure' => $isShortClosure,
+                                    'isUsingThisObject' => $isUsingThisObject,
+                                    'isUsingScope' => $isUsingScope,
+                                ];
+                                $code = '';
+                                $state = 'start';
+                                $open = 0;
+                                $use = [];
+                                $isShortClosure = false;
+                                $isUsingThisObject = false;
+                                $isUsingScope = false;
                             } elseif ($inside_structure) {
                                 $inside_structure = ! ($open === $inside_structure_mark);
                             }
@@ -312,7 +327,21 @@ class ReflectionClosure extends ReflectionFunction
                         case ']':
                             if ($isShortClosure) {
                                 if ($open === 0) {
-                                    break 3;
+                                    $candidates[] = [
+                                        'code' => $code,
+                                        'use' => $use,
+                                        'isShortClosure' => $isShortClosure,
+                                        'isUsingThisObject' => $isUsingThisObject,
+                                        'isUsingScope' => $isUsingScope,
+                                    ];
+                                    $code = '';
+                                    $state = 'start';
+                                    $open = 0;
+                                    $use = [];
+                                    $isShortClosure = false;
+                                    $isUsingThisObject = false;
+                                    $isUsingScope = false;
+                                    continue 3;
                                 }
                                 $open--;
                             }
@@ -321,7 +350,21 @@ class ReflectionClosure extends ReflectionFunction
                         case ',':
                         case ';':
                             if ($isShortClosure && $open === 0) {
-                                break 3;
+                                $candidates[] = [
+                                    'code' => $code,
+                                    'use' => $use,
+                                    'isShortClosure' => $isShortClosure,
+                                    'isUsingThisObject' => $isUsingThisObject,
+                                    'isUsingScope' => $isUsingScope,
+                                ];
+                                $code = '';
+                                $state = 'start';
+                                $open = 0;
+                                $use = [];
+                                $isShortClosure = false;
+                                $isUsingThisObject = false;
+                                $isUsingScope = false;
+                                continue 3;
                             }
                             $code .= $token[0];
                             break;
@@ -697,6 +740,121 @@ class ReflectionClosure extends ReflectionFunction
             return "#[$name($arguments)]";
         }, $this->getAttributes());
 
+        $lastItem = array_pop($candidates);
+
+        foreach ($candidates as $candidate) {
+            $code = $candidate['code'];
+            $use = $candidate['use'];
+            $isShortClosure = $candidate['isShortClosure'];
+            $isUsingThisObject = $candidate['isUsingThisObject'];
+            $isUsingScope = $candidate['isUsingScope'];
+
+
+
+            // Verify Static
+            $isStaticCode = mb_stripos($code, 'static') !== false;
+            if (parent::isStatic() !== $isStaticCode) {
+
+                continue;
+            }
+
+            // Verify Parameters and Used Variables via parsing
+            $tokens = token_get_all("<?php " . $code);
+            $params = [];
+            $vars = [];
+            $state = 'start';
+            foreach ($tokens as $token) {
+                if (!is_array($token)) {
+                    if ($token === '(' && $state === 'start') {
+                        $state = 'params';
+                    } elseif ($token === ')' && $state === 'params') {
+                        $state = 'body';
+                    }
+                    continue;
+                }
+                if ($token[0] === T_VARIABLE) {
+                    $name = substr($token[1], 1);
+                    if ($state === 'params') {
+                        $params[] = $name;
+                    } elseif ($state === 'body') {
+                        if ($name !== 'this') {
+                            $vars[$name] = true;
+                        }
+                    }
+                }
+            }
+
+            // Verify Param Count
+            if (parent::getNumberOfParameters() !== count($params)) {
+
+                continue;
+            }
+
+            // Verify Use Vars (for Short Closures especially)
+            if ($isShortClosure) {
+                $actualVars = array_keys(parent::getStaticVariables());
+                $foundVars = array_keys($vars);
+                
+                $foundCaptures = array_diff($foundVars, $params);
+                
+
+
+                if (count($foundCaptures) !== count($actualVars)) {
+
+                    continue;
+                }
+                
+                if (count(array_diff($foundCaptures, $actualVars)) > 0) {
+
+                    continue;
+                }
+            } else {
+                 if (!empty($use)) {
+                    $actualStaticVariables = array_keys(parent::getStaticVariables());
+                    if (count(array_diff($use, $actualStaticVariables)) > 0) {
+
+                        continue;
+                    }
+                 }
+                 if (count($use) !== count(parent::getStaticVariables())) {
+
+                     continue;
+                 }
+            }
+            
+
+
+
+            if ($isShortClosure) {
+                $this->useVariables = $this->getStaticVariables();
+            } else {
+                $this->useVariables = empty($use) ? $use : array_intersect_key($this->getStaticVariables(), array_flip($use));
+            }
+
+            $this->isShortClosure = $isShortClosure;
+            $this->isBindingRequired = $isUsingThisObject;
+            $this->isScopeRequired = $isUsingScope;
+            $this->code = $code;
+
+            return $this->code;
+        }
+
+        $code = $lastItem['code'];
+        $use = $lastItem['use'];
+        $isShortClosure = $lastItem['isShortClosure'];
+        $isUsingThisObject = $lastItem['isUsingThisObject'];
+        $isUsingScope = $lastItem['isUsingScope'];
+
+        if ($isShortClosure) {
+            $this->useVariables = $this->getStaticVariables();
+        } else {
+            $this->useVariables = empty($use) ? $use : array_intersect_key($this->getStaticVariables(), array_flip($use));
+        }
+
+        $this->isShortClosure = $isShortClosure;
+        $this->isBindingRequired = $isUsingThisObject;
+        $this->isScopeRequired = $isUsingScope;
+
         if (! empty($attributesCode)) {
             $code = implode("\n", array_merge($attributesCode, [$code]));
         }
@@ -705,7 +863,6 @@ class ReflectionClosure extends ReflectionFunction
 
         return $this->code;
     }
-
     /**
      * Get PHP native built in types.
      *
@@ -724,6 +881,10 @@ class ReflectionClosure extends ReflectionFunction
     public function getUseVariables()
     {
         if ($this->useVariables !== null) {
+            return $this->useVariables;
+        }
+
+        if ($this->isShortClosure()) {
             return $this->useVariables;
         }
 
