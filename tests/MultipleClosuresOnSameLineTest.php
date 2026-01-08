@@ -74,8 +74,12 @@ test('closure using variable named static is not detected as static closure', fu
 });
 
 test('multiple traditional closures on same line', function () {
-    $c1 = function () { return 1; };
-    $c2 = function () { return 2; }; // @phpstan-ignore-line
+    $c1 = function () {
+        return 1;
+    };
+    $c2 = function () {
+        return 2;
+    }; // @phpstan-ignore-line
 
     $s1 = new SerializableClosure($c1);
     $s2 = new SerializableClosure($c2);
@@ -93,8 +97,12 @@ test('multiple traditional closures on same line', function () {
 test('multiple traditional closures with use clause on same line', function () {
     $a = 1;
     $b = 2;
-    $c1 = function () use ($a) { return $a; };
-    $c2 = function () use ($b) { return $b; }; // @phpstan-ignore-line
+    $c1 = function () use ($a) {
+        return $a;
+    };
+    $c2 = function () use ($b) {
+        return $b;
+    }; // @phpstan-ignore-line
 
     $s1 = new SerializableClosure($c1);
     $s2 = new SerializableClosure($c2);
