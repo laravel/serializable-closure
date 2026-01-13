@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.7...2.x)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.8...2.x)
+
+## [v2.0.8](https://github.com/laravel/serializable-closure/compare/v2.0.7...v2.0.8) - 2026-01-08
+
+* Fix serialization of multiple closures on the same line by [@michaelruelas](https://github.com/michaelruelas) in https://github.com/laravel/serializable-closure/pull/120
 
 ## [v2.0.7](https://github.com/laravel/serializable-closure/compare/v2.0.6...v2.0.7) - 2025-11-21
 
