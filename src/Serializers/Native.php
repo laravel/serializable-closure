@@ -269,7 +269,7 @@ class Native implements Serializable
                 }
 
                 foreach ($reflection->getProperties() as $property) {
-                    if ($property->isStatic() || ! $property->getDeclaringClass()->isUserDefined()) {
+                    if ($property->isStatic() || ! $property->getDeclaringClass()->isUserDefined() || static::isVirtualProperty($property)) {
                         continue;
                     }
 
@@ -367,7 +367,7 @@ class Native implements Serializable
                 }
 
                 foreach ($reflection->getProperties() as $property) {
-                    if ($property->isStatic() || ! $property->getDeclaringClass()->isUserDefined()) {
+                    if ($property->isStatic() || ! $property->getDeclaringClass()->isUserDefined() || static::isVirtualProperty($property)) {
                         continue;
                     }
 
@@ -487,7 +487,7 @@ class Native implements Serializable
                 }
 
                 foreach ($reflection->getProperties() as $property) {
-                    if ($property->isStatic() || ! $property->getDeclaringClass()->isUserDefined() || $this->isVirtualProperty($property)) {
+                    if ($property->isStatic() || ! $property->getDeclaringClass()->isUserDefined() || static::isVirtualProperty($property)) {
                         continue;
                     }
 
@@ -513,7 +513,7 @@ class Native implements Serializable
      * @param  \ReflectionProperty  $property
      * @return bool
      */
-    protected function isVirtualProperty(ReflectionProperty $property): bool
+    protected static function isVirtualProperty(ReflectionProperty $property): bool
     {
         return method_exists($property, 'isVirtual') && $property->isVirtual();
     }
