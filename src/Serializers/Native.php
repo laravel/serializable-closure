@@ -255,7 +255,7 @@ class Native implements Serializable
             $instance = $data;
             $reflection = new ReflectionObject($instance);
 
-            if (! $reflection->isUserDefined()) {
+            if (! $reflection->isUserDefined() || $reflection->hasMethod('__serialize')) {
                 $storage[$instance] = $data;
 
                 return;
@@ -473,7 +473,7 @@ class Native implements Serializable
 
             $reflection = new ReflectionObject($data);
 
-            if (! $reflection->isUserDefined()) {
+            if (! $reflection->isUserDefined() || $reflection->hasMethod('__serialize')) {
                 $this->scope[$instance] = $data;
 
                 return;
