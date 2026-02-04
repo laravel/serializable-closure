@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.8...2.x)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.9...2.x)
+
+## [v2.0.9](https://github.com/laravel/serializable-closure/compare/v2.0.8...v2.0.9) - 2026-02-03
+
+* Fix virtual property serialization by [@jivanf](https://github.com/jivanf) in https://github.com/laravel/serializable-closure/pull/121
+* fix: cannot assign Native to property of type Closure by [@calebdw](https://github.com/calebdw) in https://github.com/laravel/serializable-closure/pull/122
+* Supports Laravel 13 by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/serializable-closure/pull/124
 
 ## [v2.0.8](https://github.com/laravel/serializable-closure/compare/v2.0.7...v2.0.8) - 2026-01-08
 
