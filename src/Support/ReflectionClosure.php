@@ -738,9 +738,20 @@ class ReflectionClosure extends ReflectionFunction
 
         $lastItem = array_pop($candidates);
 
-        $this->applyCandidate($lastItem);
+        if ($lastItem) {
+            $this->applyCandidate($lastItem);
+            $code = $lastItem['code'];
+        } else {
+            if ($isShortClosure) {
+                $this->useVariables = $this->getStaticVariables();
+            } else {
+                $this->useVariables = empty($use) ? $use : array_intersect_key($this->getStaticVariables(), array_flip($use));
+            }
 
-        $code = $lastItem['code'];
+            $this->isShortClosure = $isShortClosure;
+            $this->isBindingRequired = $isUsingThisObject;
+            $this->isScopeRequired = $isUsingScope;
+        }
 
         if (! empty($attributesCode)) {
             $code = implode("\n", array_merge($attributesCode, [$code]));
