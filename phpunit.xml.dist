@@ -20,6 +20,7 @@
             <file>tests/ReflectionClosureNonBracedNamespaceTest.php</file>
             <file>tests/SerializerTest.php</file>
             <file>tests/SignedSerializerTest.php</file>
+            <file>tests/ReflectionClosureEmptyTokensTest.php</file>
         </testsuite>
         <testsuite name="php81">
             <file phpVersion="8.1.0" phpVersionOperator=">=">tests/ReflectionClosurePhp80Test.php</file>
