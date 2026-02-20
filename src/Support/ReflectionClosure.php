@@ -737,6 +737,7 @@ class ReflectionClosure extends ReflectionFunction
         }
 
         $lastItem = array_pop($candidates);
+
         if ($lastItem) {
             $this->applyCandidate($lastItem);
             $code = $lastItem['code'];
