@@ -46,7 +46,8 @@ test('getUseVariables returns empty array when getTokens returns empty array', f
 });
 
 test('isStatic returns false when getTokens returns empty array', function () {
-    $closure = function () {};
+    $closure = function () {
+    };
 
     $rc = new EmptyTokensReflectionClosure($closure);
 
@@ -62,4 +63,3 @@ test('isShortClosure returns false when getTokens returns empty array', function
     // getCode() returns '' → trim('') === '' → substr('', 0, 2) !== 'fn'
     expect($rc->isShortClosure())->toBeFalse();
 });
-
