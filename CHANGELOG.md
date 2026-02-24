@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.9...2.x)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.10...2.x)
+
+## [v2.0.10](https://github.com/laravel/serializable-closure/compare/v2.0.9...v2.0.10) - 2026-02-20
+
+* Fix trying to access array offset on null by [@bytestream](https://github.com/bytestream) in https://github.com/laravel/serializable-closure/pull/125
 
 ## [v2.0.9](https://github.com/laravel/serializable-closure/compare/v2.0.8...v2.0.9) - 2026-02-03
 
