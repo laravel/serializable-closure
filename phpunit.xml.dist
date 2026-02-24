@@ -31,5 +31,9 @@
         <testsuite name="php84">
             <file phpVersion="8.4.0" phpVersionOperator=">=">tests/Php84Test.php</file>
         </testsuite>
+        <testsuite name="serializer-regression">
+            <file>tests/TypedClosurePropertyTest.php</file>
+            <file>tests/SerializeObjectWithClosureArrayPropertyTest.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>
