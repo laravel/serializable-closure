@@ -695,10 +695,27 @@ class ReflectionClosure extends ReflectionFunction
             }
         }
 
-        $attributesCode = array_map(function ($attribute) {
-            $arguments = $attribute->getArguments();
-
+        $attributesCode = array_values(array_filter(array_map(function ($attribute) {
             $name = $attribute->getName();
+
+            // Skip attributes that cannot target functions. When a closure is
+            // created from a method (e.g. `$obj->method(...)`), the method's
+            // attributes are inherited. Attributes that only target methods
+            // (like #[\Override]) would cause a fatal error when applied to
+            // the serialized closure function.
+            if (class_exists($name)) {
+                $ref = new \ReflectionClass($name);
+                $attrAttributes = $ref->getAttributes(\Attribute::class);
+
+                if (! empty($attrAttributes)) {
+                    $flags = $attrAttributes[0]->getArguments()[0] ?? \Attribute::TARGET_ALL;
+                    if (($flags & \Attribute::TARGET_FUNCTION) === 0) {
+                        return null;
+                    }
+                }
+            }
+
+            $arguments = $attribute->getArguments();
             $arguments = implode(', ', array_map(function ($argument, $key) {
                 $argument = var_export($argument, true);
 
@@ -710,7 +727,7 @@ class ReflectionClosure extends ReflectionFunction
             }, $arguments, array_keys($arguments)));
 
             return "#[$name($arguments)]";
-        }, $this->getAttributes());
+        }, $this->getAttributes())));
 
         if (count($candidates) > 1) {
             $lastItem = array_pop($candidates);
