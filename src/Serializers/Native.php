@@ -255,7 +255,7 @@ class Native implements Serializable
             $instance = $data;
             $reflection = new ReflectionObject($instance);
 
-            if (! $reflection->isUserDefined() || $reflection->hasMethod('__serialize')) {
+            if (! $reflection->isUserDefined()) {
                 $storage[$instance] = $data;
 
                 return;
@@ -278,6 +278,12 @@ class Native implements Serializable
                     }
 
                     $value = $property->getValue($instance);
+
+                    if (static::isClosureTypedProperty($property)) {
+                        $property->setValue($data, $value);
+
+                        continue;
+                    }
 
                     if (is_array($value) || is_object($value)) {
                         static::wrapClosures($value, $storage);
@@ -473,7 +479,7 @@ class Native implements Serializable
 
             $reflection = new ReflectionObject($data);
 
-            if (! $reflection->isUserDefined() || $reflection->hasMethod('__serialize')) {
+            if (! $reflection->isUserDefined()) {
                 $this->scope[$instance] = $data;
 
                 return;
@@ -497,6 +503,12 @@ class Native implements Serializable
 
                     $value = $property->getValue($instance);
 
+                    if (static::isClosureTypedProperty($property)) {
+                        $property->setValue($data, $value);
+
+                        continue;
+                    }
+
                     if (is_array($value) || is_object($value)) {
                         $this->mapByReference($value);
                     }
@@ -516,5 +528,30 @@ class Native implements Serializable
     protected static function isVirtualProperty(ReflectionProperty $property): bool
     {
         return method_exists($property, 'isVirtual') && $property->isVirtual();
+    }
+
+    /**
+     * Determine if property is typed as Closure.
+     *
+     * @param  \ReflectionProperty  $property
+     * @return bool
+     */
+    protected static function isClosureTypedProperty(ReflectionProperty $property): bool
+    {
+        $type = $property->getType();
+
+        if ($type instanceof \ReflectionNamedType) {
+            return $type->getName() === 'Closure';
+        }
+
+        if ($type instanceof \ReflectionUnionType || $type instanceof \ReflectionIntersectionType) {
+            foreach ($type->getTypes() as $t) {
+                if ($t instanceof \ReflectionNamedType && $t->getName() === 'Closure') {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
