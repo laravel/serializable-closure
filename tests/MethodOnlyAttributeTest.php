@@ -17,19 +17,25 @@ it('preserves attributes that can target functions', function () {
 })->with('serializers');
 
 #[\Attribute(\Attribute::TARGET_METHOD)]
-class MethodOnlyAttribute {}
+class MethodOnlyAttribute
+{
+}
 
 #[\Attribute(\Attribute::TARGET_FUNCTION | \Attribute::TARGET_METHOD)]
-class FunctionTargetableAttribute {}
+class FunctionTargetableAttribute
+{
+}
 
-class ParentClassForOverride {
+class ParentClassForOverride
+{
     public function test(): string
     {
         return '';
     }
 }
 
-class ChildClassWithOverride extends ParentClassForOverride {
+class ChildClassWithOverride extends ParentClassForOverride
+{
     #[\Override]
     public function test(): string
     {
@@ -37,7 +43,8 @@ class ChildClassWithOverride extends ParentClassForOverride {
     }
 }
 
-class ClassWithFunctionTargetableAttribute {
+class ClassWithFunctionTargetableAttribute
+{
     #[FunctionTargetableAttribute]
     public function test(): string
     {
