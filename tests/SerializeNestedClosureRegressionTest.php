@@ -3,7 +3,7 @@
 use Tests\Fixtures\ClassWithSerializeAndNestedClosures;
 
 /**
- * Regression test for https://github.com/laravel/serializable-closure/issues/126
+ * Regression test for https://github.com/laravel/serializable-closure/issues/126.
  *
  * In v2.0.9, objects implementing __serialize no longer have nested closures
  * wrapped, causing "Serialization of 'Closure' is not allowed" errors.
