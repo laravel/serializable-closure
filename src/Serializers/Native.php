@@ -197,7 +197,12 @@ class Native implements Serializable
 
         if (! empty($this->code['objects'])) {
             foreach ($this->code['objects'] as $item) {
-                $item['property']->setValue($item['instance'], $item['object']->getClosure());
+                $item['property']->setValue(
+                    $item['instance'],
+                    $item['object'] instanceof SerializableClosure || $item['object'] instanceof UnsignedSerializableClosure
+                        ? $item['object']
+                        : $item['object']->getClosure()
+                );
             }
         }
 

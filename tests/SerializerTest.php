@@ -6,6 +6,7 @@ use Laravel\SerializableClosure\SerializableClosure;
 use Laravel\SerializableClosure\Serializers\Signed;
 use Laravel\SerializableClosure\Support\ReflectionClosure;
 use Laravel\SerializableClosure\UnsignedSerializableClosure;
+use Tests\Fixtures\ClassWithSerializableClosureProperty;
 use Tests\Fixtures\Model;
 
 test('closure with simple const', function () {
@@ -484,6 +485,34 @@ test('serializes with used object date properties', function ($date, $_) {
     new Carbon,
     new CarbonImmutable,
 ])->with('serializers');
+
+test('serializable closure as class property', function () {
+    $object = new ClassWithSerializableClosureProperty(new SerializableClosure(function () {
+        return 'inner';
+    }));
+
+    $closure = new SerializableClosure(function () use ($object) {
+        return ($object->closure)();
+    });
+
+    $unserialized = unserialize(serialize($closure));
+
+    expect($unserialized())->toBe('inner');
+})->with('serializers');
+
+test('unsigned serializable closure as class property', function () {
+    $object = new ClassWithSerializableClosureProperty(SerializableClosure::unsigned(function () {
+        return 'inner';
+    }));
+
+    $closure = SerializableClosure::unsigned(function () use ($object) {
+        return ($object->closure)();
+    });
+
+    $unserialized = unserialize(serialize($closure));
+
+    expect($unserialized())->toBe('inner');
+});
 
 function serializer_php_74_switch_statement_test_is_two($a)
 {
