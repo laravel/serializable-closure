@@ -11,26 +11,11 @@
          backupStaticProperties="false">
     <testsuites>
         <testsuite name="Tests">
-            <file>tests/ReflectionClosure1Test.php</file>
-            <file>tests/ReflectionClosure2Test.php</file>
-            <file>tests/ReflectionClosure3Test.php</file>
-            <file>tests/ReflectionClosure4Test.php</file>
-            <file>tests/ReflectionClosure5Test.php</file>
-            <file>tests/ReflectionClosureBracedNamespaceTest.php</file>
-            <file>tests/ReflectionClosureNonBracedNamespaceTest.php</file>
-            <file>tests/SerializerTest.php</file>
-            <file>tests/SignedSerializerTest.php</file>
-            <file>tests/ReflectionClosureEmptyTokensTest.php</file>
-            <file>tests/TypedClosurePropertyTest.php</file>
-            <file>tests/SerializeNestedClosureRegressionTest.php</file>
-            <file>tests/InstanceofExpressionTest.php</file>
-        </testsuite>
-        <testsuite name="php81">
-            <file phpVersion="8.1.0" phpVersionOperator=">=">tests/ReflectionClosurePhp80Test.php</file>
-            <file phpVersion="8.1.0" phpVersionOperator=">=">tests/ReflectionClosurePhp81Test.php</file>
-            <file phpVersion="8.1.0" phpVersionOperator=">=">tests/SerializerPhp80Test.php</file>
-            <file phpVersion="8.1.0" phpVersionOperator=">=">tests/SerializerPhp81Test.php</file>
-            <file phpVersion="8.1.0" phpVersionOperator=">=">tests/MethodOnlyAttributeTest.php</file>
+            <directory suffix="Test.php">tests</directory>
+            <!-- Excluded because these files use PHP syntax (true type, property hooks) that causes
+                 parse errors on lower PHP versions. They run in version-gated suites below. -->
+            <exclude>tests/TrueTypeTest.php</exclude>
+            <exclude>tests/Php84Test.php</exclude>
         </testsuite>
         <testsuite name="php82">
             <file phpVersion="8.2.0" phpVersionOperator=">=">tests/TrueTypeTest.php</file>
