@@ -21,6 +21,8 @@
             <file>tests/SerializerTest.php</file>
             <file>tests/SignedSerializerTest.php</file>
             <file>tests/ReflectionClosureEmptyTokensTest.php</file>
+            <file>tests/TypedClosurePropertyTest.php</file>
+            <file>tests/SerializeNestedClosureRegressionTest.php</file>
         </testsuite>
         <testsuite name="php81">
             <file phpVersion="8.1.0" phpVersionOperator=">=">tests/ReflectionClosurePhp80Test.php</file>
