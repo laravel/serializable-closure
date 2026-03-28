@@ -4,6 +4,7 @@ namespace Laravel\SerializableClosure\Support;
 
 use Closure;
 use ReflectionFunction;
+use WeakMap;
 
 class ReflectionClosure extends ReflectionFunction
 {
@@ -15,12 +16,22 @@ class ReflectionClosure extends ReflectionFunction
     protected $isScopeRequired;
     protected $isBindingRequired;
     protected $isShortClosure;
+    protected $closureObject;
 
     protected static $files = [];
     protected static $classes = [];
     protected static $functions = [];
     protected static $constants = [];
     protected static $structures = [];
+
+    /**
+     * Tracks which candidate index has been assigned to each closure object
+     * for a given file:line, so that multiple closures on the same line with
+     * identical signatures can be distinguished.
+     *
+     * @var \WeakMap<\Closure, array{location: string, index: int}>|null
+     */
+    protected static $candidateMap;
 
     /**
      * Creates a new reflection closure instance.
@@ -32,6 +43,7 @@ class ReflectionClosure extends ReflectionFunction
     public function __construct(Closure $closure, $code = null)
     {
         parent::__construct($closure);
+        $this->closureObject = $closure;
     }
 
     /**
@@ -735,16 +747,19 @@ class ReflectionClosure extends ReflectionFunction
         }, $this->getAttributes())));
 
         if (count($candidates) > 1) {
-            $lastItem = array_pop($candidates);
-
+            // Collect all candidates that match the closure's signature.
+            $matchingCandidates = [];
             foreach ($candidates as $candidate) {
-                if (! $this->verifyCandidateSignature($candidate)) {
-                    continue;
+                if ($this->verifyCandidateSignature($candidate)) {
+                    $matchingCandidates[] = $candidate;
                 }
+            }
 
-                $this->applyCandidate($candidate);
+            if (count($matchingCandidates) === 1) {
+                // Only one candidate matches - use it directly.
+                $this->applyCandidate($matchingCandidates[0]);
 
-                $code = $candidate['code'];
+                $code = $matchingCandidates[0]['code'];
 
                 if (! empty($attributesCode)) {
                     $code = implode("\n", array_merge($attributesCode, [$code]));
@@ -755,7 +770,25 @@ class ReflectionClosure extends ReflectionFunction
                 return $this->code;
             }
 
-            $candidates[] = $lastItem;
+            if (count($matchingCandidates) > 1) {
+                // Multiple candidates with identical signatures on the same line.
+                // Use a WeakMap counter to assign each closure object a unique index
+                // so that closures are matched in the order they appear in the source.
+                $candidateIndex = $this->resolveCandidateIndex($matchingCandidates);
+                $selected = $matchingCandidates[$candidateIndex];
+
+                $this->applyCandidate($selected);
+
+                $code = $selected['code'];
+
+                if (! empty($attributesCode)) {
+                    $code = implode("\n", array_merge($attributesCode, [$code]));
+                }
+
+                $this->code = $code;
+
+                return $this->code;
+            }
         }
 
         $lastItem = array_pop($candidates);
@@ -1374,6 +1407,48 @@ class ReflectionClosure extends ReflectionFunction
         $this->isShortClosure = $candidate['isShortClosure'];
         $this->isBindingRequired = $candidate['isUsingThisObject'];
         $this->isScopeRequired = $candidate['isUsingScope'];
+    }
+
+    /**
+     * Resolve which candidate index this closure should use when multiple
+     * candidates on the same source line have identical signatures.
+     *
+     * Uses a static WeakMap to track which closure objects have already been
+     * assigned a candidate index for a given file:line, so that each closure
+     * gets a unique candidate in source order.
+     *
+     * @param  array  $matchingCandidates
+     * @return int
+     */
+    protected function resolveCandidateIndex($matchingCandidates)
+    {
+        if (static::$candidateMap === null) {
+            static::$candidateMap = new WeakMap;
+        }
+
+        // Check if this closure already has an assigned index.
+        if (isset(static::$candidateMap[$this->closureObject])) {
+            return static::$candidateMap[$this->closureObject]['index'];
+        }
+
+        // Count how many closures from this file:line have already been assigned.
+        $locationKey = $this->getFileName().':'.$this->getStartLine();
+        $usedIndices = 0;
+
+        foreach (static::$candidateMap as $closure => $data) {
+            if (($data['location'] ?? null) === $locationKey) {
+                $usedIndices++;
+            }
+        }
+
+        $index = min($usedIndices, count($matchingCandidates) - 1);
+
+        static::$candidateMap[$this->closureObject] = [
+            'location' => $locationKey,
+            'index' => $index,
+        ];
+
+        return $index;
     }
 
     /**

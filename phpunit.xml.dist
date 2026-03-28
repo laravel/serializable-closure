@@ -25,6 +25,7 @@
             <file>tests/SerializeNestedClosureRegressionTest.php</file>
             <file>tests/InstanceofExpressionTest.php</file>
             <file>tests/MultipleClosuresOnSameLineTest.php</file>
+            <file>tests/ClosureArrayIdentityTest.php</file>
         </testsuite>
         <testsuite name="php81">
             <file phpVersion="8.1.0" phpVersionOperator=">=">tests/ReflectionClosurePhp80Test.php</file>
