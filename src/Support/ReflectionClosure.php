@@ -591,7 +591,7 @@ class ReflectionClosure extends ReflectionFunction
                                     if (! $inside_structure) {
                                         $isUsingScope = $token[0] === T_DOUBLE_COLON;
                                     }
-                                } elseif (! (in_array($id_start_ci, $builtin_types))) {
+                                } elseif (! in_array($id_start_ci, $builtin_types)) {
                                     if ($classes === null) {
                                         $classes = $this->getClasses();
                                     }
@@ -641,7 +641,7 @@ class ReflectionClosure extends ReflectionFunction
                                         if (! $inside_structure && ! $id_start_ci === 'static') {
                                             $isUsingScope = true;
                                         }
-                                    } elseif (! (in_array($id_start_ci, $builtin_types))) {
+                                    } elseif (! in_array($id_start_ci, $builtin_types)) {
                                         if ($classes === null) {
                                             $classes = $this->getClasses();
                                         }
