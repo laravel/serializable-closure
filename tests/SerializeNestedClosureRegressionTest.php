@@ -42,3 +42,20 @@ test('objects with __serialize have array property closures wrapped when bound v
     expect(s($closure))->toBeInstanceOf(Closure::class);
     expect(s($closure)())->toBe('bound-chain');
 })->with('serializers');
+
+test('array property closures are callable after round-trip serialization', function () {
+    $obj = new ClassWithSerializeAndNestedClosures(
+        'round-trip',
+        [
+            fn () => 'first',
+            fn () => 'second',
+        ],
+        fn () => 'callback'
+    );
+
+    $closure = function () use ($obj) {
+        return array_map(fn ($cb) => $cb(), $obj->chainItems);
+    };
+
+    expect(s($closure)())->toBe(['first', 'second']);
+})->with('serializers');
