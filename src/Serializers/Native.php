@@ -253,6 +253,13 @@ class Native implements Serializable
             }
 
             $instance = $data;
+
+            if ($data instanceof DateTimeInterface) {
+                $storage[$instance] = $data;
+
+                return;
+            }
+
             $reflection = new ReflectionObject($instance);
 
             if (! $reflection->isUserDefined() || $reflection->hasMethod('__serialize')) {
@@ -273,7 +280,7 @@ class Native implements Serializable
                         continue;
                     }
 
-                    if (! $property->isInitialized($instance)) {
+                    if (! $property->isInitialized($instance) || ($property->isReadOnly() && $property->class !== $reflection->name)) {
                         continue;
                     }
 
