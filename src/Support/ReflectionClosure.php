@@ -643,7 +643,7 @@ class ReflectionClosure extends ReflectionFunction
                                     $context === 'root'
                                 ) {
                                     if (in_array($id_start_ci, $class_keywords)) {
-                                        if (! $inside_structure && ! $id_start_ci === 'static') {
+                                        if (! $inside_structure && $id_start_ci !== 'static') {
                                             $isUsingScope = true;
                                         }
                                     } elseif (! (\PHP_MAJOR_VERSION >= 7 && in_array($id_start_ci, $builtin_types))) {
