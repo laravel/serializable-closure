@@ -29,6 +29,7 @@
             <file phpVersion="8.1.0" phpVersionOperator=">=">tests/ReflectionClosurePhp81Test.php</file>
             <file phpVersion="8.1.0" phpVersionOperator=">=">tests/SerializerPhp80Test.php</file>
             <file phpVersion="8.1.0" phpVersionOperator=">=">tests/SerializerPhp81Test.php</file>
+            <file phpVersion="8.1.0" phpVersionOperator=">=">tests/MethodOnlyAttributeTest.php</file>
         </testsuite>
         <testsuite name="php84">
             <file phpVersion="8.4.0" phpVersionOperator=">=">tests/Php84Test.php</file>
