@@ -31,6 +31,9 @@
             <file phpVersion="8.1.0" phpVersionOperator=">=">tests/SerializerPhp81Test.php</file>
             <file phpVersion="8.1.0" phpVersionOperator=">=">tests/MethodOnlyAttributeTest.php</file>
         </testsuite>
+        <testsuite name="php82">
+            <file phpVersion="8.2.0" phpVersionOperator=">=">tests/TrueTypeTest.php</file>
+        </testsuite>
         <testsuite name="php84">
             <file phpVersion="8.4.0" phpVersionOperator=">=">tests/Php84Test.php</file>
         </testsuite>
