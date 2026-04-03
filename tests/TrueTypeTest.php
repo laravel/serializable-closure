@@ -2,8 +2,6 @@
 
 namespace Foo\Bar;
 
-use Laravel\SerializableClosure\Support\ReflectionClosure;
-
 // PHP 8.2+ added `true` as a standalone type (complement of `false`).
 // Without the fix, `true` gets treated as a class name and namespace-prefixed
 // when the closure is inside a namespace.
