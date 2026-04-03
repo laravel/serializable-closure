@@ -781,7 +781,7 @@ class ReflectionClosure extends ReflectionFunction
      */
     protected static function getBuiltinTypes()
     {
-        return ['array', 'callable', 'string', 'int', 'bool', 'float', 'iterable', 'void', 'object', 'mixed', 'false', 'null', 'never'];
+        return ['array', 'callable', 'string', 'int', 'bool', 'float', 'iterable', 'void', 'object', 'mixed', 'false', 'null', 'never', 'true'];
     }
 
     /**
