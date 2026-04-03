@@ -521,6 +521,16 @@ class ReflectionClosure extends ReflectionFunction
                             $code .= $token[1];
                             $state = 'anonymous';
                             break;
+                        case '(':
+                            if ($context === 'instanceof') {
+                                $code .= '(';
+                                if ($isShortClosure) {
+                                    $open++;
+                                }
+                                $state = $lastState;
+                                break;
+                            }
+                            // no break
                         default:
                             $i--; //reprocess last
                             $state = 'id_name';
