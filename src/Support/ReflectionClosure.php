@@ -761,6 +761,14 @@ class ReflectionClosure extends ReflectionFunction
         $lastItem = array_pop($candidates);
 
         if ($lastItem) {
+            if ($lastItem['isShortClosure']) {
+                $nested = $this->extractNestedClosure($lastItem);
+
+                if ($nested !== null && $this->verifyCandidateSignature($nested)) {
+                    $lastItem = $nested;
+                }
+            }
+
             $this->applyCandidate($lastItem);
             $code = $lastItem['code'];
         } else {
@@ -1452,5 +1460,79 @@ class ReflectionClosure extends ReflectionFunction
         }
 
         return true;
+    }
+
+    /**
+     * Extract a nested closure from a short closure candidate.
+     *
+     * When a closure like `fn() => static function() { ... }` is parsed,
+     * the token parser captures the outer arrow function. This method
+     * extracts the inner function/closure from the arrow function's body.
+     *
+     * @param  array  $candidate
+     * @return array|null
+     */
+    protected function extractNestedClosure($candidate)
+    {
+        if (! $candidate['isShortClosure']) {
+            return null;
+        }
+
+        $code = $candidate['code'];
+        $tokens = token_get_all('<?php '.$code);
+
+        // Find the code after the arrow function's =>
+        $afterArrow = false;
+        $nestedParts = [];
+
+        foreach ($tokens as $token) {
+            if (! $afterArrow) {
+                if (is_array($token) && $token[0] === T_DOUBLE_ARROW) {
+                    $afterArrow = true;
+                }
+
+                continue;
+            }
+
+            $nestedParts[] = is_array($token) ? $token[1] : $token;
+        }
+
+        $nestedCode = trim(implode('', $nestedParts));
+
+        if ($nestedCode === '') {
+            return null;
+        }
+
+        // Check if the nested code starts with a closure keyword
+        $trimmed = strtolower(ltrim($nestedCode));
+
+        if (substr($trimmed, 0, 8) !== 'function' && substr($trimmed, 0, 6) !== 'static') {
+            return null;
+        }
+
+        // Extract use variables from the nested closure's use clause
+        $use = [];
+        $nestedTokens = token_get_all('<?php '.$nestedCode);
+        $inUse = false;
+
+        foreach ($nestedTokens as $token) {
+            if (is_array($token)) {
+                if ($token[0] === T_USE) {
+                    $inUse = true;
+                } elseif ($token[0] === T_VARIABLE && $inUse) {
+                    $use[] = substr($token[1], 1);
+                }
+            } elseif ($token === '{') {
+                break;
+            }
+        }
+
+        return [
+            'code' => $nestedCode,
+            'use' => $use,
+            'isShortClosure' => false,
+            'isUsingThisObject' => false,
+            'isUsingScope' => $candidate['isUsingScope'],
+        ];
     }
 }
