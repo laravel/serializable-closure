@@ -761,7 +761,7 @@ class ReflectionClosure extends ReflectionFunction
         $lastItem = array_pop($candidates);
 
         if ($lastItem) {
-            if ($lastItem['isShortClosure'] && ($nested = $this->extractNestedClosure($lastItem)) !== null) {
+            if ($lastItem['isShortClosure'] && $this->isNestedClosure() && ($nested = $this->extractNestedClosure($lastItem)) !== null) {
                 $lastItem = $nested;
             }
 
@@ -1459,8 +1459,21 @@ class ReflectionClosure extends ReflectionFunction
     }
 
     /**
-     * Extract a nested closure from a short closure's body when the arrow
-     * function wraps a regular closure, e.g. `fn() => static function() { ... }`.
+     * Determine if this closure is nested inside another closure.
+     *
+     * @return bool
+     */
+    protected function isNestedClosure()
+    {
+        if (PHP_VERSION_ID < 80400) {
+            return true;
+        }
+
+        return str_contains(parent::getName(), '{closure:{closure:');
+    }
+
+    /**
+     * Extract the inner closure from a short closure candidate.
      *
      * @param  array  $candidate
      * @return array|null
@@ -1499,7 +1512,6 @@ class ReflectionClosure extends ReflectionFunction
         }
         $innerCode = trim($innerCode);
 
-        // Determine if the inner closure is a short closure (fn or static fn)
         $isInnerShort = $tokens[$innerStart][0] === T_FN;
         if (! $isInnerShort && $tokens[$innerStart][0] === T_STATIC) {
             foreach (array_slice($tokens, $innerStart + 1) as $t) {
@@ -1513,7 +1525,6 @@ class ReflectionClosure extends ReflectionFunction
             }
         }
 
-        // Extract use variables from the inner closure's use clause
         $use = [];
         if (! $isInnerShort) {
             $innerTokens = token_get_all('<?php '.$innerCode);

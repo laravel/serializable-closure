@@ -85,3 +85,24 @@ test('standalone function still works', function () {
 
     expect(s($fn)())->toBe(42);
 })->with('serializers');
+
+test('factory arrow function itself serializes correctly', function () {
+    $factory = fn () => static function () {
+        return 'inner';
+    };
+
+    $restored = s($factory);
+    $inner = $restored();
+
+    expect($inner)->toBeInstanceOf(Closure::class);
+    expect($inner())->toBe('inner');
+})->with('serializers');
+
+test('function with return type returned from arrow function serializes correctly', function () {
+    $factory = fn () => static function (): string {
+        return 'typed';
+    };
+    $closure = $factory();
+
+    expect(s($closure)())->toBe('typed');
+})->with('serializers');
