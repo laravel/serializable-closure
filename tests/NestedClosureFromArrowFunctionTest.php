@@ -106,3 +106,53 @@ test('function with return type returned from arrow function serializes correctl
 
     expect(s($closure)())->toBe('typed');
 })->with('serializers');
+
+// Deep nesting tests (3+ levels)
+
+test('static function returned from 3-level arrow function nesting is parsed correctly', function () {
+    $factory = fn () => fn () => static function () {
+        return 'deep';
+    };
+    $closure = $factory()();
+
+    $reflection = new ReflectionClosure($closure);
+
+    expect($reflection->getCode())->toStartWith('static function ()');
+    expect($reflection->getCode())->not->toStartWith('fn');
+    expect($reflection->isShortClosure())->toBeFalse();
+});
+
+test('static function returned from 3-level arrow function nesting serializes correctly', function () {
+    $factory = fn () => fn () => static function () {
+        return '3-level';
+    };
+    $closure = $factory()();
+
+    expect(s($closure)())->toBe('3-level');
+})->with('serializers');
+
+test('arrow function returned from 3-level arrow function nesting serializes correctly', function () {
+    $factory = fn () => fn () => fn () => '3-arrow';
+    $closure = $factory()();
+
+    expect(s($closure)())->toBe('3-arrow');
+})->with('serializers');
+
+test('static function returned from 4-level arrow function nesting serializes correctly', function () {
+    $factory = fn () => fn () => fn () => static function () {
+        return '4-level';
+    };
+    $closure = $factory()()();
+
+    expect(s($closure)())->toBe('4-level');
+})->with('serializers');
+
+test('function with use clause returned from 3-level arrow function nesting serializes correctly', function () {
+    $value = 'captured-deep';
+    $factory = fn () => fn () => static function () use ($value) {
+        return $value;
+    };
+    $closure = $factory()();
+
+    expect(s($closure)())->toBe('captured-deep');
+})->with('serializers');

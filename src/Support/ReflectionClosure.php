@@ -1548,6 +1548,17 @@ class ReflectionClosure extends ReflectionFunction
             'isUsingScope' => $candidate['isUsingScope'],
         ];
 
+        // If the extracted closure is still a short closure, it may contain
+        // another nested closure (e.g. fn() => fn() => function() {}). Recurse
+        // to peel through all arrow function layers before verifying.
+        if ($isInnerShort) {
+            $deeper = $this->extractNestedClosure($nested);
+
+            if ($deeper !== null) {
+                return $deeper;
+            }
+        }
+
         return $this->verifyCandidateSignature($nested) ? $nested : null;
     }
 }
