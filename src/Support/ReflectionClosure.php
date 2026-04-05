@@ -24,13 +24,6 @@ class ReflectionClosure extends ReflectionFunction
     protected static $constants = [];
     protected static $structures = [];
 
-    /**
-     * Tracks which candidate index has been assigned to each closure object
-     * for a given file:line, so that multiple closures on the same line with
-     * identical signatures can be distinguished.
-     *
-     * @var \WeakMap<\Closure, array{location: string, index: int}>|null
-     */
     protected static $candidateMap;
 
     /**
@@ -771,9 +764,6 @@ class ReflectionClosure extends ReflectionFunction
             }
 
             if (count($matchingCandidates) > 1) {
-                // Multiple candidates with identical signatures on the same line.
-                // Use a WeakMap counter to assign each closure object a unique index
-                // so that closures are matched in the order they appear in the source.
                 $candidateIndex = $this->resolveCandidateIndex($matchingCandidates);
                 $selected = $matchingCandidates[$candidateIndex];
 
@@ -1410,12 +1400,7 @@ class ReflectionClosure extends ReflectionFunction
     }
 
     /**
-     * Resolve which candidate index this closure should use when multiple
-     * candidates on the same source line have identical signatures.
-     *
-     * Uses a static WeakMap to track which closure objects have already been
-     * assigned a candidate index for a given file:line, so that each closure
-     * gets a unique candidate in source order.
+     * Resolve which candidate index this closure should use.
      *
      * @param  array  $matchingCandidates
      * @return int
@@ -1426,12 +1411,10 @@ class ReflectionClosure extends ReflectionFunction
             static::$candidateMap = new WeakMap;
         }
 
-        // Check if this closure already has an assigned index.
         if (isset(static::$candidateMap[$this->closureObject])) {
             return static::$candidateMap[$this->closureObject]['index'];
         }
 
-        // Count how many closures from this file:line have already been assigned.
         $locationKey = $this->getFileName().':'.$this->getStartLine();
         $usedIndices = 0;
 
