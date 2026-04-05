@@ -38,6 +38,7 @@
         </testsuite>
         <testsuite name="php84">
             <file phpVersion="8.4.0" phpVersionOperator=">=">tests/Php84Test.php</file>
+            <file phpVersion="8.4.0" phpVersionOperator=">=">tests/PropertyHookTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>
