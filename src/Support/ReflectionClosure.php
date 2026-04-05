@@ -1424,7 +1424,7 @@ class ReflectionClosure extends ReflectionFunction
             }
         }
 
-        $index = min($usedIndices, count($matchingCandidates) - 1);
+        $index = $usedIndices % count($matchingCandidates);
 
         static::$candidateMap[$this->closureObject] = [
             'location' => $locationKey,
