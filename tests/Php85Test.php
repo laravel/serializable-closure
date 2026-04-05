@@ -1,18 +1,24 @@
 <?php
 
 test('closure with static function as default parameter value', function () {
-    $f = function (callable $handler = static function () { return 'fallback'; }) {
+    $f = function (callable $handler = static function () {
+        return 'fallback';
+    }) {
         return $handler();
     };
 
     $s = s($f);
 
     expect($s())->toBe('fallback')
-        ->and($s(function () { return 'custom'; }))->toBe('custom');
+        ->and($s(function () {
+            return 'custom';
+        }))->toBe('custom');
 })->with('serializers');
 
 test('static fn with static function as default parameter value', function () {
-    $f = static fn(callable $handler = static function () { return 'fn-fallback'; }) => $handler();
+    $f = static fn (callable $handler = static function () {
+        return 'fn-fallback';
+    }) => $handler();
 
     $s = s($f);
 
@@ -20,8 +26,12 @@ test('static fn with static function as default parameter value', function () {
 })->with('serializers');
 
 test('closure with multiple static function defaults', function () {
-    $f = function (callable $a = static function () { return 'A'; }, callable $b = static function () { return 'B'; }) {
-        return $a() . $b();
+    $f = function (callable $a = static function () {
+        return 'A';
+    }, callable $b = static function () {
+        return 'B';
+    }) {
+        return $a().$b();
     };
 
     $s = s($f);
@@ -30,7 +40,9 @@ test('closure with multiple static function defaults', function () {
 })->with('serializers');
 
 test('closure with static function default that has return type', function () {
-    $f = function (callable $handler = static function (): int { return 42; }) {
+    $f = function (callable $handler = static function (): int {
+        return 42;
+    }) {
         return $handler();
     };
 
@@ -40,7 +52,9 @@ test('closure with static function default that has return type', function () {
 })->with('serializers');
 
 test('closure with static function default that has parameters', function () {
-    $f = function (callable $handler = static function (int $x = 5): int { return $x * 2; }) {
+    $f = function (callable $handler = static function (int $x = 5): int {
+        return $x * 2;
+    }) {
         return $handler();
     };
 
@@ -50,7 +64,11 @@ test('closure with static function default that has parameters', function () {
 })->with('serializers');
 
 test('closure with nested static function in default', function () {
-    $f = function (callable $handler = static function () { return static function () { return 99; }; }) {
+    $f = function (callable $handler = static function () {
+        return static function () {
+            return 99;
+        };
+    }) {
         return $handler()();
     };
 
@@ -60,8 +78,10 @@ test('closure with nested static function in default', function () {
 })->with('serializers');
 
 test('closure with mixed regular and static function defaults', function () {
-    $f = function (int $x = 10, callable $handler = static function () { return 'default'; }, string $y = 'test') {
-        return $x . $handler() . $y;
+    $f = function (int $x = 10, callable $handler = static function () {
+        return 'default';
+    }, string $y = 'test') {
+        return $x.$handler().$y;
     };
 
     $s = s($f);

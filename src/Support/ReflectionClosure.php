@@ -1339,7 +1339,7 @@ class ReflectionClosure extends ReflectionFunction
      * @param  int  $l  Total token count
      * @param  string  $code  Code string to append to (passed by reference)
      * @param  bool  $isArrowFunction  Whether this is a T_FN (arrow function)
-     * @return int  The new token index after the nested closure
+     * @return int The new token index after the nested closure
      */
     protected function skipNestedClosure(array $tokens, int $i, int $l, string &$code, bool $isArrowFunction): int
     {
