@@ -1424,7 +1424,14 @@ class ReflectionClosure extends ReflectionFunction
             }
         }
 
-        $index = min($usedIndices, count($matchingCandidates) - 1);
+        $candidateCount = count($matchingCandidates);
+
+        // Use modulo to cycle through candidates when the same source line
+        // creates closures across multiple invocations (e.g., a function
+        // called repeatedly, test datasets, loops). The previous min()
+        // clamping would silently assign all overflow closures to the last
+        // candidate, causing wrong results on subsequent invocations.
+        $index = $usedIndices % $candidateCount;
 
         static::$candidateMap[$this->closureObject] = [
             'location' => $locationKey,

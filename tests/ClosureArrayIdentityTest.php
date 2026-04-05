@@ -1,6 +1,7 @@
 <?php
 
 use Laravel\SerializableClosure\SerializableClosure;
+use Tests\Fixtures\SameLineClosures;
 
 test('multiple arrow closures in an array preserve identity after roundtrip', function () {
     $closures = [fn () => 'a', fn () => 'b', fn () => 'c'];
@@ -76,4 +77,36 @@ test('mixed signature closures on same line still disambiguate correctly', funct
     expect($unserialized[0]())->toBe('no-args');
     expect($unserialized[1]('test'))->toBe('test');
     expect($unserialized[2]())->toBe('also-no-args');
+});
+
+test('same-line closures from repeated invocations cycle correctly via modulo', function () {
+    // First invocation: 3 closures, assigned indices 0, 1, 2
+    $batch1 = SameLineClosures::threeIdentical();
+    $serialized1 = serialize(array_map(fn ($c) => new SerializableClosure($c), $batch1));
+    $unserialized1 = unserialize($serialized1);
+
+    expect($unserialized1[0]())->toBe('a');
+    expect($unserialized1[1]())->toBe('b');
+    expect($unserialized1[2]())->toBe('c');
+
+    // Second invocation: 3 new closures from the same line,
+    // modulo cycles back to indices 0, 1, 2
+    $batch2 = SameLineClosures::threeIdentical();
+    $serialized2 = serialize(array_map(fn ($c) => new SerializableClosure($c), $batch2));
+    $unserialized2 = unserialize($serialized2);
+
+    expect($unserialized2[0]())->toBe('a');
+    expect($unserialized2[1]())->toBe('b');
+    expect($unserialized2[2]())->toBe('c');
+});
+
+test('sequential same-line serialization still works without throwing', function () {
+    $closures = [fn () => 'a', fn () => 'b', fn () => 'c'];
+
+    $serialized = serialize(array_map(fn ($c) => new SerializableClosure($c), $closures));
+    $unserialized = unserialize($serialized);
+
+    expect($unserialized[0]())->toBe('a');
+    expect($unserialized[1]())->toBe('b');
+    expect($unserialized[2]())->toBe('c');
 });
