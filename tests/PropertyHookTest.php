@@ -125,6 +125,7 @@ class ProductWithGetHook
     public string $name {
         get {
             static::$getHookCallCount++;
+
             return $this->name;
         }
     }
@@ -146,6 +147,7 @@ class ItemWithBothHooks
     public string $label {
         get {
             static::$getHookCallCount++;
+
             return $this->label;
         }
         set(string $value) {
