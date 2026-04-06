@@ -121,6 +121,10 @@ class SerializableClosure
             throw new InvalidSignatureException();
         }
 
+        if (! Signed::$signer && $data['serializable'] instanceof Signed) {
+            throw new InvalidSignatureException();
+        }
+
         $this->serializable = $data['serializable'];
     }
 }
