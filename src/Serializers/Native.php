@@ -197,7 +197,8 @@ class Native implements Serializable
 
         if (! empty($this->code['objects'])) {
             foreach ($this->code['objects'] as $item) {
-                $item['property']->setValue(
+                static::setPropertyValue(
+                    $item['property'],
                     $item['instance'],
                     $item['object'] instanceof SerializableClosure || $item['object'] instanceof UnsignedSerializableClosure
                         ? $item['object']
@@ -282,10 +283,10 @@ class Native implements Serializable
                         continue;
                     }
 
-                    $value = $property->getValue($instance);
+                    $value = static::getPropertyValue($property, $instance);
 
                     if (static::isClosureTypedProperty($property)) {
-                        $property->setValue($data, $value);
+                        static::setPropertyValue($property, $data, $value);
 
                         continue;
                     }
@@ -294,7 +295,7 @@ class Native implements Serializable
                         static::wrapClosures($value, $storage);
                     }
 
-                    $property->setValue($data, $value);
+                    static::setPropertyValue($property, $data, $value);
                 }
             } while ($reflection = $reflection->getParentClass());
         }
@@ -386,7 +387,7 @@ class Native implements Serializable
                         continue;
                     }
 
-                    $item = $property->getValue($data);
+                    $item = static::getPropertyValue($property, $data);
 
                     if ($item instanceof SerializableClosure || $item instanceof UnsignedSerializableClosure || ($item instanceof SelfReference && $item->hash === $this->code['self'])) {
                         $this->code['objects'][] = [
@@ -396,7 +397,7 @@ class Native implements Serializable
                         ];
                     } elseif (is_array($item) || is_object($item)) {
                         $this->mapPointers($item);
-                        $property->setValue($data, $item);
+                        static::setPropertyValue($property, $data, $item);
                     }
                 }
             } while ($reflection = $reflection->getParentClass());
@@ -506,10 +507,10 @@ class Native implements Serializable
                         continue;
                     }
 
-                    $value = $property->getValue($instance);
+                    $value = static::getPropertyValue($property, $instance);
 
                     if (static::isClosureTypedProperty($property)) {
-                        $property->setValue($data, $value);
+                        static::setPropertyValue($property, $data, $value);
 
                         continue;
                     }
@@ -518,10 +519,39 @@ class Native implements Serializable
                         $this->mapByReference($value);
                     }
 
-                    $property->setValue($data, $value);
+                    static::setPropertyValue($property, $data, $value);
                 }
             } while ($reflection = $reflection->getParentClass());
         }
+    }
+
+    /**
+     * Get the value of a property, bypassing hooks on PHP 8.4+.
+     *
+     * @param  \ReflectionProperty  $property
+     * @param  object  $object
+     * @return mixed
+     */
+    protected static function getPropertyValue(ReflectionProperty $property, object $object): mixed
+    {
+        return PHP_VERSION_ID >= 80400
+            ? $property->getRawValue($object)
+            : $property->getValue($object);
+    }
+
+    /**
+     * Set the value of a property, bypassing hooks on PHP 8.4+.
+     *
+     * @param  \ReflectionProperty  $property
+     * @param  object  $object
+     * @param  mixed  $value
+     * @return void
+     */
+    protected static function setPropertyValue(ReflectionProperty $property, object $object, mixed $value): void
+    {
+        PHP_VERSION_ID >= 80400
+            ? $property->setRawValue($object, $value)
+            : $property->setValue($object, $value);
     }
 
     /**
