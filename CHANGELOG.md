@@ -1,6 +1,19 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.10...2.x)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.11...2.x)
+
+## [v2.0.11](https://github.com/laravel/serializable-closure/compare/v2.0.10...v2.0.11) - 2026-04-07
+
+* [2.x] [bug] Fix operator precedence bug in scope detection for class keywords by [@JoshSalway](https://github.com/JoshSalway) in https://github.com/laravel/serializable-closure/pull/137
+* [2.x] [cleanup] Remove dead code and fix docblock errors by [@JoshSalway](https://github.com/JoshSalway) in https://github.com/laravel/serializable-closure/pull/139
+* [2.x] [regression] Fix v2.0.9 regression: Bus::chain breaks with nested closures by [@JoshSalway](https://github.com/JoshSalway) in https://github.com/laravel/serializable-closure/pull/129
+* [2.x] [bug] Fix crash with method-only attributes on serialized closures by [@JoshSalway](https://github.com/JoshSalway) in https://github.com/laravel/serializable-closure/pull/128
+* [2.x] [bug] Add true to builtin types list for PHP 8.2+ by [@JoshSalway](https://github.com/JoshSalway) in https://github.com/laravel/serializable-closure/pull/141
+* [2.x] [bug] Fix instanceof with parenthesized expressions by [@JoshSalway](https://github.com/JoshSalway) in https://github.com/laravel/serializable-closure/pull/140
+* [2.x] [bug] Fix SerializableClosure as class property being unwrapped during deserialization by [@JoshSalway](https://github.com/JoshSalway) in https://github.com/laravel/serializable-closure/pull/135
+* Register MultipleClosuresOnSameLineTest in phpunit.xml.dist by [@JoshSalway](https://github.com/JoshSalway) in https://github.com/laravel/serializable-closure/pull/143
+* [2.x] [docs] Update README caveats by [@JoshSalway](https://github.com/JoshSalway) in https://github.com/laravel/serializable-closure/pull/153
+* [2.x] [bug] Bypass property hooks during serialization traversal on PHP 8.4+ by [@JoshSalway](https://github.com/JoshSalway) in https://github.com/laravel/serializable-closure/pull/146
 
 ## [v2.0.10](https://github.com/laravel/serializable-closure/compare/v2.0.9...v2.0.10) - 2026-02-20
 
