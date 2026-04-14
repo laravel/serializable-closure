@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.11...2.x)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.12...2.x)
+
+## [v2.0.12](https://github.com/laravel/serializable-closure/compare/v2.0.11...v2.0.12) - 2026-04-14
+
+* fix: closure from inside anonymous migration by [@calebdw](https://github.com/calebdw) in https://github.com/laravel/serializable-closure/pull/156
 
 ## [v2.0.11](https://github.com/laravel/serializable-closure/compare/v2.0.10...v2.0.11) - 2026-04-07
 
