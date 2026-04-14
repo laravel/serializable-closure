@@ -126,7 +126,11 @@ class Native implements Serializable
         }
 
         if ($scope = $reflector->getClosureScopeClass()) {
-            $scope = $scope->name;
+            if (! $scope->isAnonymous() || $reflector->isBindingRequired() || $reflector->isScopeRequired()) {
+                $scope = $scope->name;
+            } else {
+                $scope = null;
+            }
         }
 
         $this->reference = spl_object_hash($this->closure);
