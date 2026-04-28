@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.12...2.x)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.13...2.x)
+
+## [v2.0.13](https://github.com/laravel/serializable-closure/compare/v2.0.12...v2.0.13) - 2026-04-16
+
+* feat: support closures in constant expressions (php8.5) by [@calebdw](https://github.com/calebdw) in https://github.com/laravel/serializable-closure/pull/157
 
 ## [v2.0.12](https://github.com/laravel/serializable-closure/compare/v2.0.11...v2.0.12) - 2026-04-14
 
