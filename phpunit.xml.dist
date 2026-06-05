@@ -23,6 +23,7 @@
             <file>tests/ReflectionClosureEmptyTokensTest.php</file>
             <file>tests/TypedClosurePropertyTest.php</file>
             <file>tests/SerializeNestedClosureRegressionTest.php</file>
+            <file>tests/ReserializeNestedClosurePropertyTest.php</file>
             <file>tests/InstanceofExpressionTest.php</file>
             <file>tests/MultipleClosuresOnSameLineTest.php</file>
         </testsuite>
