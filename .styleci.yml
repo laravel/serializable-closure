@@ -3,6 +3,7 @@ php:
   preset: laravel
   finder:
     not-name:
+      - MultipleClosuresOnSameLineTest.php
       - Php84Test.php
       - ReflectionClosureBracedNamespaceTest.php
       - ReflectionClosureNonBracedNamespaceTest.php

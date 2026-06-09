@@ -7,6 +7,7 @@ use ReflectionFunction;
 
 class ReflectionClosure extends ReflectionFunction
 {
+    protected $closure;
     protected $code;
     protected $tokens;
     protected $hashedName;
@@ -23,6 +24,20 @@ class ReflectionClosure extends ReflectionFunction
     protected static $structures = [];
 
     /**
+     * Candidate indexes previously assigned to closure instances.
+     *
+     * @var \WeakMap<\Closure, int>|null
+     */
+    protected static $candidateIndexes;
+
+    /**
+     * Counts closures seen per file / line range / candidate group.
+     *
+     * @var array<string, int>
+     */
+    protected static $candidateCounters = [];
+
+    /**
      * Creates a new reflection closure instance.
      *
      * @param  \Closure  $closure
@@ -32,6 +47,8 @@ class ReflectionClosure extends ReflectionFunction
     public function __construct(Closure $closure, $code = null)
     {
         parent::__construct($closure);
+
+        $this->closure = $closure;
     }
 
     /**
@@ -777,35 +794,30 @@ class ReflectionClosure extends ReflectionFunction
             return "#[$name($arguments)]";
         }, $this->getAttributes())));
 
+        $selected = null;
+
         if (count($candidates) > 1) {
-            $lastItem = array_pop($candidates);
+            $verified = array_values(array_filter($candidates, function ($candidate) {
+                return $this->verifyCandidateSignature($candidate);
+            }));
 
-            foreach ($candidates as $candidate) {
-                if (! $this->verifyCandidateSignature($candidate)) {
-                    continue;
-                }
-
-                $this->applyCandidate($candidate);
-
-                $code = $candidate['code'];
-
-                if (! empty($attributesCode)) {
-                    $code = implode("\n", array_merge($attributesCode, [$code]));
-                }
-
-                $this->code = $code;
-
-                return $this->code;
+            if (count($verified) === 1) {
+                $selected = $verified[0];
+            } elseif (count($verified) > 1) {
+                // Multiple closures with identical signatures exist on the same
+                // line. Reflection cannot tell them apart, so candidates are
+                // assigned to closure instances in the order they are first seen.
+                $selected = $verified[$this->resolveCandidateIndex($verified)];
             }
-
-            $candidates[] = $lastItem;
         }
 
-        $lastItem = array_pop($candidates);
+        if ($selected === null) {
+            $selected = array_pop($candidates);
+        }
 
-        if ($lastItem) {
-            $this->applyCandidate($lastItem);
-            $code = $lastItem['code'];
+        if ($selected) {
+            $this->applyCandidate($selected);
+            $code = $selected['code'];
         } else {
             if ($isShortClosure) {
                 $this->useVariables = $this->getStaticVariables();
@@ -1398,6 +1410,34 @@ class ReflectionClosure extends ReflectionFunction
             'closureArgsInnerFuncCount' => 0,
             'closureArgsBraceDepth' => 0,
         ];
+    }
+
+    /**
+     * Resolve which of the verified candidates belongs to this closure.
+     *
+     * Closures with identical signatures on the same line are indistinguishable
+     * through reflection, so candidates are assigned to closure instances in the
+     * order in which they are first serialized. The assigned index is cached per
+     * closure instance so repeated serializations remain stable.
+     *
+     * @param  array  $verified
+     * @return int
+     */
+    protected function resolveCandidateIndex($verified)
+    {
+        static::$candidateIndexes ??= new \WeakMap;
+
+        if (isset(static::$candidateIndexes[$this->closure])) {
+            return static::$candidateIndexes[$this->closure] % count($verified);
+        }
+
+        $key = $this->getFileName().':'.$this->getStartLine().':'.$this->getEndLine().':'.md5(implode("\x00", array_column($verified, 'code')));
+
+        $index = static::$candidateCounters[$key] ?? 0;
+
+        static::$candidateCounters[$key] = $index + 1;
+
+        return static::$candidateIndexes[$this->closure] = $index % count($verified);
     }
 
     /**

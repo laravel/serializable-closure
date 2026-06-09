@@ -94,6 +94,57 @@ test('multiple traditional closures on same line', function () {
     expect($u2())->toBe(2);
 });
 
+test('multiple closures on same line with identical signatures', function () {
+    $closures = [fn () => 'a', fn () => 'b', fn () => 'c'];
+
+    $serialized = serialize(array_map(fn ($c) => new SerializableClosure($c), $closures));
+    $unserialized = array_map(fn ($sc) => $sc->getClosure(), unserialize($serialized));
+
+    expect($unserialized[0]())->toBe('a');
+    expect($unserialized[1]())->toBe('b');
+    expect($unserialized[2]())->toBe('c');
+});
+
+test('closure with identical signature keeps its candidate on repeated serialization', function () {
+    $closures = [fn () => 'x', fn () => 'y'];
+
+    $s1 = new SerializableClosure($closures[0]);
+    $s2 = new SerializableClosure($closures[1]);
+
+    expect(unserialize(serialize($s1))->getClosure()())->toBe('x');
+    expect(unserialize(serialize($s2))->getClosure()())->toBe('y');
+
+    // Serializing the same instances again must yield the same results.
+    expect(unserialize(serialize($s1))->getClosure()())->toBe('x');
+    expect(unserialize(serialize($s2))->getClosure()())->toBe('y');
+});
+
+test('multiple traditional closures with identical signatures on same line', function () {
+    $c1 = function () { return 1; }; $c2 = function () { return 2; }; // @phpstan-ignore-line
+
+    $u1 = unserialize(serialize(new SerializableClosure($c1)))->getClosure();
+    $u2 = unserialize(serialize(new SerializableClosure($c2)))->getClosure();
+
+    expect($u1())->toBe(1);
+    expect($u2())->toBe(2);
+});
+
+test('identical signature closures created in a loop', function () {
+    $all = [];
+
+    for ($i = 0; $i < 2; $i++) {
+        $pair = [fn () => 'first', fn () => 'second'];
+
+        $all[] = unserialize(serialize(new SerializableClosure($pair[0])))->getClosure();
+        $all[] = unserialize(serialize(new SerializableClosure($pair[1])))->getClosure();
+    }
+
+    expect($all[0]())->toBe('first');
+    expect($all[1]())->toBe('second');
+    expect($all[2]())->toBe('first');
+    expect($all[3]())->toBe('second');
+});
+
 test('multiple traditional closures with use clause on same line', function () {
     $a = 1;
     $b = 2;
