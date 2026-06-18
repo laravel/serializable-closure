@@ -1,6 +1,7 @@
 <?php
 
 use Laravel\SerializableClosure\Exceptions\InvalidSignatureException;
+use Laravel\SerializableClosure\Exceptions\MissingSecretKeyException;
 use Laravel\SerializableClosure\SerializableClosure;
 
 test('secure closure integrity fail', function () {
@@ -36,6 +37,5 @@ test('signed closure without signer', function () {
 
     $value = serialize(new SerializableClosure($closure));
     SerializableClosure::setSecretKey(null);
-    $closure = unserialize($value)->getClosure();
-    expect($closure())->toBeTrue();
-});
+    unserialize($value);
+})->throws(MissingSecretKeyException::class);

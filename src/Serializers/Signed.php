@@ -79,7 +79,11 @@ class Signed implements Serializable
      */
     public function __unserialize($signature)
     {
-        if (static::$signer && ! static::$signer->verify($signature)) {
+        if (! static::$signer) {
+            throw new MissingSecretKeyException();
+        }
+
+        if (! static::$signer->verify($signature)) {
             throw new InvalidSignatureException();
         }
 
