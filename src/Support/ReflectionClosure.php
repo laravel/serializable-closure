@@ -804,6 +804,10 @@ class ReflectionClosure extends ReflectionFunction
         $lastItem = array_pop($candidates);
 
         if ($lastItem) {
+            if ($lastItem['isShortClosure'] && $this->isNestedClosure() && ($nested = $this->extractNestedClosure($lastItem)) !== null) {
+                $lastItem = $nested;
+            }
+
             $this->applyCandidate($lastItem);
             $code = $lastItem['code'];
         } else {
@@ -1497,5 +1501,109 @@ class ReflectionClosure extends ReflectionFunction
         }
 
         return true;
+    }
+
+    /**
+     * Determine if this closure is nested inside another closure.
+     *
+     * @return bool
+     */
+    protected function isNestedClosure()
+    {
+        if (PHP_VERSION_ID < 80400) {
+            return true;
+        }
+
+        return str_contains(parent::getName(), '{closure:{closure:');
+    }
+
+    /**
+     * Extract the inner closure from a short closure candidate.
+     *
+     * @param  array  $candidate
+     * @return array|null
+     */
+    protected function extractNestedClosure($candidate)
+    {
+        $tokens = token_get_all('<?php '.$candidate['code']);
+        $afterArrow = false;
+        $innerStart = null;
+
+        foreach ($tokens as $i => $token) {
+            if (! $afterArrow) {
+                if (is_array($token) && $token[0] === T_DOUBLE_ARROW) {
+                    $afterArrow = true;
+                }
+                continue;
+            }
+
+            if (is_array($token) && in_array($token[0], [T_FUNCTION, T_STATIC, T_FN], true)) {
+                $innerStart = $i;
+                break;
+            }
+
+            if (! is_array($token) || ! in_array($token[0], [T_WHITESPACE, T_COMMENT], true)) {
+                return null;
+            }
+        }
+
+        if ($innerStart === null) {
+            return null;
+        }
+
+        $innerCode = '';
+        for ($i = $innerStart; $i < count($tokens); $i++) {
+            $innerCode .= is_array($tokens[$i]) ? $tokens[$i][1] : $tokens[$i];
+        }
+        $innerCode = trim($innerCode);
+
+        $isInnerShort = $tokens[$innerStart][0] === T_FN;
+        if (! $isInnerShort && $tokens[$innerStart][0] === T_STATIC) {
+            foreach (array_slice($tokens, $innerStart + 1) as $t) {
+                if (is_array($t) && $t[0] === T_FN) {
+                    $isInnerShort = true;
+                    break;
+                }
+                if (! is_array($t) || $t[0] !== T_WHITESPACE) {
+                    break;
+                }
+            }
+        }
+
+        $use = [];
+        if (! $isInnerShort) {
+            $innerTokens = token_get_all('<?php '.$innerCode);
+            $inUse = false;
+            foreach ($innerTokens as $token) {
+                if (is_array($token) && $token[0] === T_USE) {
+                    $inUse = true;
+                } elseif ($inUse && is_array($token) && $token[0] === T_VARIABLE) {
+                    $use[] = substr($token[1], 1);
+                } elseif ($inUse && $token === '{') {
+                    break;
+                }
+            }
+        }
+
+        $nested = [
+            'code' => $innerCode,
+            'use' => $use,
+            'isShortClosure' => $isInnerShort,
+            'isUsingThisObject' => $candidate['isUsingThisObject'],
+            'isUsingScope' => $candidate['isUsingScope'],
+        ];
+
+        // If the extracted closure is still a short closure, it may contain
+        // another nested closure (e.g. fn() => fn() => function() {}). Recurse
+        // to peel through all arrow function layers before verifying.
+        if ($isInnerShort) {
+            $deeper = $this->extractNestedClosure($nested);
+
+            if ($deeper !== null) {
+                return $deeper;
+            }
+        }
+
+        return $this->verifyCandidateSignature($nested) ? $nested : null;
     }
 }
