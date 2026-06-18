@@ -41,5 +41,8 @@
             <file phpVersion="8.4.0" phpVersionOperator=">=">tests/Php84Test.php</file>
             <file phpVersion="8.4.0" phpVersionOperator=">=">tests/PropertyHookTest.php</file>
         </testsuite>
+        <testsuite name="php85">
+            <file phpVersion="8.5.0" phpVersionOperator=">=">tests/Php85Test.php</file>
+        </testsuite>
     </testsuites>
 </phpunit>

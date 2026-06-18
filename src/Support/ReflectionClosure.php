@@ -257,6 +257,11 @@ class ReflectionClosure extends ReflectionFunction
                             $state = 'closure';
                             $open++;
                             break;
+                        case T_FN:
+                        case T_FUNCTION:
+                            $code .= $token[1];
+                            $i = $this->skipNestedClosure($tokens, $i, $l, $code, $token[0] === T_FN);
+                            break;
                         default:
                             $code .= is_array($token) ? $token[1] : $token;
                     }
@@ -1364,6 +1369,78 @@ class ReflectionClosure extends ReflectionFunction
         $id_name = '\\'.implode('\\', $pieces);
 
         return [$id_start, $id_start_ci, $id_name];
+    }
+
+    /**
+     * Skip over a nested closure in parameter default values.
+     *
+     * When the parser encounters T_FUNCTION or T_FN inside closure_args (parameter defaults),
+     * this method consumes all tokens belonging to the nested closure and appends them to $code.
+     *
+     * @param  array  $tokens
+     * @param  int  $i  Current token index (pointing to the T_FUNCTION/T_FN token)
+     * @param  int  $l  Total token count
+     * @param  string  $code  Code string to append to (passed by reference)
+     * @param  bool  $isArrowFunction  Whether this is a T_FN (arrow function)
+     * @return int The new token index after the nested closure
+     */
+    protected function skipNestedClosure(array $tokens, int $i, int $l, string &$code, bool $isArrowFunction): int
+    {
+        $depth = 0;
+        $bodyStarted = false;
+
+        for ($i++; $i < $l; $i++) {
+            $token = $tokens[$i];
+            $code .= is_array($token) ? $token[1] : $token;
+
+            if ($isArrowFunction) {
+                // For arrow functions: fn(...) => expr
+                // Track parens for the parameter list, then after =>, track the expression
+                // The expression ends at a , or ) at depth 0
+                if ($token[0] === '(' || $token[0] === '{' || $token[0] === '[') {
+                    $depth++;
+                } elseif ($token[0] === ')' || $token[0] === '}' || $token[0] === ']') {
+                    $depth--;
+                    if ($depth < 0) {
+                        // We've consumed a ) that belongs to the outer param list, put it back
+                        $code = substr($code, 0, -1);
+                        $i--;
+                        break;
+                    }
+                } elseif ($token[0] === T_DOUBLE_ARROW && $depth === 0) {
+                    $bodyStarted = true;
+                } elseif ($token[0] === ',' && $depth === 0 && $bodyStarted) {
+                    // Comma at depth 0 after => ends the arrow function expression
+                    // Put the comma back for the outer parser
+                    $code = substr($code, 0, -1);
+                    $i--;
+                    break;
+                } elseif ($token[0] === T_FN || $token[0] === T_FUNCTION) {
+                    // Nested closure inside the arrow function expression
+                    $i = $this->skipNestedClosure($tokens, $i, $l, $code, $token[0] === T_FN);
+                }
+            } else {
+                // For regular functions: function (...) { ... }
+                // First track parens for parameter list, then track braces for the body
+                if ($token[0] === '(' || $token[0] === '{') {
+                    $depth++;
+                    if ($token[0] === '{') {
+                        $bodyStarted = true;
+                    }
+                } elseif ($token[0] === ')' || $token[0] === '}') {
+                    $depth--;
+                    if ($depth === 0 && $bodyStarted) {
+                        // Closing brace of the function body - nested closure is complete
+                        break;
+                    }
+                } elseif ($token[0] === T_FN || $token[0] === T_FUNCTION) {
+                    // Nested closure inside the function body
+                    $i = $this->skipNestedClosure($tokens, $i, $l, $code, $token[0] === T_FN);
+                }
+            }
+        }
+
+        return $i;
     }
 
     /**
