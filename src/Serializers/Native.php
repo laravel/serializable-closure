@@ -328,6 +328,10 @@ class Native implements Serializable
      */
     protected function mapPointers(&$data)
     {
+        if ($data instanceof SerializableClosure || $data instanceof UnsignedSerializableClosure) {
+            return;
+        }
+
         $scope = $this->scope;
 
         if ($data instanceof static) {
