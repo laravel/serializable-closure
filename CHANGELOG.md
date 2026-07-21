@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.14...2.x)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.15...2.x)
+
+## [v2.0.15](https://github.com/laravel/serializable-closure/compare/v2.0.14...v2.0.15) - 2026-07-21
+
+* Fix nested SerializableClosure in array property becoming a plain Closure by [@lucasmichot](https://github.com/lucasmichot) in https://github.com/laravel/serializable-closure/pull/172
 
 ## [v2.0.14](https://github.com/laravel/serializable-closure/compare/v2.0.13...v2.0.14) - 2026-06-24
 
