@@ -1,6 +1,18 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.13...2.x)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.14...2.x)
+
+## [v2.0.14](https://github.com/laravel/serializable-closure/compare/v2.0.13...v2.0.14) - 2026-06-24
+
+* Pin GitHub Actions to commit SHAs and add Dependabot config by [@joetannenbaum](https://github.com/joetannenbaum) in https://github.com/laravel/serializable-closure/pull/158
+* Bump shivammathur/setup-php from 2.37.0 to 2.37.1 in the github-actions group by [@dependabot](https://github.com/dependabot)[bot] in https://github.com/laravel/serializable-closure/pull/160
+* GitHub Actions hardening by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/serializable-closure/pull/162
+* Add Dependabot cooldown of 5 days by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/serializable-closure/pull/163
+* Enable Dependabot auto-merge by [@nunomaduro](https://github.com/nunomaduro) in https://github.com/laravel/serializable-closure/pull/165
+* [2.x] Restore nested closure in object property on unserialize by [@kapersoft](https://github.com/kapersoft) in https://github.com/laravel/serializable-closure/pull/166
+* Bump actions/checkout from 6.0.2 to 6.0.3 in the github-actions group by [@dependabot](https://github.com/dependabot)[bot] in https://github.com/laravel/serializable-closure/pull/168
+* Bump shivammathur/setup-php from 2.37.1 to 2.37.2 in the github-actions group by [@dependabot](https://github.com/dependabot)[bot] in https://github.com/laravel/serializable-closure/pull/169
+* Bump actions/checkout from 6.0.3 to 7.0.0 in the github-actions group by [@dependabot](https://github.com/dependabot)[bot] in https://github.com/laravel/serializable-closure/pull/170
 
 ## [v2.0.13](https://github.com/laravel/serializable-closure/compare/v2.0.12...v2.0.13) - 2026-04-16
 
