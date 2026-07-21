@@ -42,11 +42,11 @@ test('SerializableClosure nested in an array property stays a SerializableClosur
     $resolved = ($wrapped->getClosure())();
 
     expect($resolved->callbacks[0])->toBeInstanceOf($serializer === UnsignedSerializableClosure::class ? UnsignedSerializableClosure::class : SerializableClosure::class);
-    expect(($resolved->callbacks[0])->getClosure()())->toBe('hello');
+    expect($resolved->callbacks[0]->getClosure()())->toBe('hello');
 
     // Must still be serializable a second time.
     $reWrapped = unserialize(serialize($wrapped));
     $reResolved = ($reWrapped->getClosure())();
 
-    expect(($reResolved->callbacks[0])->getClosure()())->toBe('hello');
+    expect($reResolved->callbacks[0]->getClosure()())->toBe('hello');
 })->with('serializers');
