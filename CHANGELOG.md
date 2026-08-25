@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.15...2.x)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.16...2.x)
+
+## [v2.0.16](https://github.com/laravel/serializable-closure/compare/v2.0.15...v2.0.16) - 2026-08-18
+
+* Bump actions/checkout from 7.0.0 to 7.0.1 in the github-actions group by [@dependabot](https://github.com/dependabot)[bot] in https://github.com/laravel/serializable-closure/pull/173
+* [2.x] Ensure `$signer` is configured before attempting to execute `unserialize()` by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/serializable-closure/pull/174
 
 ## [v2.0.15](https://github.com/laravel/serializable-closure/compare/v2.0.14...v2.0.15) - 2026-07-21
 
