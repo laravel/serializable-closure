@@ -2,6 +2,7 @@
 
 use Carbon\CarbonImmutable;
 use Tests\Fixtures\ClassWithCarbonProperty;
+use Tests\Fixtures\CustomCollection;
 use Tests\Fixtures\CustomDate;
 
 /**
@@ -41,6 +42,16 @@ test('userland subclasses of internal classes survive serialization intact', fun
     };
 
     expect(s($closure)())->toBe('2026-01-01 12:00:00 Europe/Amsterdam');
+})->with('serializers');
+
+test('userland subclasses of internal classes keep their internal storage', function () {
+    $obj = new CustomCollection(['a', 'b', 'c']);
+
+    $closure = function () use ($obj) {
+        return $obj->getArrayCopy();
+    };
+
+    expect(s($closure)())->toBe(['a', 'b', 'c']);
 })->with('serializers');
 
 test('carbon instances keep their value and timezone after round trip', function () {
