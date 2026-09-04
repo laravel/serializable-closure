@@ -23,7 +23,7 @@ jobs:
       matrix:
         php: [8.1, 8.2, 8.3, 8.4, 8.5]
         laravel: [10, 11, 12, 13]
-        experimental: false
+        experimental: [false]
         exclude:
           - php: 8.1
             laravel: 11
