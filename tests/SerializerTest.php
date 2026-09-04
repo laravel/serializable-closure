@@ -362,7 +362,7 @@ test('serializable closure serialization string content dont change', function (
         return $a;
     });
 
-    $actual = explode('s:32:', serialize($c))[0];
+    $actual = explode('s:4:"self";', serialize($c))[0].'s:4:"self";';
 
     expect($actual)->toBe(<<<OEF
 O:47:"Laravel\SerializableClosure\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\SerializableClosure\Serializers\Signed":2:{s:12:"serializable";s:264:"O:46:"Laravel\SerializableClosure\Serializers\Native":5:{s:3:"use";a:1:{s:1:"a";i:100;}s:8:"function";s:47:"function () use (\$a) {
@@ -381,7 +381,7 @@ test('unsigned serializable closure serialization string content dont change', f
         return $a;
     });
 
-    $actual = explode('s:32:', serialize($c))[0];
+    $actual = explode('s:4:"self";', serialize($c))[0].'s:4:"self";';
 
     expect($actual)->toBe(<<<OEF
 O:55:"Laravel\SerializableClosure\UnsignedSerializableClosure":1:{s:12:"serializable";O:46:"Laravel\SerializableClosure\Serializers\Native":5:{s:3:"use";a:1:{s:1:"a";i:100;}s:8:"function";s:47:"function () use (\$a) {
