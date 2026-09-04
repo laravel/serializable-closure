@@ -55,7 +55,7 @@ class Native implements Serializable
     /**
      * The closure's reference.
      *
-     * @var string
+     * @var string|int
      */
     protected $reference;
 
@@ -133,7 +133,9 @@ class Native implements Serializable
             }
         }
 
-        $this->reference = spl_object_id($this->closure);
+        $this->reference = PHP_VERSION_ID >= 80600
+            ? spl_object_id($this->closure)
+            : spl_object_hash($this->closure);
 
         $this->scope[$this->closure] = $this;
 
