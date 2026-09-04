@@ -362,14 +362,20 @@ test('serializable closure serialization string content dont change', function (
         return $a;
     });
 
-    $actual = explode('s:32:', serialize($c))[0];
+    $actual = serialize($c);
 
-    expect($actual)->toBe(<<<OEF
-O:47:"Laravel\SerializableClosure\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\SerializableClosure\Serializers\Signed":2:{s:12:"serializable";s:264:"O:46:"Laravel\SerializableClosure\Serializers\Native":5:{s:3:"use";a:1:{s:1:"a";i:100;}s:8:"function";s:47:"function () use (\$a) {
-        return \$a;
-    }";s:5:"scope";s:22:"P\Tests\SerializerTest";s:4:"this";N;s:4:"self";
-OEF
-    );
+    // The "self" field is a spl_object_hash() string on PHP < 8.6 and a spl_object_id() integer
+    // on PHP >= 8.6, so its serialized form (and the byte-length prefix of the string containing
+    // it) can't be hardcoded and must be extracted from the actual output instead.
+    preg_match('/s:4:"self";(s:\d+:"[^"]*"|i:\d+);/', $actual, $matches);
+
+    $native = 'O:46:"Laravel\SerializableClosure\Serializers\Native":5:{s:3:"use";a:1:{s:1:"a";i:100;}s:8:"function";s:47:"function () use ($a) {
+        return $a;
+    }";s:5:"scope";s:22:"P\Tests\SerializerTest";s:4:"this";N;s:4:"self";'.$matches[1].';}';
+
+    $expected = 'O:47:"Laravel\SerializableClosure\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\SerializableClosure\Serializers\Signed":2:{s:12:"serializable";s:'.strlen($native).':"'.$native.'";';
+
+    expect(substr($actual, 0, strlen($expected)))->toBe($expected);
 });
 
 test('unsigned serializable closure serialization string content dont change', function () {
@@ -381,7 +387,7 @@ test('unsigned serializable closure serialization string content dont change', f
         return $a;
     });
 
-    $actual = explode('s:32:', serialize($c))[0];
+    $actual = explode('s:4:"self";', serialize($c))[0].'s:4:"self";';
 
     expect($actual)->toBe(<<<OEF
 O:55:"Laravel\SerializableClosure\UnsignedSerializableClosure":1:{s:12:"serializable";O:46:"Laravel\SerializableClosure\Serializers\Native":5:{s:3:"use";a:1:{s:1:"a";i:100;}s:8:"function";s:47:"function () use (\$a) {
