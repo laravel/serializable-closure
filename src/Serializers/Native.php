@@ -133,9 +133,7 @@ class Native implements Serializable
             }
         }
 
-        $this->reference = PHP_VERSION === '8.6.0-dev' || version_compare(PHP_VERSION, '8.6.0', '>=')
-            ? spl_object_id($this->closure)
-            : spl_object_hash($this->closure);
+        $this->reference = spl_object_id($this->closure);
 
         $this->scope[$this->closure] = $this;
 

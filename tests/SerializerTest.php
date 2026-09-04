@@ -365,9 +365,9 @@ test('serializable closure serialization string content dont change', function (
     $actual = explode('s:32:', serialize($c))[0];
 
     expect($actual)->toBe(<<<OEF
-O:47:"Laravel\SerializableClosure\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\SerializableClosure\Serializers\Signed":2:{s:12:"serializable";s:264:"O:46:"Laravel\SerializableClosure\Serializers\Native":5:{s:3:"use";a:1:{s:1:"a";i:100;}s:8:"function";s:47:"function () use (\$a) {
+O:47:"Laravel\SerializableClosure\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\SerializableClosure\Serializers\Signed":2:{s:12:"serializable";s:231:"O:46:"Laravel\SerializableClosure\Serializers\Native":5:{s:3:"use";a:1:{s:1:"a";i:100;}s:8:"function";s:47:"function () use (\$a) {
         return \$a;
-    }";s:5:"scope";s:22:"P\Tests\SerializerTest";s:4:"this";N;s:4:"self";
+    }";s:5:"scope";s:22:"P\Tests\SerializerTest";s:4:"this";N;s:4:"self";i:6838;}";s:4:"hash";s:44:"+1lcRO0lDFgbghMrNFtILaGX/14VC8WpQYXUwpIjwVQ=";}}
 OEF
     );
 });
@@ -386,7 +386,7 @@ test('unsigned serializable closure serialization string content dont change', f
     expect($actual)->toBe(<<<OEF
 O:55:"Laravel\SerializableClosure\UnsignedSerializableClosure":1:{s:12:"serializable";O:46:"Laravel\SerializableClosure\Serializers\Native":5:{s:3:"use";a:1:{s:1:"a";i:100;}s:8:"function";s:47:"function () use (\$a) {
         return \$a;
-    }";s:5:"scope";s:22:"P\Tests\SerializerTest";s:4:"this";N;s:4:"self";
+    }";s:5:"scope";s:22:"P\Tests\SerializerTest";s:4:"this";N;s:4:"self";i:2551;}}
 OEF
     );
 });
