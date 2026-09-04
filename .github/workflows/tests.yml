@@ -24,6 +24,10 @@ jobs:
         php: [8.1, 8.2, 8.3, 8.4, 8.5]
         laravel: [10, 11, 12, 13]
         experimental: [false]
+        include:
+          - php: 8.6
+            laravel: 13
+            experimental: true
         exclude:
           - php: 8.1
             laravel: 11
@@ -39,9 +43,6 @@ jobs:
             laravel: 10
           - php: 8.5
             laravel: 11
-          - php: 8.6
-            laravel: 13
-            experimental: true
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 
