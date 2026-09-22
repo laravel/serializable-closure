@@ -1,6 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.0.16...2.x)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.1.0...2.x)
+
+## [v2.1.0](https://github.com/laravel/serializable-closure/compare/v2.0.16...v2.1.0) - 2026-09-22
+
+* [2.x] Fix uninitialized internal state when serializing subclasses of PHP internal classes by [@frans-slabbekoorn](https://github.com/frans-slabbekoorn) in https://github.com/laravel/serializable-closure/pull/176
+* Supports PHP 8.6 by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/serializable-closure/pull/177
+* Test Improvements by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/serializable-closure/pull/178
 
 ## [v2.0.16](https://github.com/laravel/serializable-closure/compare/v2.0.15...v2.0.16) - 2026-08-18
 
