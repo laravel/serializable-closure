@@ -1,6 +1,19 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.1.0...2.x)
+## [Unreleased](https://github.com/laravel/serializable-closure/compare/v2.2.0...2.x)
+
+## [v2.2.0](https://github.com/laravel/serializable-closure/compare/v2.1.0...v2.2.0) - 2026-10-14
+
+### What's Changed
+
+* Remove security policy in favor of the org-wide default by [@pushpak1300](https://github.com/pushpak1300) in https://github.com/laravel/serializable-closure/pull/179
+* Bump shivammathur/setup-php from 2.37.2 to 2.40.0 in the github-actions group by [@dependabot](https://github.com/dependabot)[bot] in https://github.com/laravel/serializable-closure/pull/180
+
+### New Contributors
+
+* [@pushpak1300](https://github.com/pushpak1300) made their first contribution in https://github.com/laravel/serializable-closure/pull/179
+
+**Full Changelog**: https://github.com/laravel/serializable-closure/compare/v2.1.0...v2.2.0
 
 ## [v2.1.0](https://github.com/laravel/serializable-closure/compare/v2.0.16...v2.1.0) - 2026-09-22
 
